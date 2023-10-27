@@ -1,11 +1,10 @@
-
 .team-container{
     display: flex;
     background-color: rgba(255, 255, 255, 0.600);
     justify-content: space-evenly;
-    position: fixed;
+    /* position: fixed;
     bottom: 10px;
-    left: 10px;
+    left: 10px; */
     opacity: 30%;
     width: 35vw;
     height: 16vh;

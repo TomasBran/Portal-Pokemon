@@ -1,9 +1,15 @@
 .navbar{
+    position: fixed;
+    top: 0;
     display: flex;
     justify-content: center;
-    gap:24px;
+    align-items: center;
+    gap: 24px;
     width: 100vw;
-    background-color: rgb(139, 139, 151);
+    height: 6vh;
+    background-color: rgb(45, 45, 45);
+    border-bottom: solid 2px rgba(112, 112, 112, 0.858);
+    z-index: 10;
     
 }
 
@@ -18,5 +24,5 @@
 
 .navbar-button:hover{
     cursor: pointer;
-    background-color: rgb(255, 113, 113);
+    background-color: rgb(98, 164, 255);
 }

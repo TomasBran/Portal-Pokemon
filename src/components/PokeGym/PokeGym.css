@@ -1,12 +1,18 @@
-.pokeGymGame{
-    background-color: rgb(149, 149, 203);
-    height: 80vh;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.poke-gym-container{
+    background-color: rgb(26, 154, 180);
+    margin-top: 6vh;
+    height: 94vh;
 }
 
-.pokeCard{
+.poke-gym-game{
+    background-color: rgb(26, 154, 180);
+    height: 75vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.poke-card{
     min-width: 30vw;
     display: flex;
     flex-direction: column;
@@ -17,13 +23,13 @@
     border: 2px black solid;
 }
 
-.lockedIn{
+.locked-in{
     background-color: rgb(119, 227, 119);
     padding: 8px 24px;
     border-radius: 50px;
 }
 
-.pokeCard:hover{
+.poke-card:hover{
     cursor: pointer;
     background-color: rgb(246, 246, 172);
 }
@@ -45,19 +51,23 @@
 
 .gym-game-button:disabled:hover{
     cursor: default;
-    box-shadow: none;
 }
 
-.gym-game-button:hover{
+.gym-game-button:not(:disabled) {
+    background-color: rgb(255, 254, 244);
+    font-weight: bold;
+}
+
+.gym-game-button:not(:disabled):hover {
     cursor: pointer;
     box-shadow: 0px 0px 10px white;
-
 }
 
 .gym-game-button-container{
     display: flex;
     justify-content: center;
     gap: 24px;
+    margin-left: 32px;
 }
 
 .generation-selector-container{
@@ -81,9 +91,9 @@
 }
 
 .generation-selector-button{
-    position: fixed;
+    /* position: fixed;
     right: 4vw;
-    bottom: 3vw;
+    bottom: 3vw; */
     padding: 8px 16px;
     border-radius: 10px;
 }
@@ -148,4 +158,11 @@
 .disabled-panel:hover{
     background-color: rgb(255, 146, 146);
 
+}
+
+.bottom-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px;
 }

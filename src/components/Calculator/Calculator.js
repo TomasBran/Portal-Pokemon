@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelection } from "../../context/SelectionContext";
-import "./TypeButtons.css";
+import "./Calculator.css";
 import  pokedex  from "../../assets/pokedex.webp"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -191,11 +191,11 @@ const pokemonTypes = [
     }
 ]
 
-const TypeButtons = () => {
+const Calculator = () => {
 
 
     const searchErrorMessage = () => toast.error(`El pokemon "${input.toUpperCase()}" no existe`, {
-        position: "top-center",
+        position: "top-left",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -232,6 +232,18 @@ const TypeButtons = () => {
             if(shouldReset){
                 resetTypes()
                 setIsVisible(false)
+            } else{
+                
+                toast.error(`Ya estás utilizando 2 tipos. Elimina uno primero`, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    })
             }
         }
 
@@ -325,83 +337,83 @@ const TypeButtons = () => {
 
     return (
 
-        <div className='mainContainer'>
-              <h2 className='mainTitle'>Tipos del pokemon enemigo:</h2>
+        <div className='main-container'>
+              <h2 className='main-title'>Tipos del pokemon enemigo:</h2>
               <div className="type-container">
 
 
-                <div className="flexContainer">
+                <div className="flex-container">
 
-                    <div className="selectorContainer">
+                    <div className="selector-container">
                         <div className="button-container">
                             {pokemonTypes.map((type) => 
                             <button onClick={() => handleClick(type.name)} className={`${type.name} button`} key={type.name}>{type.name}</button>
                             )}
                         </div>
 
-                        <div className={`pokedexContainer ${isVisible ? (currentFirstSelection!=="" ? currentFirstSelection : currentSecondSelection) : "emptyPokedex"} ${(currentFirstSelection==="" && currentSecondSelection==="") && "emptyPokedex"}`}>
-                            <div className="pokedexInfo">
-                                <img alt="" src={pokedex} className="pokedexImage"/>
-                                <div className="searchInfo">
-                                    <button className="searchButton" onClick={() => searchPokemon(input)}>Buscar</button>
-                                    <input className="searchInput" placeholder="Ej: Pikachu" value={input} onChange={(e) => setInput(e.target.value)} onKeyPress={(e) => handleEnter(e)}></input>
+                        <div className={`pokedex-container ${isVisible ? (currentFirstSelection!=="" ? currentFirstSelection : currentSecondSelection) : "empty-pokedex"} ${(currentFirstSelection==="" && currentSecondSelection==="") && "empty-pokedex"}`}>
+                            <div className="pokedex-info">
+                                <img alt="" src={pokedex} className="pokedex-image"/>
+                                <div className="search-info">
+                                    <button className="search-button" onClick={() => searchPokemon(input)}>Buscar</button>
+                                    <input className="search-input" placeholder="Ej: Pikachu" value={input} onChange={(e) => setInput(e.target.value)} onKeyPress={(e) => handleEnter(e)}></input>
                                 </div>
                             </div>
                             
-                            <div className={`pokemonPreview ${isVisible ? "visible" : "invisible"}`}>
-                                <div className="pokemonInfoDisplay">
-                                    <span className="pokemonName">#{currentPokemonId} - {currentPokemonName}</span>
-                                    <div className="pokemonTypes">
+                            <div className={`pokemon-preview ${isVisible ? "visible" : "invisible"}`}>
+                                <div className="pokemon-info-display">
+                                    <span className="pokemon-name">#{currentPokemonId} - {currentPokemonName}</span>
+                                    <div className="pokemon-types">
                                         <p className={`${currentFirstSelection!=="" ? currentFirstSelection : "invisible"} types`}>{currentFirstSelection}</p>
                                         <p className={`${currentSecondSelection!=="" ? currentSecondSelection : "invisible"} types`}>{currentSecondSelection}</p>
                                     </div>
                                 </div>
-                                <img alt="" src={currentPokemonImage} className="pokemonImage"/>
+                                <img alt="" src={currentPokemonImage} className="pokemon-image"/>
                                 
                             </div>    
                         </div>
                     </div>
-                    <div className="selectedContainer">
+                    <div className="selected-container">
                         <h2>Seleccionados:</h2>
-                        <button className={currentFirstSelection!=="" ? `${currentFirstSelection} button selectedType` : "empty"} onClick={() => handleClick(currentFirstSelection)}>{currentFirstSelection}</button>
-                        <button className={currentSecondSelection!== "" ? `${currentSecondSelection} button selectedType` : "empty"} onClick={() => handleClick(currentSecondSelection)}>{currentSecondSelection}</button>
+                        <button className={currentFirstSelection!=="" ? `${currentFirstSelection} button selected-type` : "empty"} onClick={() => handleClick(currentFirstSelection)}>{currentFirstSelection}</button>
+                        <button className={currentSecondSelection!== "" ? `${currentSecondSelection} button selected-type` : "empty"} onClick={() => handleClick(currentSecondSelection)}>{currentSecondSelection}</button>
                     </div>
 
-                    <div className="mainTypeContainer">
-                        <div className="EffectiveContainer">
+                    <div className="main-type-container">
+                        <div className="effective-container">
                             <h2>Efectivo:</h2>
                             <h2>x4:</h2>
-                            <div className="typesContainer">
+                            <div className="types-container">
                                 {types_x4.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
                             </div>
                             <h2>x2:</h2>
-                            <div className="typesContainer">
+                            <div className="types-container">
                                 {types_x2.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
                             </div>
                         </div>
-                        <div className="NeutralContainer">
+                        <div className="neutral-container">
                             <h2>Neutral:</h2>
                             <h2>x1:</h2>
-                            <div className="typesContainer">
+                            <div className="types-container">
                                 {types_x1.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
                             </div>
                         </div>
-                        <div className="UneffectiveContainer">
+                        <div className="uneffective-container">
                             <h2>Poco efectivo:</h2>
                             <h2>x1/2:</h2>
-                            <div className="typesContainer">
+                            <div className="types-container">
                                 {types_x05.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
                             </div>
                             <h2>x1/4:</h2>
-                            <div className="typesContainer">
+                            <div className="types-container">
                                 {types_x025.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
                             </div>
                         </div>
 
-                        <div className="ImmuneContainer">
+                        <div className="immune-container">
                             <h2>Inmune:</h2>
                             <h2>x0:</h2>
-                            <div className="typesContainer">
+                            <div className="types-container">
                                 {types_x0.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
                             </div>
 
@@ -409,9 +421,9 @@ const TypeButtons = () => {
                     </div>
                 </div>
               </div>
-              <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored"/>
+              <ToastContainer autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored"/>
             </div>
     )
 }
 
-export default TypeButtons
+export default Calculator

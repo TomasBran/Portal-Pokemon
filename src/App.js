@@ -1,6 +1,6 @@
 import './App.css';
 import PokeGym from './components/PokeGym/PokeGym';
-import TypeButtons from './components/TypeButtons/TypeButtons';
+import Calculator from './components/Calculator/Calculator';
 import { SelectionProvider } from './context/SelectionContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,7 +24,7 @@ function App() {
 
             <Route path="/Portal-Pokemon" element={<Home/>}/>
             <Route path="/gym" element={<PokeGym/>}/>
-            <Route path="/calculator" element={<TypeButtons/>}/>
+            <Route path="/calculator" element={<Calculator/>}/>
 
           </Routes>
 

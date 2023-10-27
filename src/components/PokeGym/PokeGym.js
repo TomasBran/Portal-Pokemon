@@ -27,6 +27,7 @@ const PokeGym = () => {
     
     const [shouldDisable, setShouldDisable] = useState(false)
 
+    const generationsContainer = document.getElementsByClassName("generation-container")[0]
         
     
 
@@ -89,7 +90,7 @@ const PokeGym = () => {
       };
 
     
-      useEffect(() => {
+    useEffect(() => {
         handleButtonText();
     }, [chosenTeam, updatePokemonTeam]);
 
@@ -169,10 +170,37 @@ const PokeGym = () => {
         setCurrentGenerations(newGenerations)
     }
 
-    const toggleGenerationPanel = () => {
-        document.getElementsByClassName("generation-container")[0].classList.toggle("invisible")
-    }
 
+   
+      
+
+    const toggleGenerationPanel = async () => {
+
+        setShouldDisable(true);
+
+        if (!generationsContainer.classList.contains("invisible")) {
+            generationsContainer.classList.toggle("invisible");
+            setShouldDisable(false);
+            return;
+          }
+
+        let result = await MySwal.fire({
+            title: '¿Querés cambiar las generaciones disponibles?',
+            text: 'Esto reiniciará tu partida',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Cambiar'
+          });
+
+          if(result.isConfirmed){
+              generationsContainer.classList.toggle("invisible")
+              resetGame(false)
+          }
+
+        setShouldDisable(false);
+    }
 
     const handleButtonText = () => {
         if(rerollsLeft===4){
@@ -212,6 +240,7 @@ const PokeGym = () => {
         const bonusLuck = (randomEnhancer*100).toFixed(0)-100
         power*=randomEnhancer
 
+        power=2150
 
         if(power>=3200){
             beatenGyms=8
@@ -219,8 +248,8 @@ const PokeGym = () => {
             finalText=`Felicitaciones! Conquistaste los <span style="color: green;">${beatenGyms}</span> gimnasios. Un maestro pokemon!\n- Te sobró un <span style="color: green;">${excessPower}%</span> de poder.`
         } else if (power >= 3000){
             beatenGyms = 6+Math.floor((power-3000)/100)
-            // excessPower = (power-3000) % 100; // MOSTRAR EL PROGRESO
-            excessPower = (power % 100 === 0) ? 0 : 100 - (power % 100); // MOSTRAR EL RESTANTE 
+            excessPower = (power-3000) % 100; // MOSTRAR EL PROGRESO
+            // excessPower = (power % 100 === 0) ? 0 : 100 - (power % 100); // MOSTRAR EL RESTANTE 
             finalText+=`<span style="color: green;">${beatenGyms}</span>. Impresionante!`
         } else {
             beatenGyms = 1+Math.floor((power-2250)/150)
@@ -228,7 +257,8 @@ const PokeGym = () => {
                 beatenGyms=0
             } 
             finalText+=`<span style="color: red;">${beatenGyms}.</span>`
-            excessPower = (((power-2250) % 150 === 0) ? 0 : 150 - ((power-2250) % 150))/150*100;
+            excessPower = ((power - 2250) % 150)/150*100
+            // excessPower = (((power-2250) % 150 === 0) ? 0 : 150 - ((power-2250) % 150))/150*100;
             
             if(beatenGyms>=4){
                 finalText+= " Nada mal."
@@ -237,13 +267,13 @@ const PokeGym = () => {
             }
             if(beatenGyms===0){
                 excessPower = (2250 - power)/2250*100
-                finalText += `\nTe faltó <span style="color: blue;">${excessPower.toFixed(0)}%+</span> para tu primera medalla.`
+                finalText += `\nTe faltó un <span style="color: blue;">~${excessPower.toFixed(0)}%</span> de progreso para conseguir la primera medalla.`
             }
             
         }
 
         finalText+=
-        `${beatenGyms!==8 && beatenGyms!==0 ? `\n- Progreso faltante para la ${beatenGyms+1}° medalla: <span style="color: blue;">${excessPower.toFixed(0)}%</span>.` : ""}
+        `${beatenGyms!==8 && beatenGyms!==0 ? `\n- Progreso hacia la ${beatenGyms+1}° medalla: <span style="color: blue;">~${excessPower.toFixed(0)}%</span>.` : ""}
         - Bonus Suerte: <span style="color: ${bonusLuck===0 ? "blue" : bonusLuck>=0 ? "green" : "red"};">${bonusLuck}%</span>`
 
         await MySwal.fire({
@@ -259,7 +289,7 @@ const PokeGym = () => {
     }
 
     const resetGame = async (shouldAsk) => {
-        let testing = true
+        let testing = false  //CAMBIAR CUANDO ESTOY TESTEANDO
         let result = false
         if(shouldAsk && !testing){
             result = await MySwal.fire({
@@ -287,32 +317,36 @@ const PokeGym = () => {
     }
     
     return(
-        <div className="pokeGymContainer">
-            <div className="pokeGymGame">
+        <div className="poke-gym-container">
+            <div className="poke-gym-game">
                 {currentTeam.map((pokemon, index) => {
                     
                     return(
-                        <div className="pokeCard" key={index} onClick={() => lockInPokemon(pokemon)}>
+                        <div className="poke-card" key={index} onClick={() => lockInPokemon(pokemon)}>
                             <span>#{pokemon.id} - {pokemon.name}</span>
-                            <img alt="" src={pokemon.img} className="pokemonImage"/>
+                            <img alt="" src={pokemon.img} className="pokemon-image"/>
                             {handleStars(pokemon.power)}
-                            <span className={`lockedIn ${pokemon.hasBeenChosen ? "visible" : "invisible"}`}>ELEGIDO</span>
+                            <span className={`locked-in ${pokemon.hasBeenChosen ? "visible" : "invisible"}`}>ELEGIDO</span>
                         </div>
                 )})}
             </div>
-            
-            <div className="gym-game-button-container">
 
-                <button className="gym-game-button" style={{marginTop:24, padding:16}} onClick={() => updatePokemonTeam()} disabled={shouldDisable}>{rollButtonText}</button>
-                <button className="gym-game-button" disabled={chosenTeam.length!==6} onClick={fightGymLeaders}>PELEAR</button>
-                <button className="gym-game-button" disabled={rollButtonText==="Iniciar"} onClick={() => resetGame(true)}>REINICIAR JUEGO</button>
+            <div className="bottom-container">
+                
+                <TeamContainer team={chosenTeam}/>
+
+                <div className="gym-game-button-container">
+
+                    <button className="gym-game-button" style={{marginTop:24, padding:16}} onClick={() => updatePokemonTeam()} disabled={shouldDisable}>{rollButtonText}</button>
+                    <button className="gym-game-button" disabled={chosenTeam.length!==6} onClick={fightGymLeaders}>PELEAR</button>
+                    <button className="gym-game-button" disabled={rollButtonText==="Iniciar"} onClick={() => resetGame(true)}>REINICIAR JUEGO</button>
+                </div>
+                
+                <div className="generation-selector-button-container">
+                    <button className="generation-selector-button" onClick={toggleGenerationPanel}>Cambiar Generación</button>
+                </div>
             </div>
 
-            <TeamContainer team={chosenTeam}/>
-
-            <div className="generation-selector-button-container">
-                <button className="generation-selector-button" onClick={toggleGenerationPanel}>Cambiar Generación</button>
-            </div>
             
             <div className="generation-container invisible">
                 <div  className="generation-selector-panel">
