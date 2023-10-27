@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/TomasBran/Portal-Pokemon/static/css/main.4c428608.css",
+    "main.js": "/TomasBran/Portal-Pokemon/static/js/main.268f32f0.js",
+    "static/js/787.bd30492c.chunk.js": "/TomasBran/Portal-Pokemon/static/js/787.bd30492c.chunk.js",
+    "static/media/gym.png": "/TomasBran/Portal-Pokemon/static/media/gym.5ad4dc019d57c4c36632.png",
+    "static/media/calculator.png": "/TomasBran/Portal-Pokemon/static/media/calculator.268111bc8b5de22c456b.png",
+    "static/media/background.jpg": "/TomasBran/Portal-Pokemon/static/media/background.01b8d36634d61dedbd28.jpg",
+    "static/media/pokedex.webp": "/TomasBran/Portal-Pokemon/static/media/pokedex.492367d043e723e92388.webp",
+    "index.html": "/TomasBran/Portal-Pokemon/index.html",
+    "main.4c428608.css.map": "/TomasBran/Portal-Pokemon/static/css/main.4c428608.css.map",
+    "main.268f32f0.js.map": "/TomasBran/Portal-Pokemon/static/js/main.268f32f0.js.map",
+    "787.bd30492c.chunk.js.map": "/TomasBran/Portal-Pokemon/static/js/787.bd30492c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4c428608.css",
+    "static/js/main.268f32f0.js"
+  ]
+}
