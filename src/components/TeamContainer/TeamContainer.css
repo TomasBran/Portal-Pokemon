@@ -1,0 +1,36 @@
+
+.team-container{
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.600);
+    justify-content: space-evenly;
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    opacity: 30%;
+    width: 35vw;
+    height: 16vh;
+    border: black solid 2px;
+    border-radius: 30px;
+    transition: all ease-in-out 200ms;
+}
+
+.team-container:hover{
+    opacity: 100%;
+    cursor: zoom-in;
+    background-color: rgba(255, 255, 255, 0.300);
+}
+
+.team-pokemon-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+.pokemon-team-image{
+    max-width: 5vw;
+    max-height: 15vh;
+}
+
+.dead-pokemon{
+    filter:grayscale(100);
+}

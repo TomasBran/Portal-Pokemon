@@ -1,23 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import PokeGym from './components/PokeGym/PokeGym';
+import TypeButtons from './components/TypeButtons/TypeButtons';
+import { SelectionProvider } from './context/SelectionContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter, Route, Link, Routes} from "react-router-dom";
+import Home from './components/Home/Home';
+import Navbar from './components/Navbar/Navbar';
+
+
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <BrowserRouter> 
+
+          <Navbar/>
+          <SelectionProvider>
+
+          <Routes>
+
+            <Route path="/Portal-Pokemon" element={<Home/>}/>
+            <Route path="/gym" element={<PokeGym/>}/>
+            <Route path="/calculator" element={<TypeButtons/>}/>
+
+          </Routes>
+
+          
+
+            
+
+          </SelectionProvider>
+      </BrowserRouter>
+      
+
     </div>
   );
 }

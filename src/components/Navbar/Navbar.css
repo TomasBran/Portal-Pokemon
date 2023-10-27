@@ -1,0 +1,22 @@
+.navbar{
+    display: flex;
+    justify-content: center;
+    gap:24px;
+    width: 100vw;
+    background-color: rgb(139, 139, 151);
+    
+}
+
+.navbar-button{
+    padding: 4px 20px;
+    margin: 4px;
+    min-width: 10vw;
+    border-radius: 7px;
+    background-color: rgb(255, 76, 76);
+    font-weight: bold;
+}
+
+.navbar-button:hover{
+    cursor: pointer;
+    background-color: rgb(255, 113, 113);
+}

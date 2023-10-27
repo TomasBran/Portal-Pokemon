@@ -1,0 +1,74 @@
+.home-container{
+    display: flex;
+    justify-content: center;
+}
+
+.home-panel{
+    background-color: rgba(255, 255, 255, 0.729);
+    border-radius: 20px;
+    width: 70vw;
+    height: 70vh;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home-title{
+    font-size: 40px;
+}
+
+.home-button{
+    padding: 8px 16px;
+    width: 25vw;
+    height: 35vh;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    transition: all ease 150ms;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0px 0px 25px black;
+    text-decoration: none;
+}
+
+.home-button:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+    box-shadow: 0px 0px 12px black;
+
+}
+
+.no-underline{
+    text-decoration: none;
+}
+
+.home-button-text{
+    color:white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: -2px -2px black;
+}
+
+.home-button-container{
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+
+}
+
+
+
+.gym-button{
+    background:url(../../assets/gym.png);
+}
+
+.calculator-button{
+    background: url(../../assets/calculator.png);
+}
+
+.gym-button, .calculator-button{
+    background-size: cover;
+    background-position: center;
+}
