@@ -240,7 +240,6 @@ const PokeGym = () => {
         const bonusLuck = (randomEnhancer*100).toFixed(0)-100
         power*=randomEnhancer
 
-        power=2150
 
         if(power>=3200){
             beatenGyms=8
