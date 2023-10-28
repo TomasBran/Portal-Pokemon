@@ -11,6 +11,9 @@ import withReactContent from 'sweetalert2-react-content'
 
 const PokeGym = () => {
 
+
+    const testing = false  //CAMBIAR CUANDO ESTOY TESTEANDO
+
     const MySwal = withReactContent(Swal);
 
     const pokemonNumberLimits = [
@@ -22,7 +25,7 @@ const PokeGym = () => {
     const [currentPokemonLimit, setCurrentPokemonLimit] = useState(898)
     const [currentTeam, setCurrentTeam] = useState([])
     const [chosenTeam, setChosenTeam] = useState([])
-    const [rerollsLeft, setRerollsLeft] = useState(4)
+    const [rerollsLeft, setRerollsLeft] = useState(testing ? 100 : 4)
     const [rollButtonText, setRollButtonText] = useState(`Generar ${6-chosenTeam.length} pokemon (3 REROLLS)`)
     
     const [shouldDisable, setShouldDisable] = useState(false)
@@ -54,7 +57,25 @@ const PokeGym = () => {
 
    
     const updatePokemonTeam = () => {
+
+        const gymButton = document.getElementsByClassName("gym-game-button")[0]
         
+        gymButton.disabled=true
+        const tempText = rollButtonText
+
+        setTimeout(() => {
+            
+            gymButton.textContent="Espera"
+
+        }, 1);
+        
+        setTimeout(() => {
+            if(rerollsLeft>1){
+                gymButton.disabled=false
+            }
+            setRollButtonText(tempText)
+        }, 1500);
+
         setCurrentTeam([])
         setRerollsLeft(prev => prev-1)
 
@@ -104,16 +125,19 @@ const PokeGym = () => {
             randomNum = Math.floor(Math.random() * (currentPokemonLimit)) + 1;
             
             tries++;
-    
-            numberIsValid = pokemonNumberLimits.some((element, index) => {
+
+            numberIsValid = !chosenTeam.some(pokemon => pokemon.id === randomNum) &&
+            !currentTeam.some(pokemon => pokemon.id === randomNum) &&
+            pokemonNumberLimits.some((element, index) => {
                 if (randomNum > element) {
                     return false;
-                } else if (currentGenerations[index] === true && (randomNum > pokemonNumberLimits[index-1] || index===0)) {
+                } else if (currentGenerations[index] === true && (randomNum > pokemonNumberLimits[index - 1] || index === 0)) {
                     return true;
                 } else {
                     return false;
                 }
             });
+    
         } while (!numberIsValid && tries<100);
     
         if(!numberIsValid){
@@ -169,9 +193,6 @@ const PokeGym = () => {
         newGenerations[index] = !newGenerations[index]
         setCurrentGenerations(newGenerations)
     }
-
-
-   
       
 
     const toggleGenerationPanel = async () => {
@@ -222,7 +243,7 @@ const PokeGym = () => {
         }
     }
 
-    const  getRandomArbitrary = (min, max) => {
+    const getRandomArbitrary = (min, max) => {
         return Math.random() * (max - min) + min;
       }
 
@@ -288,7 +309,6 @@ const PokeGym = () => {
     }
 
     const resetGame = async (shouldAsk) => {
-        let testing = false  //CAMBIAR CUANDO ESTOY TESTEANDO
         let result = false
         if(shouldAsk && !testing){
             result = await MySwal.fire({
@@ -307,7 +327,7 @@ const PokeGym = () => {
 
             setChosenTeam([])
             setCurrentTeam([])
-            setRerollsLeft(4)
+            setRerollsLeft(testing ? 100 : 4)
             setRollButtonText("Iniciar")
             setShouldDisable(false)
         } 
@@ -321,7 +341,7 @@ const PokeGym = () => {
                 {currentTeam.map((pokemon, index) => {
                     
                     return(
-                        <div className="poke-card" key={index} onClick={() => lockInPokemon(pokemon)}>
+                        <div className={`${pokemon.hasBeenChosen ? "selected-poke-card" : "poke-card"}`} key={index} onClick={() => lockInPokemon(pokemon)}>
                             <span>#{pokemon.id} - {pokemon.name}</span>
                             <img alt="" src={pokemon.img} className="pokemon-image"/>
                             {handleStars(pokemon.power)}
@@ -336,8 +356,8 @@ const PokeGym = () => {
 
                 <div className="gym-game-button-container">
 
-                    <button className="gym-game-button" style={{marginTop:24, padding:16}} onClick={() => updatePokemonTeam()} disabled={shouldDisable}>{rollButtonText}</button>
-                    <button className="gym-game-button" disabled={chosenTeam.length!==6} onClick={fightGymLeaders}>PELEAR</button>
+                    <button className="gym-game-button" onClick={() => updatePokemonTeam()} disabled={shouldDisable}>{rollButtonText}</button>
+                    <button className="gym-game-button" disabled={chosenTeam.length!==6} onClick={fightGymLeaders}>PELEAR {chosenTeam.length!==6 ? `(Necesitas 6 Pokemon)` : ""}</button>
                     <button className="gym-game-button" disabled={rollButtonText==="Iniciar"} onClick={() => resetGame(true)}>REINICIAR JUEGO</button>
                 </div>
                 
