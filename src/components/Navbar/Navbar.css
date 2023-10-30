@@ -7,10 +7,9 @@
     gap: 24px;
     width: 100vw;
     height: 6vh;
-    background-color: rgb(45, 45, 45);
+    background-color: #333;
     border-bottom: solid 2px rgba(112, 112, 112, 0.858);
     z-index: 10;
-    
 }
 
 .navbar-button{
@@ -18,11 +17,11 @@
     margin: 4px;
     min-width: 10vw;
     border-radius: 7px;
-    background-color: rgb(255, 76, 76);
+    background-color: #FF5733;
     font-weight: bold;
 }
 
-.navbar-button:hover{
+.navbar-button:not(:disabled):hover {
     cursor: pointer;
-    background-color: rgb(98, 164, 255);
+    background-color: #40A3DB;
 }

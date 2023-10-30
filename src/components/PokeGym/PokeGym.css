@@ -1,93 +1,97 @@
-.poke-gym-container{
-    background-color: rgb(26, 154, 180);
+.poke-gym-container {
+    background-color: #1A9AA4;
     margin-top: 6vh;
     height: 94vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.poke-gym-game{
-    background-color: rgb(26, 154, 180);
+.poke-gym-game {
+    background-color: #1A9AA4;
+    padding-top: 8px;
     height: 75vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    align-items: center;
+    align-items:center;
 }
 
-.selected-poke-card{
-    background-color: rgb(147, 206, 147);
+.selected-poke-card {
+    background-color: #93CE93;
 }
 
-.poke-card, .selected-poke-card{
+.poke-card,
+.selected-poke-card {
+    margin: 0px 8px;
     min-width: 30vw;
     height: 35vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 16px;
-    margin-top: 16px;
-    border: 2px black solid;
+    border: 2px solid #000;
     border-radius: 20px;
 }
 
-.poke-card{
-    background-color: rgb(222, 225, 228);
+.poke-card {
+    background-color: #DEE1E4;
 }
 
-.locked-in{
-    background-color: rgb(119, 227, 119);
+.locked-in {
+    background-color: #77E377;
     padding: 8px 24px;
     border-radius: 50px;
     font-weight: 400;
-    border: solid rgba(255, 255, 255, 0.662) 2px;
-    box-shadow: 0px 0px 5px black;
+    border: 2px solid rgba(255, 255, 255, 0.662);
+    box-shadow: 0px 0px 5px #000;
 }
 
-.locked-in:hover, .poke-card:hover, .selected-poke-card:hover{
+.locked-in:hover, .poke-card:hover, .selected-poke-card:hover {
     cursor: pointer;
 }
 
-.poke-card:hover{
-    background-color: rgb(210, 226, 181);
+.poke-card:hover {
+    background-color: #D2E2B5;
 }
 
-.gym-game-button{
+.gym-game-button {
     margin: 24px 0px;
     padding: 16px;
-    min-width: 8vw;
+    width: 12vw;
+    min-height: 9vh;
     font-weight: bold;
     transition: all ease-in-out 150ms;
     border-radius: 10px;
-    background-color: rgb(255, 254, 244);
+    background-color: #FFFFF4;
+    border: none;
 }
 
-.gym-game-button:disabled{
-    background-color: rgb(209, 209, 209);
+.gym-game-button:disabled {
+    background-color: #D1D1D1;
     font-weight: 100;
-}
-
-.gym-game-button:disabled:hover{
-    cursor: default;
+    cursor: not-allowed;
 }
 
 .gym-game-button:not(:disabled) {
-    background-color: rgb(255, 254, 244);
-    font-weight: bold;
+    background-color: #FFFFF4;
 }
 
 .gym-game-button:not(:disabled):hover {
     cursor: pointer;
-    box-shadow: 0px 0px 10px white;
+    box-shadow: 0px 0px 10px #FFF;
 }
 
-.gym-game-button-container{
+.gym-game-button-container {
     display: flex;
     justify-content: center;
     gap: 24px;
     margin-left: 32px;
 }
 
-.generation-selector-container{
-    position:fixed;
+.generation-selector-container {
+    position: fixed;
     right: 2vw;
     bottom: 2vw;
     display: flex;
@@ -95,87 +99,74 @@
     align-items: center;
 }
 
-.generation-selector{
+.generation-selector {
     padding: 8px 16px;
     border-radius: 10px;
     transition: all ease-in-out 150ms;
 }
 
-.generation-selector:hover{
-    cursor: pointer;
-    box-shadow: 0px 0px 10px white;
-}
-
-.generation-selector-button{
+.generation-selector-button {
     padding: 8px 16px;
     border-radius: 10px;
 }
 
-.generation-panel{
+.generation-panel {
     width: 10vw;
     padding: 8px;
     border-radius: 10px;
 }
 
-.generation-container{
+.generation-container {
     padding: 16px;
     width: 42vw;
     position: fixed;
     right: 2vw;
     bottom: 2vw;
-    background-color: white;
+    background-color: #FFF;
     border-radius: 30px;
-    border: solid 2px rgb(89, 89, 89);
+    border: 2px solid #595959;
 }
 
-.generation-selector-panel{
+.generation-selector-panel {
     display: flex;
     flex-wrap: wrap;
-    gap:24px;
+    gap: 24px;
     justify-content: center;
 }
 
-.generation-selector-panel-button{
+.generation-selector-panel-button {
     margin-top: 32px;
     padding: 8px 32px;
     border-radius: 7px;
     transition: all ease-in 150ms;
 }
 
-
-.generation-selector-panel-button:hover{
-    cursor:pointer;
-    box-shadow: 0px 0px 8px rgba(46, 46, 46, 0.705);
-
-}
-
 .generation-panel:hover,
-.generation-selector-button:hover{
+.generation-selector-button:hover {
     cursor: pointer;
     box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.705);
 }
 
-.enabled-panel{
-    background-color: rgb(116, 255, 82);
+.enabled-panel {
+    background-color: #74FF52;
 }
 
-.enabled-panel:hover{
-    background-color: rgb(168, 255, 146);
-
+.enabled-panel:hover {
+    background-color: #A8FF92;
 }
 
-.disabled-panel{
-    background-color: rgb(255, 82, 82);
+.disabled-panel {
+    background-color: #FF5252;
 }
 
-.disabled-panel:hover{
-    background-color: rgb(255, 146, 146);
-
+.disabled-panel:hover {
+    background-color: #FF9292;
 }
 
-.bottom-container{
+.bottom-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    margin: 16px;
+    margin: 16px 32px;
+    width: 100vw;
 }

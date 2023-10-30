@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import TeamContainer from "../TeamContainer/TeamContainer";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { generateRandomPokemonNumber } from "../../utils/functions";
+import { getPokemon } from "../../services/pokemon";
 
 
 
@@ -22,7 +24,6 @@ const PokeGym = () => {
     
 
     const [currentGenerations, setCurrentGenerations] = useState([true,true,true,true,true,true,true,true])
-    const [currentPokemonLimit, setCurrentPokemonLimit] = useState(898)
     const [currentTeam, setCurrentTeam] = useState([])
     const [chosenTeam, setChosenTeam] = useState([])
     const [rerollsLeft, setRerollsLeft] = useState(testing ? 100 : 4)
@@ -56,107 +57,44 @@ const PokeGym = () => {
     }
 
    
-    const updatePokemonTeam = () => {
+    const updatePokemonTeam = async () => {
 
         const gymButton = document.getElementsByClassName("gym-game-button")[0]
-        
         gymButton.disabled=true
         const tempText = rollButtonText
 
         setTimeout(() => {
-            
-            gymButton.textContent="Espera"
-
+            gymButton.textContent = "Espera";
         }, 1);
         
         setTimeout(() => {
-            if(rerollsLeft>1){
-                gymButton.disabled=false
+            if (rerollsLeft > 1) {
+              gymButton.disabled = false;
             }
-            setRollButtonText(tempText)
-        }, 1500);
+            setRollButtonText(tempText);
+        }, 750);
 
         setCurrentTeam([])
         setRerollsLeft(prev => prev-1)
+        
 
         for (let index = 0; index < 6-chosenTeam.length; index++) {
-            const randomNum = generateRandomPokemonNumber()
+            const randomNum = generateRandomPokemonNumber(currentGenerations, chosenTeam, currentTeam)
             
-            fetch('https://pokeapi.co/api/v2/pokemon/' + randomNum)
-                .then(res => res.json())
-                .then(pokemonFromApi => {
-    
-                    const sprite = pokemonFromApi.sprites.other.dream_world.front_default ? pokemonFromApi.sprites.other.dream_world.front_default : pokemonFromApi.sprites.other.home.front_default
+            const newPokemon = await getPokemon(randomNum);
 
-                    const pokemonName = pokemonFromApi.name.charAt(0).toUpperCase() + pokemonFromApi.name.slice(1)
-
-                    const currentPokemon = {
-                        id: pokemonFromApi.id,
-                        name:pokemonName,
-                        img:sprite,
-                        power:calculatePower(pokemonFromApi.stats),
-                        hasBeenChosen:false
-                    }
-
-                    setCurrentTeam(team => [...team, currentPokemon])
-
-
-                    
-                })
-
-                
+            setCurrentTeam((team) => [...team, newPokemon]);
         }
         
-        
-      };
+    };
 
     
     useEffect(() => {
         handleButtonText();
     }, [chosenTeam, updatePokemonTeam]);
 
-
-    const generateRandomPokemonNumber = () => {
-        let randomNum = 0;
-        let tries = 0;
-        let numberIsValid = false;
     
-        do {
-            randomNum = Math.floor(Math.random() * (currentPokemonLimit)) + 1;
-            
-            tries++;
-
-            numberIsValid = !chosenTeam.some(pokemon => pokemon.id === randomNum) &&
-            !currentTeam.some(pokemon => pokemon.id === randomNum) &&
-            pokemonNumberLimits.some((element, index) => {
-                if (randomNum > element) {
-                    return false;
-                } else if (currentGenerations[index] === true && (randomNum > pokemonNumberLimits[index - 1] || index === 0)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-    
-        } while (!numberIsValid && tries<100);
-    
-        if(!numberIsValid){
-            return 1
-        }
-
-        return randomNum
-    };
-    
-
-
-    const calculatePower = (pokemonStats) => {
-        let totalStats = 0
-        pokemonStats.forEach(stat => {
-            totalStats += stat.base_stat
-        })
-        return totalStats
-    }
-
+  
     const handleStars = (power) => {
 
         if(power>560){
@@ -277,8 +215,8 @@ const PokeGym = () => {
                 beatenGyms=0
             } 
             finalText+=`<span style="color: red;">${beatenGyms}.</span>`
-            excessPower = ((power - 2250) % 150)/150*100
-            // excessPower = (((power-2250) % 150 === 0) ? 0 : 150 - ((power-2250) % 150))/150*100;
+            excessPower = ((power - 2250) % 150)/150*100 // MOSTRAR PROGRESO
+            // excessPower = (((power-2250) % 150 === 0) ? 0 : 150 - ((power-2250) % 150))/150*100; // MOSTRAR RESTANTE
             
             if(beatenGyms>=4){
                 finalText+= " Nada mal."

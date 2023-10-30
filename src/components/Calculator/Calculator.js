@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, React } from "react";
 import { useSelection } from "../../context/SelectionContext";
 import "./Calculator.css";
 import  pokedex  from "../../assets/pokedex.webp"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PokemonSearch from "../PokemonSearch/PokemonSearch";
+
 
 
     const steel = "steel"
@@ -193,19 +195,7 @@ const pokemonTypes = [
 
 const Calculator = () => {
 
-
-    const searchErrorMessage = () => toast.error(`El pokemon "${input.toUpperCase()}" no existe`, {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        })
-
-    const [input, setInput] = useState('')
+    const [inputValue, setInputValue] = useState('')
     const [isVisible, setIsVisible] = useState(false)
     const [currentPokemonImage, setCurrentPokemonImage] = useState()
     const [currentPokemonName, setCurrentPokemonName] = useState("")
@@ -219,6 +209,23 @@ const Calculator = () => {
     const [ types_x0,   setTypes_x0  ] = useState([])
 
     const {currentFirstSelection, currentSecondSelection, setSelection, deleteSelection, setBothTypes, deleteBothTypes} = useSelection()
+    
+
+    const handleInputChange = (value) => {
+        setInputValue(value)
+    }
+
+
+    const searchErrorMessage = () => toast.error(`El pokemon "${inputValue.toUpperCase()}" no existe`, {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        })
 
     const handleClick = (type) => {
         if(type===currentFirstSelection || type===currentSecondSelection){
@@ -316,7 +323,6 @@ const Calculator = () => {
                 searchErrorMessage()
             })
             
-            setInput("")
     }
 
 
@@ -328,11 +334,6 @@ const Calculator = () => {
     }
 
 
-    const handleEnter = (e) => {
-        if(e.key === "Enter"){
-            searchPokemon(input)
-        }
-    }
 
 
     return (
@@ -354,10 +355,9 @@ const Calculator = () => {
                         <div className={`pokedex-container ${isVisible ? (currentFirstSelection!=="" ? currentFirstSelection : currentSecondSelection) : "empty-pokedex"} ${(currentFirstSelection==="" && currentSecondSelection==="") && "empty-pokedex"}`}>
                             <div className="pokedex-info">
                                 <img alt="" src={pokedex} className="pokedex-image"/>
-                                <div className="search-info">
-                                    <button className="search-button" onClick={() => searchPokemon(input)}>Buscar</button>
-                                    <input className="search-input" placeholder="Ej: Pikachu" value={input} onChange={(e) => setInput(e.target.value)} onKeyPress={(e) => handleEnter(e)}></input>
-                                </div>
+                                <PokemonSearch onInputChange={handleInputChange}/>
+                                <button className="search-button" onClick={() => searchPokemon(inputValue)}>Buscar</button>
+                                
                             </div>
                             
                             <div className={`pokemon-preview ${isVisible ? "visible" : "invisible"}`}>
@@ -370,7 +370,7 @@ const Calculator = () => {
                                 </div>
                                 <img alt="" src={currentPokemonImage} className="pokemon-image"/>
                                 
-                            </div>    
+                            </div>
                         </div>
                     </div>
                     <div className="selected-container">

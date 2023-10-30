@@ -1,0 +1,75 @@
+.pokedle-main-container {
+    background-color: #D17C59;
+    margin-top: 6vh;
+    min-height: 93vh;
+    padding-bottom: 1vh;
+}
+
+.pokedle-title-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 0;
+}
+
+.pokedle-game-container{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pokedle-options-name{
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+.guessed-options-container{
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+
+}
+
+.guessed-item, .title-item {
+    width: 6vw;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.guessed-item {
+    height: 6vw;
+    background-color: #4287f5;
+}
+
+.title-item {
+    height: 3vw;
+    background-color: #575e5e;
+}
+
+.correct-guess {
+    background-color: #4caf50;
+}
+
+.wrong-guess {
+    background-color: #f44336;
+}
+
+.guess-button{
+    height: 6vh;
+    border-radius: 10px;
+    padding: 0 24px;
+}
+
+.guess-button:hover{
+    cursor: pointer;
+}
+
+.image-guess{
+    background-size: cover;
+}
