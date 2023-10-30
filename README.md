@@ -5,7 +5,13 @@ Portal Pokemon es un proyecto de React.js basado en el mundo Pokemon, que posee 
 
 Inició como una calculadora de tipos, luego quise incluir una Pokedex para buscar al Pokemon que necesitase y posteriormente fue evolucionando en lo que es ahora, que aún está en camino de algo más grande.
 
+## Dependencies
 
+- React-Router-Dom
+- React-Toastify
+- Sweet Alert 2
+- React-Icons
+- React Autosuggest
 
 
 ## Features
