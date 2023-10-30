@@ -5,6 +5,7 @@ import  pokedex  from "../../assets/pokedex.webp"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PokemonSearch from "../PokemonSearch/PokemonSearch";
+import { getPokemon } from "../../services/pokemon";
 
 
 
@@ -215,18 +216,6 @@ const Calculator = () => {
         setInputValue(value)
     }
 
-
-    const searchErrorMessage = () => toast.error(`El pokemon "${inputValue.toUpperCase()}" no existe`, {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        })
-
     const handleClick = (type) => {
         if(type===currentFirstSelection || type===currentSecondSelection){
             type===currentFirstSelection ? deleteSelection(1) : deleteSelection(2)
@@ -256,7 +245,6 @@ const Calculator = () => {
 
 
     }
-
 
     const resetTypes = () => {
         setTypes_x4([])
@@ -297,32 +285,28 @@ const Calculator = () => {
     
     }, [currentFirstSelection, currentSecondSelection])
     
-    const searchPokemon = (selectedPokemon) => {
-        fetch('https://pokeapi.co/api/v2/pokemon/' + selectedPokemon.toLowerCase())
-            .then(res => res.json())
-            .then(data => {
-                let sprite = data.sprites.other.dream_world.front_default
-                renderPokemon(sprite, data.name, data.id)
-                deleteBothTypes()
-                
-                if(data.types.length>1){
+    const searchPokemon = async (selectedPokemon) => {
 
-                    (data.types[0].type.name !== currentFirstSelection || data.types[1].type.name !== currentSecondSelection) && resetTypes()
-
-                    setBothTypes(data.types[0].type.name, data.types[1].type.name)
-                } else{
-                    resetTypes()
-                    setSelection(data.types[0].type.name)
-                }
-            }
-            )
-            .catch(() =>{
-                setIsVisible(false)
-                deleteBothTypes()
+        const searchedPokemon = await getPokemon(selectedPokemon)
+        
+        searchedPokemon.type_1=searchedPokemon.type_1.toLowerCase()
+        searchedPokemon.type_2=searchedPokemon.type_2.toLowerCase()
+        if(searchedPokemon.id!==undefined){
+            renderPokemon(searchedPokemon.img, searchedPokemon.name, searchedPokemon.id)
+            deleteBothTypes()
+            if(searchedPokemon.type_2!=="ninguno"){
+                (searchedPokemon.type_1 !== currentFirstSelection || searchedPokemon.type_2 !== currentSecondSelection) && resetTypes()
+                setBothTypes(searchedPokemon.type_1, searchedPokemon.type_2)
+            } else{
                 resetTypes()
-                searchErrorMessage()
-            })
-            
+                setSelection(searchedPokemon.type_1)
+            }
+        } else{
+            setIsVisible(false)
+            deleteBothTypes()
+            resetTypes()
+        }
+        
     }
 
 

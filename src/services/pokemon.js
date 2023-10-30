@@ -1,17 +1,22 @@
-
+import unknown_pokemon from '../assets/unknown_pokemon.png'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 async function getPokemon (pokemonName) {
     let pokemon = {}
+    pokemonName+=''
 
     const pokemonNumberLimits = [
-        151, 251, 386, 493, 649, 721, 809, 898
+        151, 251, 386, 493, 649, 721, 809, 898, 1017
     ]
 
     function capitalizeFirstLetter (word) {
         return word.charAt(0).toUpperCase() + word.slice(1)
     }
 
-    await fetch('https://pokeapi.co/api/v2/pokemon/' + pokemonName)
+    
+
+    await fetch('https://pokeapi.co/api/v2/pokemon/' + pokemonName.toLowerCase())
     .then(res => res.json())
     .then(fetchedPokemon => {
         let totalStats = 0
@@ -21,7 +26,9 @@ async function getPokemon (pokemonName) {
         })
         pokemon.img = fetchedPokemon.sprites.other.dream_world.front_default
         ? fetchedPokemon.sprites.other.dream_world.front_default
-        : fetchedPokemon.sprites.front_default
+        : (fetchedPokemon.sprites.front_default
+            ? fetchedPokemon.sprites.front_default
+            : unknown_pokemon)
         pokemon.name = capitalizeFirstLetter(fetchedPokemon.name)
         pokemonNumberLimits.forEach((element, index) => {
             if(fetchedPokemon.id<=element && !wasGenerationAssigned){
@@ -45,7 +52,16 @@ async function getPokemon (pokemonName) {
     )
     .catch((error) =>{
         console.log(error)
-        alert(error)
+        toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            })
     })
 
 

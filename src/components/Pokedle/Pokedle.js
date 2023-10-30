@@ -45,7 +45,7 @@ const Pokedle = () => {
         
             for (const property in newChosenPokemon) {
                 if(property==="hasBeenChosen" || property==="id"){
-                    setComparisons([...comparisons, results]);
+                    setComparisons([results, ...comparisons]);
                     break
                 }
                 if(property==="img"){
@@ -68,7 +68,7 @@ const Pokedle = () => {
         let newValue = value;
 
       
-        if (element === "height" || element === "weight" || element === "power") {
+        if (element === "height" || element === "weight" || element === "power" || element === "generation") {
           if (originalPokemon[element] > value) {
             newValue += " ↑";
           } else {
