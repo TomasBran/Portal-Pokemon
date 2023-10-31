@@ -113,7 +113,7 @@
 .button-container{
     display: flex;
     justify-content: center;
-    width: 300px;
+    width: 25vw;
     height: 25vh;
     flex-wrap: wrap;
     gap: 10px;
@@ -189,14 +189,14 @@
 
 .main-title{
     background-color: rgba(31, 26, 26, 0.622);
-    border-radius: 40px;
+    border-radius: 30px;
     color:white;
     min-width: 25vw;
     min-height: 5vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px;
+    padding: 16px;
 }
 
 .main-container{
@@ -317,4 +317,81 @@
     100%{
         transform: scale(1);
     }
+}
+
+
+@media screen and (max-width: 768px) {
+
+    .main-container{
+        margin-top: 10vh;
+    }
+
+    .main-title{
+        font-size: 20px;
+        padding: 8px 16px;
+        border-radius: 15px;
+        background-color: rgba(0, 0, 0, 0.766);
+    }
+
+    .selector-container{
+        flex-direction: column-reverse;
+        gap: 16px;
+    }
+
+    .button-container{
+        width: 100vw;
+        height: 40vh;
+        background-color: rgba(255, 255, 255, 0.878);
+    }
+
+    .pokedex-container{
+        width: 100vw;
+    }
+
+    .search-button{
+        width: 22vw;
+    }
+
+    .pokedex-image{
+        animation: none;
+    }
+
+    .react-autosuggest__container, .react-autosuggest__suggestions-list{
+        width: 40vw !important;
+    }
+
+    .react-autosuggest__input{
+        text-align: center;
+    }
+
+    .pokemon-info-display{
+        margin: 0px 4px;
+    }
+
+    .pokemon-preview{
+        flex-direction: column;
+    }
+
+    .selected-container{
+        width: 100vw;
+    }
+
+    .button{
+        width: 25vw;
+    }
+
+    .main-type-container{
+        flex-direction: column;
+    }
+
+    .effective-container, .neutral-container, .uneffective-container, .immune-container{
+        width: 100vw;
+        padding: 4px;
+        min-height: 20vh;
+    }
+
+    .types-container{
+        width: auto;
+    }
+
 }

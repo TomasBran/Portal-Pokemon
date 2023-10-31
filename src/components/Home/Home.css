@@ -2,12 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 94vh;
+    min-height: 94vh;
     margin-top: 6vh;
+    background-color: #ECECEC;
 }
 
 .home-panel {
-    background-color: #ECECEC;
     width: 100vw;
     height: 94vh;
     display: flex;
@@ -45,8 +45,9 @@
     justify-content: space-evenly;
     flex-wrap: wrap;
     gap: 16px;
+    background-color: #ECECEC;
 }
-
+ 
 .gym-button {
     background: url(../../assets/gym.png);
 }
@@ -79,3 +80,28 @@
     background-position: center;
 }
 
+@media screen and (max-width: 768px) {
+    .home-panel{
+        min-height: 85vh;
+        height: 120vh;
+        padding-top: 3vh;
+        margin-bottom: 0;
+    }
+
+    .home-title{
+        font-size: 20px;
+    }
+
+    .home-button-container{
+        padding-bottom: 8px;
+    }
+
+    .home-button{
+        width: 100vw;
+        border-radius: 0;
+        border: rgb(62, 62, 62) solid 4px;
+        border-left: none;
+        border-right: none;
+        height: 30vh;
+    }
+}

@@ -2,11 +2,11 @@
     position: fixed;
     top: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
-    gap: 24px;
     width: 100vw;
-    height: 6vh;
+    min-height: 6vh;
+    max-height: 6vh;
     background-color: #333;
     border-bottom: solid 2px rgba(112, 112, 112, 0.858);
     z-index: 10;
@@ -14,14 +14,28 @@
 
 .navbar-button{
     padding: 4px 20px;
-    margin: 4px;
-    min-width: 10vw;
+    min-width: 11vw;
+    max-height: 6vh;
     border-radius: 7px;
     background-color: #FF5733;
     font-weight: bold;
+    font-size: 12px;
 }
 
 .navbar-button:not(:disabled):hover {
     cursor: pointer;
     background-color: #40A3DB;
+}
+
+@media screen and (max-width: 768px) {
+    .navbar{
+        max-height: 15vh;
+        flex-wrap: wrap;
+        gap: 2vw;
+    }
+    .navbar-button{
+        padding: 6px;
+        margin-bottom: 2px;
+        font-size: 10px;
+    }
 }
