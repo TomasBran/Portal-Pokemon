@@ -29,3 +29,22 @@
 .dead-pokemon{
     filter:grayscale(100);
 }
+
+
+
+@media screen and (max-width: 768px) {
+
+    .team-container{
+        width: 100vw;
+        border-radius: 0;
+        opacity: 100%;
+    }
+
+    .team-container:hover{
+        background-color: rgba(255, 255, 255, 0.600);
+    }
+
+    .pokemon-team-image{
+        max-width: 15vw;
+    }
+}

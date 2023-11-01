@@ -280,7 +280,7 @@ const PokeGym = () => {
                     
                     return(
                         <div className={`${pokemon.hasBeenChosen ? "selected-poke-card" : "poke-card"}`} key={index} onClick={() => lockInPokemon(pokemon)}>
-                            <span>#{pokemon.id} - {pokemon.name}</span>
+                            <span><span className="pokemon-number">#{pokemon.id} - </span>{pokemon.name}</span>
                             <img alt="" src={pokemon.img} className="pokemon-image"/>
                             {handleStars(pokemon.power)}
                             <span className={`locked-in ${pokemon.hasBeenChosen ? "visible" : "invisible"}`}>ELEGIDO</span>
@@ -308,7 +308,7 @@ const PokeGym = () => {
             <div className="generation-container invisible">
                 <div  className="generation-selector-panel">
                     {currentGenerations.map((element, index) => (
-                        <span key={index} className={`generation-panel ${element===true ? "enabled-panel" : "disabled-panel"}`} onClick={() => toggleGeneration(index)}>{index+1}° Generación</span>
+                        <div key={index} className={`generation-panel ${element===true ? "enabled-panel" : "disabled-panel"}`} onClick={() => toggleGeneration(index)}><span>{index+1}° Gen<span className="shorten-text">eración</span></span></div>
                     ))}
 
                 </div>

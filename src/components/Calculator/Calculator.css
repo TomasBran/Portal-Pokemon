@@ -390,6 +390,12 @@
         min-height: 20vh;
     }
 
+    .effective-container, .neutral-container, .uneffective-container, .immune-container:hover{
+        transform: none;
+        box-shadow: none;
+        background-color: rgba(233, 231, 231, 0.712);
+    }
+
     .types-container{
         width: auto;
     }
