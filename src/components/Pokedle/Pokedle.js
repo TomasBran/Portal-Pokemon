@@ -79,6 +79,10 @@ const Pokedle = () => {
         return newValue;
       };
 
+    const resetGame = () => {
+        setComparisons([])
+        startNewGame()
+    }
 
     const handleInputChange = (value) => {
         setInputValue(value)
@@ -90,7 +94,7 @@ const Pokedle = () => {
                 <span>Elige un Pokemon:</span>
                 <PokemonSearch onInputChange={handleInputChange}/>
            <button className='guess-button' onClick={() => comparePokemon(originalPokemon)}>ADIVINAR</button>
-            <button className='guess-button' onClick={() => setComparisons([])}>REINICIAR</button>
+            <button className='guess-button' onClick={() => resetGame()}>REINICIAR</button>
             </div>
 
             <div className='pokedle-game-container'>
