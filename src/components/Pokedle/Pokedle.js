@@ -97,7 +97,7 @@ const Pokedle = () => {
                 <div className='pokedle-options-name'>
                     <div className='title-item'><span>Foto</span></div>
                     <div className='title-item'><span>Nombre</span></div>
-                    <div className='title-item'><span>Generación</span></div>
+                    <div className='title-item'><span>Gen<span className='shorten-text'>eración</span></span></div>
                     <div className='title-item'><span>Tipo 1</span></div>
                     <div className='title-item'><span>Tipo 2</span></div>
                     <div className='title-item'><span>Fuerza</span></div>
