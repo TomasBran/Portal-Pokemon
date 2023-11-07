@@ -21,16 +21,6 @@ const Pokedle = () => {
     const [currentGenerations, setCurrentGenerations] = useState([true,true,true,true,true,true,true,true])
     
 
-    const searchErrorMessage = () => toast.error(`El pokemon "${inputValue.toUpperCase()}" no existe`, {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        })
 
     useEffect(() => {
         startNewGame()
@@ -41,7 +31,7 @@ const Pokedle = () => {
     const startNewGame = async() => {
         
         const newPokemon = await getPokemon(generateRandomPokemonNumber(currentGenerations));
-        // const newPokemon = await getPokemon(9) // TEST CON BLASTOISE
+        // const newPokemon = await getPokemon("graveler") // TEST
         setOriginalPokemon(newPokemon);
     }
 
@@ -52,24 +42,31 @@ const Pokedle = () => {
         setChosenPokemon(newChosenPokemon);
         const results = {};
         
-            for (const property in newChosenPokemon) {
-                if(property==="hasBeenChosen" || property==="id"){
-                    setComparisons([results, ...comparisons]);
-                    break
-                }
-                if(property==="img"){
-                    results[property] = { img: newChosenPokemon[property], class: 'image-guess'};
-                } else if(property==="name"){
-                    results[property] = { value: newChosenPokemon[property] };
-                } else if (newChosenPokemon.hasOwnProperty(property) && originalPokemon.hasOwnProperty(property)) {
-                    if (newChosenPokemon[property] === originalPokemon[property]) {
-                    results[property] = { value: newChosenPokemon[property], class: 'correct-guess' };
-                    } else {
-                    
-                    results[property] = { value: checkCorrection(property, newChosenPokemon[property]), class: 'wrong-guess' };
-                    }
-                }
+        for (const property in newChosenPokemon) {
+            if(property === "hasBeenChosen" || property === "id"){
+              setComparisons([results, ...comparisons]);
+              break
             }
+            if(property === "img"){
+              results[property] = { img: newChosenPokemon[property], class: 'image-guess'};
+            } else if(property === "name"){
+              results[property] = { value: newChosenPokemon[property] };
+            } else if (newChosenPokemon.hasOwnProperty(property) && originalPokemon.hasOwnProperty(property)) {
+              if (newChosenPokemon[property] === originalPokemon[property]) {
+                results[property] = { value: newChosenPokemon[property], class: 'correct-guess' };
+              } else if(property === "type_1" || property === "type_2"){
+                const otherType = property === "type_1" ? "type_2" : "type_1";
+                if (originalPokemon[otherType] === newChosenPokemon[property]) {
+                  results[property] = { value: newChosenPokemon[property], class: 'partial-correct-guess' };
+                } else {
+                  results[property] = { value: checkCorrection(property, newChosenPokemon[property]), class: 'wrong-guess' };
+                }
+              } else{
+                results[property] = { value: checkCorrection(property, newChosenPokemon[property]), class: 'wrong-guess' };
+              }
+            }
+          }
+          
 
         if(originalPokemon.name === newChosenPokemon.name){
             MySwal.fire({

@@ -60,6 +60,10 @@
     background-color: #f44336;
 }
 
+.partial-correct-guess{
+    background-color: rgb(197, 197, 54);
+}
+
 .guess-button{
     height: 6vh;
     border-radius: 10px;
