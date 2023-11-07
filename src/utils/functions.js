@@ -8,8 +8,8 @@ const generateRandomPokemonNumber = (currentGenerations, chosenTeam, currentTeam
     let randomNum = 0;
     let tries = 0;
     let numberIsValid = false;
-
-    if(!currentGenerations || !chosenTeam || !currentTeam){
+    //(!currentGenerations || !chosenTeam || !currentTeam)
+    if(!currentGenerations){
         randomNum = Math.floor(Math.random() * (898)) + 1;
         return randomNum
     }
@@ -20,9 +20,7 @@ const generateRandomPokemonNumber = (currentGenerations, chosenTeam, currentTeam
         
         tries++;
 
-        numberIsValid = !chosenTeam.some(pokemon => pokemon.id === randomNum) &&
-        !currentTeam.some(pokemon => pokemon.id === randomNum) &&
-        pokemonNumberLimits.some((element, index) => {
+        numberIsValid = pokemonNumberLimits.some((element, index) => {
             if (randomNum > element) {
                 return false;
             } else if (currentGenerations[index] === true && (randomNum > pokemonNumberLimits[index - 1] || index === 0)) {

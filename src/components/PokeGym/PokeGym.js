@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { generateRandomPokemonNumber } from "../../utils/functions";
 import { getPokemon } from "../../services/pokemon";
+import Generations from "../Generations/Generations";
 
 
 
@@ -18,9 +19,6 @@ const PokeGym = () => {
 
     const MySwal = withReactContent(Swal);
 
-    const pokemonNumberLimits = [
-        151, 251, 386, 493, 649, 721, 809, 898
-    ]
     
 
     const [currentGenerations, setCurrentGenerations] = useState([true,true,true,true,true,true,true,true])
@@ -33,6 +31,10 @@ const PokeGym = () => {
 
     const generationsContainer = document.getElementsByClassName("generation-container")[0]
         
+
+    const getGenerations = (childGenerations) => {
+        setCurrentGenerations(childGenerations);
+       }
     
 
      const lockInPokemon = (pokemon) => {
@@ -113,53 +115,6 @@ const PokeGym = () => {
         
     }
 
-
-    const toggleGeneration = (index) => {
-
-        const trueCount = currentGenerations.filter((value) => value === true).length;
-
-        if (trueCount === 1 && currentGenerations[index]) {
-            toast.error(`Se necesita por lo menos 1 generación disponible`, {
-                autoClose: 3000,
-                position: "top-right",
-            });
-            return;
-        }
-        
-        
-        let newGenerations = currentGenerations.slice()
-        newGenerations[index] = !newGenerations[index]
-        setCurrentGenerations(newGenerations)
-    }
-      
-
-    const toggleGenerationPanel = async () => {
-
-        setShouldDisable(true);
-
-        if (!generationsContainer.classList.contains("invisible")) {
-            generationsContainer.classList.toggle("invisible");
-            setShouldDisable(false);
-            return;
-          }
-
-        let result = await MySwal.fire({
-            title: '¿Querés cambiar las generaciones disponibles?',
-            text: 'Esto reiniciará tu partida',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Cambiar'
-          });
-
-          if(result.isConfirmed){
-              generationsContainer.classList.toggle("invisible")
-              resetGame(false)
-          }
-
-        setShouldDisable(false);
-    }
 
     const handleButtonText = () => {
         if(rerollsLeft===4){
@@ -299,23 +254,11 @@ const PokeGym = () => {
                     <button className="gym-game-button" disabled={rollButtonText==="Iniciar"} onClick={() => resetGame(true)}>REINICIAR JUEGO</button>
                 </div>
                 
-                <div className="generation-selector-button-container">
-                    <button className="generation-selector-button" onClick={toggleGenerationPanel}>Cambiar Generación</button>
-                </div>
+                <Generations getGenerations={getGenerations} resetGame={resetGame}/>
+                
             </div>
 
             
-            <div className="generation-container invisible">
-                <div  className="generation-selector-panel">
-                    {currentGenerations.map((element, index) => (
-                        <div key={index} className={`generation-panel ${element===true ? "enabled-panel" : "disabled-panel"}`} onClick={() => toggleGeneration(index)}><span>{index+1}° Gen<span className="shorten-text">eración</span></span></div>
-                    ))}
-
-                </div>
-
-                <button className="generation-selector-panel-button" onClick={toggleGenerationPanel}>Listo</button>
-
-            </div>
 
 
             <ToastContainer newestOnTop={false} rtl={true} theme="colored" pauseOnHover/>

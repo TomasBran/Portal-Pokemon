@@ -90,7 +90,7 @@
     margin-left: 32px;
 }
 
-.generation-selector-container {
+/* .generation-selector-container {
     position: fixed;
     right: 2vw;
     bottom: 2vw;
@@ -161,7 +161,7 @@
 
 .disabled-panel:hover {
     background-color: #FF9292;
-}
+} */
 
 .bottom-container {
     display: flex;
@@ -224,7 +224,7 @@
         margin-left: 0;
     }
 
-    .generation-container{
+    /* .generation-container{
         width: 100vw;
         bottom: 0vw;
         right: 0vw;
@@ -257,7 +257,7 @@
 
     .generation-selector-panel-button{
         margin: 8px;
-    }
+    } */
 
     .swal2-popup{
         width: 100vw !important;

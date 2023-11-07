@@ -5,13 +5,21 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getPokemon } from '../../services/pokemon';
 import { generateRandomPokemonNumber } from '../../utils/functions';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import Generations from '../Generations/Generations';
 
 const Pokedle = () => {
+
+    
+    const MySwal = withReactContent(Swal);
 
     const [comparisons, setComparisons] = useState([]);
     const [inputValue, setInputValue] = useState('')
     const [originalPokemon, setOriginalPokemon] = useState({})
     const [chosenPokemon, setChosenPokemon] = useState({})
+    const [currentGenerations, setCurrentGenerations] = useState([true,true,true,true,true,true,true,true])
+    
 
     const searchErrorMessage = () => toast.error(`El pokemon "${inputValue.toUpperCase()}" no existe`, {
         position: "top-left",
@@ -32,7 +40,8 @@ const Pokedle = () => {
 
     const startNewGame = async() => {
         
-        const newPokemon = await getPokemon(generateRandomPokemonNumber());
+        const newPokemon = await getPokemon(generateRandomPokemonNumber(currentGenerations));
+        // const newPokemon = await getPokemon(9) // TEST CON BLASTOISE
         setOriginalPokemon(newPokemon);
     }
 
@@ -62,6 +71,20 @@ const Pokedle = () => {
                 }
             }
 
+        if(originalPokemon.name === newChosenPokemon.name){
+            MySwal.fire({
+                title: `Felicitaciones! El Pokemon era ${originalPokemon.name}.`,
+                text: `${comparisons.length!==0 ? `Adivinaste en ${comparisons.length+1} intentos` : "Adivinaste a la primera. Wow."}`,
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Volver',
+              }).then(() => {
+                resetGame()
+              })
+            
+        }
+
     }
 
     const checkCorrection = (element, value) => {
@@ -78,6 +101,10 @@ const Pokedle = () => {
       
         return newValue;
       };
+
+    const getGenerations = (childGenerations) => {
+        setCurrentGenerations(childGenerations)
+    }
 
     const resetGame = () => {
         setComparisons([])
@@ -119,7 +146,9 @@ const Pokedle = () => {
                 </div>
                 ))}
             </div>
-            
+            <div className='test1'>
+                <Generations getGenerations={getGenerations} resetGame={resetGame}/>
+            </div>
             <ToastContainer/>
         </div>
     )

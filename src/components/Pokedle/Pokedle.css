@@ -71,7 +71,15 @@
 }
 
 .image-guess{
-    background-size: cover;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.test1{
+    position: fixed;
+    bottom: 6vh;
+    right: 6vh;
 }
 
 
@@ -107,9 +115,4 @@
         min-width: 28vw;
     }
 
-    .image-guess{
-        background-position: center;
-        background-size: contain;
-        background-repeat: no-repeat;
-    }
 }
