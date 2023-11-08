@@ -9,6 +9,7 @@ import withReactContent from 'sweetalert2-react-content'
 import { generateRandomPokemonNumber } from "../../utils/functions";
 import { getPokemon } from "../../services/pokemon";
 import Generations from "../Generations/Generations";
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 
 
@@ -20,7 +21,7 @@ const PokeGym = () => {
     const MySwal = withReactContent(Swal);
 
     
-
+    const [isLoading, setIsLoading] = useState(false);
     const [currentGenerations, setCurrentGenerations] = useState([true,true,true,true,true,true,true,true])
     const [currentTeam, setCurrentTeam] = useState([])
     const [chosenTeam, setChosenTeam] = useState([])
@@ -29,7 +30,6 @@ const PokeGym = () => {
     
     const [shouldDisable, setShouldDisable] = useState(false)
 
-    const generationsContainer = document.getElementsByClassName("generation-container")[0]
         
 
     const getGenerations = (childGenerations) => {
@@ -58,37 +58,50 @@ const PokeGym = () => {
         
     }
 
-   
     const updatePokemonTeam = async () => {
-
-        const gymButton = document.getElementsByClassName("gym-game-button")[0]
-        gymButton.disabled=true
-        const tempText = rollButtonText
-
+        setIsLoading(true);
+      
+        const gymButton = document.getElementsByClassName("gym-game-button")[0];
+        gymButton.disabled = true;
+        const tempText = rollButtonText;
+      
         setTimeout(() => {
-            gymButton.textContent = "Espera";
+          gymButton.textContent = "Espera";
         }, 1);
-        
+      
         setTimeout(() => {
-            if (rerollsLeft > 1) {
-              gymButton.disabled = false;
-            }
-            setRollButtonText(tempText);
+          if (rerollsLeft > 1) {
+            gymButton.disabled = false;
+          }
+          setRollButtonText(tempText);
         }, 750);
+      
+        setCurrentTeam([]);
+        setRerollsLeft((prev) => prev - 1);
+      
+        const imagesToLoad = 6 - chosenTeam.length;
+        let loadedImages = 0;
+        let currentGivenTeam = []
+        for (let index = 0; index < imagesToLoad; index++) {
+          const randomNum = generateRandomPokemonNumber(currentGenerations, chosenTeam, currentGivenTeam);
+          currentGivenTeam.push(randomNum)
 
-        setCurrentTeam([])
-        setRerollsLeft(prev => prev-1)
-        
-
-        for (let index = 0; index < 6-chosenTeam.length; index++) {
-            const randomNum = generateRandomPokemonNumber(currentGenerations, chosenTeam, currentTeam)
-            
-            const newPokemon = await getPokemon(randomNum);
-
-            setCurrentTeam((team) => [...team, newPokemon]);
+      
+          const newPokemon = await getPokemon(randomNum);
+      
+          setCurrentTeam((team) => [...team, newPokemon]);
+      
+          const img = new Image();
+          img.src = newPokemon.img;
+          img.onload = () => {
+            loadedImages++;
+            if (loadedImages === imagesToLoad) {
+              setIsLoading(false);
+            }
+          };
         }
-        
-    };
+      };
+      
 
     
     useEffect(() => {
@@ -228,19 +241,29 @@ const PokeGym = () => {
 
     }
     
+
     return(
         <div className="poke-gym-container">
             <div className="poke-gym-game">
-                {currentTeam.map((pokemon, index) => {
-                    
-                    return(
-                        <div className={`${pokemon.hasBeenChosen ? "selected-poke-card" : "poke-card"}`} key={index} onClick={() => lockInPokemon(pokemon)}>
-                            <span><span className="pokemon-number">#{pokemon.id} - </span>{pokemon.name}</span>
-                            <img alt="" src={pokemon.img} className="pokemon-image"/>
-                            {handleStars(pokemon.power)}
-                            <span className={`locked-in ${pokemon.hasBeenChosen ? "visible" : "invisible"}`}>ELEGIDO</span>
-                        </div>
-                )})}
+                {isLoading ? (
+                    <ProgressSpinner />
+                ) : (
+                    currentTeam.map((pokemon, index) => {
+                        
+                        return(
+                            <div className={`${pokemon.hasBeenChosen ? "selected-poke-card" : "poke-card"}`} key={index} onClick={() => lockInPokemon(pokemon)}>
+                                <span><span className="pokemon-number">#{pokemon.id} - </span>{pokemon.name}</span>
+
+                                
+                                <img alt="" src={pokemon.img} className="pokemon-image"/>
+
+
+                                {handleStars(pokemon.power)}
+                                <span className={`locked-in ${pokemon.hasBeenChosen ? "visible" : "invisible"}`}>ELEGIDO</span>
+                            </div>
+                    )})
+
+                )}
             </div>
 
             <div className="bottom-container">

@@ -6,6 +6,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PokemonSearch from "../PokemonSearch/PokemonSearch";
 import { getPokemon } from "../../services/pokemon";
+import { capitalizeFirstLetter } from "../../utils/functions";
+import { ProgressSpinner } from 'primereact/progressspinner';
+
 
 
 
@@ -196,6 +199,7 @@ const pokemonTypes = [
 
 const Calculator = () => {
 
+    const [loading, setLoading] = useState(false);
     const [inputValue, setInputValue] = useState('')
     const [isVisible, setIsVisible] = useState(false)
     const [currentPokemonImage, setCurrentPokemonImage] = useState()
@@ -286,12 +290,14 @@ const Calculator = () => {
     }, [currentFirstSelection, currentSecondSelection])
     
     const searchPokemon = async (selectedPokemon) => {
+        setLoading(true);
 
-        const searchedPokemon = await getPokemon(selectedPokemon)
-        
-        searchedPokemon.type_1=searchedPokemon.type_1.toLowerCase()
-        searchedPokemon.type_2=searchedPokemon.type_2.toLowerCase()
-        if(searchedPokemon.id!==undefined){
+        try{
+            const searchedPokemon = await getPokemon(selectedPokemon)
+            
+            searchedPokemon.type_1=searchedPokemon.type_1.toLowerCase()
+            searchedPokemon.type_2=searchedPokemon.type_2.toLowerCase()
+            
             renderPokemon(searchedPokemon.img, searchedPokemon.name, searchedPokemon.id)
             deleteBothTypes()
             if(searchedPokemon.type_2!=="ninguno"){
@@ -301,20 +307,27 @@ const Calculator = () => {
                 resetTypes()
                 setSelection(searchedPokemon.type_1)
             }
-        } else{
+        } catch (error){
+            setLoading(false)
             setIsVisible(false)
             deleteBothTypes()
             resetTypes()
         }
         
+        
     }
 
 
     const renderPokemon = (url, name, id) => {
-        setCurrentPokemonImage(url)
-        setCurrentPokemonName(name)
-        setCurrentPokemonId(id)
-        setIsVisible(true)
+        const imgElement = new Image();
+        imgElement.src = url;
+        imgElement.onload = () => {
+            setCurrentPokemonImage(url)
+            setCurrentPokemonName(name)
+            setCurrentPokemonId(id)
+            setIsVisible(true)
+            setLoading(false)
+        }
     }
 
 
@@ -332,7 +345,7 @@ const Calculator = () => {
                     <div className="selector-container">
                         <div className="button-container">
                             {pokemonTypes.map((type) => 
-                            <button onClick={() => handleClick(type.name)} className={`${type.name} button`} key={type.name}>{type.name}</button>
+                            <button onClick={() => handleClick(type.name)} className={`${type.name} button`} key={type.name}><span>{type.name}</span></button>
                             )}
                         </div>
 
@@ -343,62 +356,78 @@ const Calculator = () => {
                                 <button className="search-button" onClick={() => searchPokemon(inputValue)}>Buscar</button>
                                 
                             </div>
-                            
-                            <div className={`pokemon-preview ${isVisible ? "visible" : "invisible"}`}>
-                                <div className="pokemon-info-display">
-                                    <span className="pokemon-name">#{currentPokemonId} - {currentPokemonName}</span>
-                                    <div className="pokemon-types">
-                                        <p className={`${currentFirstSelection!=="" ? currentFirstSelection : "invisible"} types`}>{currentFirstSelection}</p>
-                                        <p className={`${currentSecondSelection!=="" ? currentSecondSelection : "invisible"} types`}>{currentSecondSelection}</p>
+
+                            {loading
+                                ? ( <ProgressSpinner/> )
+                                : (
+                                    <div className={`pokemon-preview ${isVisible ? "visible" : "invisible"}`}>
+                                        <div className="pokemon-info-display">
+                                            <span className="pokemon-name">#{currentPokemonId} - {currentPokemonName}</span>
+                                            <div className="pokemon-types">
+                                                <p className={`${currentFirstSelection!=="" ? currentFirstSelection : "invisible"} types`}>{capitalizeFirstLetter(currentFirstSelection)}</p>
+                                                <p className={`${currentSecondSelection!=="" ? currentSecondSelection : "invisible"} types`}>{capitalizeFirstLetter(currentSecondSelection)}</p>
+                                            </div>
+                                        </div>
+                                        <img alt="" src={currentPokemonImage} className="pokemon-image" loading="lazy"/>
+                                        
                                     </div>
-                                </div>
-                                <img alt="" src={currentPokemonImage} className="pokemon-image"/>
-                                
-                            </div>
+                                )}
+                            
                         </div>
                     </div>
                     <div className="selected-container">
                         <h2>Seleccionados:</h2>
-                        <button className={currentFirstSelection!=="" ? `${currentFirstSelection} button selected-type` : "empty"} onClick={() => handleClick(currentFirstSelection)}>{currentFirstSelection}</button>
-                        <button className={currentSecondSelection!== "" ? `${currentSecondSelection} button selected-type` : "empty"} onClick={() => handleClick(currentSecondSelection)}>{currentSecondSelection}</button>
+                        <div className="selections">
+                            <button className={` ${currentFirstSelection!=="" ? `${currentFirstSelection} button selected-type` : "empty"}`} onClick={() => handleClick(currentFirstSelection)}><span>{currentFirstSelection}</span></button>
+                            <button className={currentSecondSelection!== "" ? `${currentSecondSelection} button selected-type` : "empty"} onClick={() => handleClick(currentSecondSelection)}><span>{currentSecondSelection}</span></button>
+                        </div>
                     </div>
 
-                    <div className="main-type-container">
+                    <div className={`main-type-container ${(currentFirstSelection==="" && currentSecondSelection==="") ? "invisible" : ""}`}>
                         <div className="effective-container">
                             <h2>Efectivo:</h2>
-                            <h2>x4:</h2>
-                            <div className="types-container">
-                                {types_x4.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
+                            <div className={`${types_x4.length===0 ? "invisible" : ""}`}>
+                                <h2>x4:</h2>
+                                <div className="types-container">
+                                    {types_x4.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
+                                </div>
                             </div>
-                            <h2>x2:</h2>
-                            <div className="types-container">
-                                {types_x2.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
+                            <div className={`${types_x2.length===0 ? "invisible" : ""}`}>
+                                <h2>x2:</h2>
+                                <div className="types-container">
+                                    {types_x2.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
+                                </div>
                             </div>
                         </div>
                         <div className="neutral-container">
                             <h2>Neutral:</h2>
                             <h2>x1:</h2>
                             <div className="types-container">
-                                {types_x1.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
+                                {types_x1.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
                             </div>
                         </div>
-                        <div className="uneffective-container">
+                        <div className={`uneffective-container ${(types_x05.length===0 && types_x025.length===0) ? "invisible" : ""}`}>
                             <h2>Poco efectivo:</h2>
-                            <h2>x1/2:</h2>
-                            <div className="types-container">
-                                {types_x05.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
+                            <div className={`${types_x05.length===0 ? "invisible" : ""}`}>
+                                <h2>x1/2:</h2>
+                                <div className="types-container">
+                                    {types_x05.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
+                                </div>
+
                             </div>
-                            <h2>x1/4:</h2>
-                            <div className="types-container">
-                                {types_x025.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
+                            <div className={`${types_x025.length===0 ? "invisible" : ""}`}>
+                                <h2>x1/4:</h2>
+                                <div className="types-container">
+                                    {types_x025.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
+                                </div>
                             </div>
                         </div>
 
-                        <div className="immune-container">
+                        <div className={`immune-container ${types_x0.length===0 ? "invisible" : ""}`}>
                             <h2>Inmune:</h2>
                             <h2>x0:</h2>
                             <div className="types-container">
-                                {types_x0.map((type) => <p className={`${type} types`} key={type}>{type}</p>)}
+                                {types_x0.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
                             </div>
 
                         </div>

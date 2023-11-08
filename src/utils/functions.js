@@ -1,7 +1,9 @@
 
+function capitalizeFirstLetter (word) {
+    return word.charAt(0).toUpperCase() + word.slice(1)
+}
 
-
-const generateRandomPokemonNumber = (currentGenerations, chosenTeam, currentTeam) => {
+function generateRandomPokemonNumber (currentGenerations, chosenTeam, currentTeam) {
     const pokemonNumberLimits = [
         151, 251, 386, 493, 649, 721, 809, 898
     ]
@@ -17,8 +19,10 @@ const generateRandomPokemonNumber = (currentGenerations, chosenTeam, currentTeam
     
     do {
         randomNum = Math.floor(Math.random() * (898)) + 1;
-        
+
         tries++;
+
+
 
         numberIsValid = pokemonNumberLimits.some((element, index) => {
             if (randomNum > element) {
@@ -30,7 +34,16 @@ const generateRandomPokemonNumber = (currentGenerations, chosenTeam, currentTeam
             }
         });
 
-    } while (!numberIsValid && tries<50);
+        
+        if(numberIsValid){
+            numberIsValid = !chosenTeam.some(element => element.id === randomNum);
+        }
+
+        if(numberIsValid){
+            numberIsValid = !currentTeam.includes(randomNum);
+        }
+
+    } while (!numberIsValid && tries<75);
 
     if(!numberIsValid){
         return 1
@@ -40,4 +53,4 @@ const generateRandomPokemonNumber = (currentGenerations, chosenTeam, currentTeam
 }
 
 
-export { generateRandomPokemonNumber }
+export { generateRandomPokemonNumber, capitalizeFirstLetter }

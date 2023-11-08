@@ -91,13 +91,30 @@
     background-color: var(--fairy-color);
 }
 
+.button{
+    width: 5vw;
+    height: 5vh;
+}
+
+.types{
+    width: 5vw;
+    height: 5vh;
+}
+
+.types span::first-letter, .button span::first-letter{
+    text-transform: capitalize;
+}
+
 .button, .types{
     padding: 4px 12px;
     color:white;
     font-weight: 600;
     border-radius: 10px;
     border-color: white;
-    max-height: 24px;
+    font-size: 0.85vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .button::first-letter, .types::first-letter{
@@ -110,18 +127,24 @@
     cursor: pointer;
 }
 
+.main-container{
+    background-color: #622903;
+    min-height: 94vh;
+}
+
 .button-container{
     display: flex;
     justify-content: center;
-    width: 25vw;
+    align-items: center;
+    width: 40vw;
     height: 25vh;
     flex-wrap: wrap;
     gap: 10px;
     background-color: rgba(236, 236, 236, 0.527);
-    padding: 30px;
+    padding: 20px;
     border-radius: 10px;
-
 }
+
 
 .button-container:hover{
     background-color: rgba(236, 236, 236, 0.719);
@@ -138,8 +161,7 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    width: 20vw;
-    gap: 10px;
+    gap: 8px;
 }
 
 .empty{
@@ -148,8 +170,8 @@
 
 .main-type-container{
     display: flex;
-    gap: 20px;
-    margin-bottom: 60px;
+    justify-content: space-evenly;
+    gap: 8px;
 }
 
 .main-type-container *:hover {
@@ -158,29 +180,39 @@
 
 .selected-container{
     background-color: rgba(255, 255, 255, 0.815);
-    margin: 20px;
+    margin: 10px;
     border-radius: 10px;
     padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 28vw;
+    height: 10vh;
 }
 
-.selected-container * {
-    margin: 10px;
+
+.selections{
+    display: flex;
+    justify-content: space-evenly;
+    width: 12vw;
+}
+
+.selected-container h2{
+    font-size: 1.5vw;
 }
 
 .effective-container, .neutral-container, .uneffective-container, .immune-container{
     background-color: rgba(233, 231, 231, 0.712);
-    min-height: 45vh;
+    height: 40vh;
+    width: 23.5vw;
     border-radius: 10px;
-    box-shadow: -3px 5px 10px black;
-    transition: all 0.2s ease;
     padding: 8px;
 }
 
-.effective-container:hover, .neutral-container:hover, .uneffective-container:hover, .immune-container:hover{
-    background-color: rgb(233, 231, 231);
-    transform: scale(1.1);
-    box-shadow: -15px 15px 10px black;
+h2{
+    margin: 8px;
 }
+
 
 .selected-type:hover{
     background-color: #c40c0c;
@@ -188,15 +220,14 @@
 }
 
 .main-title{
-    background-color: rgba(31, 26, 26, 0.622);
-    border-radius: 30px;
+    background-color: rgba(190, 190, 190, 0.622);
+    border-radius: 15px;
     color:white;
-    min-width: 25vw;
-    min-height: 5vh;
+    width: 30vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 16px;
+    padding: 8px;
 }
 
 .main-container{
@@ -213,8 +244,8 @@
 }
 
 .pokedex-container{
-    width: 32vw;
-    min-height: 28vh;
+    width: 45vw;
+    height: 30vh;
     padding: 20px 10px;
     border-radius: 10px;
 }
@@ -378,6 +409,10 @@
 
     .button{
         width: 25vw;
+    }
+
+    .button, .types{
+        font-size:unset;
     }
 
     .main-type-container{
