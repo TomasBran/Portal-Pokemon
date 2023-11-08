@@ -53,7 +53,7 @@ const Generations = ({getGenerations, resetGame}) => {
         return () => {
           document.removeEventListener('keydown', handleKeyPress);
         };
-    }, []);
+    }, [generationsContainer]);
 
     useEffect(() => {
         getGenerations(currentGenerations);
