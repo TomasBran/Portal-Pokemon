@@ -90,79 +90,6 @@
     margin-left: 32px;
 }
 
-/* .generation-selector-container {
-    position: fixed;
-    right: 2vw;
-    bottom: 2vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.generation-selector {
-    padding: 8px 16px;
-    border-radius: 10px;
-    transition: all ease-in-out 150ms;
-}
-
-.generation-selector-button {
-    padding: 8px 16px;
-    border-radius: 10px;
-}
-
-.generation-panel {
-    width: 10vw;
-    padding: 8px;
-    border-radius: 10px;
-}
-
-.generation-container {
-    padding: 16px;
-    width: 42vw;
-    position: fixed;
-    right: 2vw;
-    bottom: 2vw;
-    background-color: #FFF;
-    border-radius: 30px;
-    border: 2px solid #595959;
-}
-
-.generation-selector-panel {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    justify-content: center;
-}
-
-.generation-selector-panel-button {
-    margin-top: 32px;
-    padding: 8px 32px;
-    border-radius: 7px;
-    transition: all ease-in 150ms;
-}
-
-.generation-panel:hover,
-.generation-selector-button:hover {
-    cursor: pointer;
-    box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.705);
-}
-
-.enabled-panel {
-    background-color: #74FF52;
-}
-
-.enabled-panel:hover {
-    background-color: #A8FF92;
-}
-
-.disabled-panel {
-    background-color: #FF5252;
-}
-
-.disabled-panel:hover {
-    background-color: #FF9292;
-} */
-
 .bottom-container {
     display: flex;
     justify-content: space-around;
@@ -171,6 +98,9 @@
     width: 100vw;
 }
 
+.hotkey{
+    color:rgb(206, 7, 7);
+}
 
 @media screen and (max-width: 768px) {
 
@@ -223,41 +153,6 @@
         gap:10px;
         margin-left: 0;
     }
-
-    /* .generation-container{
-        width: 100vw;
-        bottom: 0vw;
-        right: 0vw;
-        padding: 0px;
-        border-radius: 0px;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-    }
-
-    .generation-selector-panel{
-        gap:unset;
-        justify-content: space-evenly;
-        padding-top: 10px;
-
-    }
-
-    .generation-panel{
-        width: 17vw;
-        height: 5vh;
-        margin-top: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .shorten-text{
-        display: none;
-    }
-
-
-    .generation-selector-panel-button{
-        margin: 8px;
-    } */
 
     .swal2-popup{
         width: 100vw !important;

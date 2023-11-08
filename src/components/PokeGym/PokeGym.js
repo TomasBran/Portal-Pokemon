@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import './PokeGym.css'
 import { BsStarFill, BsStarHalf, BsStar } from 'react-icons/bs';
 import { ToastContainer, toast } from 'react-toastify';
@@ -30,33 +30,93 @@ const PokeGym = () => {
     
     const [shouldDisable, setShouldDisable] = useState(false)
 
+    
+
+    const lockInPokemon = useCallback((pokemon) => {
+        if (pokemon.hasBeenChosen === true) {
+          toast.error(`Has quitado a ${pokemon.name} de tu equipo`, {
+            autoClose: 3000,
+            position: "bottom-right",
+          });
+          pokemon.hasBeenChosen = false;
+          setChosenTeam((previousTeam) =>
+            previousTeam.filter((poke) => poke.name !== pokemon.name)
+          );
+          return;
+        }
+        toast.success(`Has incluido a ${pokemon.name} en tu equipo`, {
+          autoClose: 2000,
+          position: "bottom-right",
+        });
+        pokemon.hasBeenChosen = true;
+        if (!chosenTeam.find((element) => element.name === pokemon.name)) {
+          setChosenTeam((team) => [...team, pokemon]);
+        }
+      }, [chosenTeam, setChosenTeam]);
+      
+
+    useEffect(() => {
+        const handleKeyPress = (event) => {
+          const key = event.key;
+    
+          switch (key) {
+              case '1':
+              case '2':
+              case '3':
+              case '4':
+              case '5':
+              case '6':
+                  if (currentTeam.length >= Number(key)) {
+                      lockInPokemon(currentTeam[Number(key) - 1]);
+                  }
+                  break;
+              
+              case ' ':
+                    if(!shouldDisable){
+                        updatePokemonTeam()
+                    } else{
+                        toast.warn(`${rollButtonText}`, {
+                            autoClose: 3000,
+                            position: "bottom-right",
+                        });
+                    }
+                    break;
+                case 'r':
+                    if(rollButtonText!=="Iniciar"){
+                        resetGame(true)
+                    }
+                    break;
+                case 'p':
+                    if(chosenTeam.length===6){
+                        fightGymLeaders()
+                      } else{
+                        toast.warn(`Necesitas ${6-chosenTeam.length} Pokemon más para poder pelear`, {
+                            autoClose: 3000,
+                            position: "bottom-right",
+                        });
+                      }
+                    break;
+                    
+              default:
+                  break;
+          }
+        };
+    
+        document.addEventListener('keydown', handleKeyPress);
+    
+        return () => {
+          document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [currentTeam, lockInPokemon, shouldDisable, rollButtonText]);
+    
         
+
+      
 
     const getGenerations = (childGenerations) => {
         setCurrentGenerations(childGenerations);
        }
     
-
-     const lockInPokemon = (pokemon) => {
-        if(pokemon.hasBeenChosen===true){
-            toast.error(`Has quitado a ${pokemon.name} de tu equipo`, {
-                autoClose: 3000,
-                position: "bottom-right",
-            });
-            pokemon.hasBeenChosen=false
-            setChosenTeam(previousTeam => previousTeam.filter(poke => poke.name !== pokemon.name))
-            return
-        }
-        toast.success(`Has incluido a ${pokemon.name} en tu equipo`, {
-            autoClose: 2000,
-            position: "bottom-right",
-        });
-        pokemon.hasBeenChosen=true
-        if(!chosenTeam.find((element) => element.name === pokemon.name)){
-            setChosenTeam(team => [...team, pokemon])
-        }
-        
-    }
 
     const updatePokemonTeam = async () => {
         setIsLoading(true);
@@ -100,6 +160,7 @@ const PokeGym = () => {
             }
           };
         }
+
       };
       
 
@@ -250,7 +311,7 @@ const PokeGym = () => {
                 ) : (
                     currentTeam.map((pokemon, index) => {
                         
-                        return(
+                        return(  
                             <div className={`${pokemon.hasBeenChosen ? "selected-poke-card" : "poke-card"}`} key={index} onClick={() => lockInPokemon(pokemon)}>
                                 <span><span className="pokemon-number">#{pokemon.id} - </span>{pokemon.name}</span>
 
@@ -273,8 +334,8 @@ const PokeGym = () => {
                 <div className="gym-game-button-container">
 
                     <button className="gym-game-button" onClick={() => updatePokemonTeam()} disabled={shouldDisable}>{rollButtonText}</button>
-                    <button className="gym-game-button" disabled={chosenTeam.length!==6} onClick={fightGymLeaders}>PELEAR {chosenTeam.length!==6 ? `(Necesitas 6 Pokemon)` : ""}</button>
-                    <button className="gym-game-button" disabled={rollButtonText==="Iniciar"} onClick={() => resetGame(true)}>REINICIAR JUEGO</button>
+                    <button className="gym-game-button" disabled={chosenTeam.length!==6} onClick={fightGymLeaders}><span className="hotkey">P</span>ELEAR {chosenTeam.length!==6 ? `(Necesitas 6 Pokemon)` : ""}</button>
+                    <button className="gym-game-button" disabled={rollButtonText==="Iniciar"} onClick={() => resetGame(true)}><span className="hotkey">R</span>EINICIAR JUEGO</button>
                 </div>
                 
                 <Generations getGenerations={getGenerations} resetGame={resetGame}/>

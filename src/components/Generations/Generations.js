@@ -36,6 +36,26 @@ const Generations = ({getGenerations, resetGame}) => {
     }
 
     useEffect(() => {
+        const handleKeyPress = (event) => {
+          const key = event.key;
+    
+          if(key==='g'){
+            if(!generationsContainer.classList.contains("invisible")){
+                resetGame()
+            }
+            toggleGenerationPanel()
+          }
+          
+        };
+    
+        document.addEventListener('keydown', handleKeyPress);
+    
+        return () => {
+          document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, []);
+
+    useEffect(() => {
         getGenerations(currentGenerations);
     }, [currentGenerations]);
 
@@ -68,7 +88,7 @@ const Generations = ({getGenerations, resetGame}) => {
     return(
         <div>
             <div className="generation-selector-button-container">
-                <button className="generation-selector-button" onClick={toggleGenerationPanel}>Cambiar Generación</button>
+                <button className="generation-selector-button" onClick={toggleGenerationPanel}>Cambiar <span className="hotkey">G</span>eneración</button>
             </div>
 
             <div className="generation-container invisible">
