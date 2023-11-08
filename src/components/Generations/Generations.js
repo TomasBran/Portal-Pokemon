@@ -38,8 +38,7 @@ const Generations = ({getGenerations, resetGame}) => {
     useEffect(() => {
         const handleKeyPress = (event) => {
           const key = event.key;
-    
-          if(key==='g'){
+          if(key==='g' && event.target.tagName !== "INPUT"){
             if(!generationsContainer.classList.contains("invisible")){
                 resetGame()
             }
