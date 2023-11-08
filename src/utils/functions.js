@@ -3,7 +3,7 @@ function capitalizeFirstLetter (word) {
     return word.charAt(0).toUpperCase() + word.slice(1)
 }
 
-function generateRandomPokemonNumber (currentGenerations, chosenTeam, currentTeam) {
+function generateRandomPokemonNumber (currentGenerations, chosenTeam = [], currentTeam = []) {
     const pokemonNumberLimits = [
         151, 251, 386, 493, 649, 721, 809, 898
     ]
