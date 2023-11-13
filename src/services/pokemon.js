@@ -4,6 +4,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { capitalizeFirstLetter } from '../utils/functions';
 
 
+const pokemonNumberLimits = [
+    151, 251, 386, 493, 649, 721, 809, 898, 1017
+]
+
 async function pokemonExists (pokemonName){
     const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=905&offset=0');
     const data = await response.json();
@@ -28,23 +32,32 @@ async function pokemonExists (pokemonName){
 
 }
 
+function getPokemonsGeneration (pokemonId) {
+
+    let wasGenerationAssigned = false
+    let generation
+
+    pokemonNumberLimits.forEach((element, index) => {
+        if(pokemonId<=element && !wasGenerationAssigned){
+         generation = index+1
+         wasGenerationAssigned = true
+        }
+    });
+
+    return generation
+}
+
 
 async function getPokemon (pokemonName) {
     let pokemon = {}
     pokemonName+=''
 
-    const pokemonNumberLimits = [
-        151, 251, 386, 493, 649, 721, 809, 898, 1017
-    ]
 
-
-    
 
     await fetch('https://pokeapi.co/api/v2/pokemon/' + pokemonName.toLowerCase())
     .then(res => res.json())
     .then(fetchedPokemon => {
         let totalStats = 0
-        let wasGenerationAssigned = false
         fetchedPokemon.stats.forEach(stat => {
             totalStats += stat.base_stat
         })
@@ -64,12 +77,10 @@ async function getPokemon (pokemonName) {
 
 
         pokemon.name = capitalizeFirstLetter(fetchedPokemon.name)
-        pokemonNumberLimits.forEach((element, index) => {
-            if(fetchedPokemon.id<=element && !wasGenerationAssigned){
-             pokemon.generation = index+1
-             wasGenerationAssigned = true
-            }
-        });
+
+        pokemon.generation = getPokemonsGeneration(fetchedPokemon.id)
+
+
         pokemon.type_1 = capitalizeFirstLetter(fetchedPokemon.types[0].type.name)
         pokemon.type_2 = fetchedPokemon.types.length>1 ?  capitalizeFirstLetter(fetchedPokemon.types[1].type.name) : "Ninguno"
         pokemon.power = totalStats
@@ -99,4 +110,4 @@ async function getPokemon (pokemonName) {
 }
 
 
-export { getPokemon, pokemonExists}
+export { getPokemon, pokemonExists, getPokemonsGeneration}

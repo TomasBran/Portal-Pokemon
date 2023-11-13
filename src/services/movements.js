@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -21,11 +20,13 @@ async function getPokemonMovements (pokemonName) {
         if(!pokemonMovements.includes(availableMovements[randomNumber])){
             pokemonMovements.push(availableMovements[randomNumber])
         }
-    }
+    } // 0 a 3
 
     const randomAbilityNumber = Math.floor(Math.random() * fetchedPokemon.abilities.length)
-    pokemonMovements.push(fetchedPokemon.abilities[randomAbilityNumber].ability.name.replace(/-/g, ' '))
-    pokemonMovements.push(fetchedPokemon.name)
+    pokemonMovements.push(fetchedPokemon.abilities[randomAbilityNumber].ability.name.replace(/-/g, ' ')) // 4
+    pokemonMovements.push(fetchedPokemon.name) // 5
+    pokemonMovements.push(fetchedPokemon.id) // 6
+    
     })
 
 

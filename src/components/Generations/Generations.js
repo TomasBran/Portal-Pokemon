@@ -64,6 +64,7 @@ const Generations = ({getGenerations, resetGame}) => {
 
         if (!generationsContainer.classList.contains("invisible")) {
             generationsContainer.classList.toggle("invisible");
+            resetGame(false)
             return;
           }
 

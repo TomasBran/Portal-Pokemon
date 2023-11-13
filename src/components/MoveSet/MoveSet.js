@@ -7,20 +7,21 @@ import { generateRandomPokemonNumber } from '../../utils/functions';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Generations from '../Generations/Generations';
-import { pokemonExists} from '../../services/pokemon';
+import { getPokemonsGeneration, pokemonExists } from '../../services/pokemon';
 import { ToastContainer } from 'react-toastify';
 
 const MoveSet = () => {
 
     const MySwal = withReactContent(Swal);
     const [originalPokemonMovements, setOriginalPokemonMovements] = useState([])
+    const [currentGenerations, setCurrentGenerations] = useState([true,true,true,true,true,true,true,true])
     const [movesShown, setMovesShown] = useState(0)
     const [inputValue, setInputValue] = useState('')
     const [guessedPokemons, setGuessedPokemons] = useState([])
 
     const startNewGame = async () => {
-        // const newPokemon = await getPokemonMovements(generateRandomPokemonNumber());
-        const newPokemon = await getPokemonMovements("eevee")
+        const newPokemon = await getPokemonMovements(generateRandomPokemonNumber(currentGenerations));
+        // const newPokemon = await getPokemonMovements("eevee")
         setOriginalPokemonMovements(newPokemon)
     }
 
@@ -48,6 +49,10 @@ const MoveSet = () => {
         } 
     }
 
+    const getGenerations = (childGenerations) => {
+        setCurrentGenerations(childGenerations);
+    }
+
     const handleInputChange = (value) => {
         setInputValue(value)
     }
@@ -73,6 +78,7 @@ const MoveSet = () => {
         }
     }
 
+    console.log(getPokemonsGeneration(originalPokemonMovements[6]))
 
     useEffect(() => {
         
@@ -116,6 +122,9 @@ const MoveSet = () => {
 
 
                 <div className='moveset-container'>
+                    <div>
+                        <span>Generación: {getPokemonsGeneration(originalPokemonMovements[6])}</span>
+                    </div>
                     <div className='movements'>
                         <div className={`moveset-item movement ${movesShown>=1 ? "shown-moveset" : "hidden-moveset"}`}>
                             <span>{`Movimiento 1`}<br />{movesShown>=1 ? originalPokemonMovements[0] : "???"}</span>
@@ -136,7 +145,7 @@ const MoveSet = () => {
             </div>
 
             <ToastContainer/>
-            {/* <Generations/> */}
+            <Generations getGenerations={getGenerations} resetGame={resetGame}/>
         </div>
     )
 }

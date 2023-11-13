@@ -111,11 +111,9 @@ const PokeGym = () => {
     
         
 
-      
-
     const getGenerations = (childGenerations) => {
         setCurrentGenerations(childGenerations);
-       }
+    }
     
 
     const updatePokemonTeam = async () => {
@@ -163,7 +161,7 @@ const PokeGym = () => {
 
       };
       
-
+    
     
     useEffect(() => {
         handleButtonText();
