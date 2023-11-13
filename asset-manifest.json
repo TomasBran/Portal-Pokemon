@@ -1,24 +1,26 @@
 {
   "files": {
-    "main.css": "/Portal-Pokemon/static/css/main.ae6c34a3.css",
-    "main.js": "/Portal-Pokemon/static/js/main.c2d5da4a.js",
+    "main.css": "/Portal-Pokemon/static/css/main.f78e6971.css",
+    "main.js": "/Portal-Pokemon/static/js/main.3a1f3326.js",
     "static/js/787.bd30492c.chunk.js": "/Portal-Pokemon/static/js/787.bd30492c.chunk.js",
     "static/media/gym.png": "/Portal-Pokemon/static/media/gym.5ad4dc019d57c4c36632.png",
     "static/media/calculator.png": "/Portal-Pokemon/static/media/calculator.268111bc8b5de22c456b.png",
     "static/media/pokedle.png": "/Portal-Pokemon/static/media/pokedle.2bbd442e089dcdbaf814.png",
     "static/media/Inter-italic.var.woff2?v=3.19": "/Portal-Pokemon/static/media/Inter-italic.var.30807be7abc48ba8c73c.woff2",
     "static/media/Inter-roman.var.woff2?v=3.19": "/Portal-Pokemon/static/media/Inter-roman.var.ba4caefcdf5b36b438db.woff2",
+    "static/media/moveset_background.jpg": "/Portal-Pokemon/static/media/moveset_background.143efd5d44b281424e6d.jpg",
     "static/media/background.jpg": "/Portal-Pokemon/static/media/background.01b8d36634d61dedbd28.jpg",
     "static/media/unknown_pokemon.png": "/Portal-Pokemon/static/media/unknown_pokemon.e3d98628396cf224a500.png",
     "static/media/pokedex.webp": "/Portal-Pokemon/static/media/pokedex.492367d043e723e92388.webp",
     "static/media/coming_soon.webp": "/Portal-Pokemon/static/media/coming_soon.160b0f7056306a03f270.webp",
+    "static/media/unresolved_pokemon.png": "/Portal-Pokemon/static/media/unresolved_pokemon.f679d133b9774d54dbdd.png",
     "index.html": "/Portal-Pokemon/index.html",
-    "main.ae6c34a3.css.map": "/Portal-Pokemon/static/css/main.ae6c34a3.css.map",
-    "main.c2d5da4a.js.map": "/Portal-Pokemon/static/js/main.c2d5da4a.js.map",
+    "main.f78e6971.css.map": "/Portal-Pokemon/static/css/main.f78e6971.css.map",
+    "main.3a1f3326.js.map": "/Portal-Pokemon/static/js/main.3a1f3326.js.map",
     "787.bd30492c.chunk.js.map": "/Portal-Pokemon/static/js/787.bd30492c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ae6c34a3.css",
-    "static/js/main.c2d5da4a.js"
+    "static/css/main.f78e6971.css",
+    "static/js/main.3a1f3326.js"
   ]
 }
