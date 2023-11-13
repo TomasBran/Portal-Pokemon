@@ -11,7 +11,7 @@ const Navbar = () => {
                 <Link to="/calculator"><button className='navbar-button'>Calculadora</button></Link>
                 <Link to="/gym"><button className='navbar-button'>Gimnasio</button></Link>
                 <Link to="/pokedle"><button className='navbar-button'>Pokedle (WIP)</button></Link>
-                <button className='navbar-button' disabled>COMING SOON</button>
+                <Link to="/moveset"><button className='navbar-button'>Adivina el MoveSet (WIP)</button></Link>
                 <button className='navbar-button' disabled>COMING SOON</button>
                 <button className='navbar-button' disabled>COMING SOON</button>
                 

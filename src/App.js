@@ -9,6 +9,7 @@ import Navbar from './components/Navbar/Navbar';
 import Pokedle from './components/Pokedle/Pokedle';
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
+import MoveSet from './components/MoveSet/MoveSet';
         
 
 
@@ -31,6 +32,8 @@ function App() {
               <Route path="/calculator" element={<Calculator/>}/>
               <Route path="/gym" element={<PokeGym/>}/>
               <Route path="/pokedle" element={<Pokedle/>}/>
+              <Route path="/moveset" element={<MoveSet/>}/>
+              
 
             </Routes>
 

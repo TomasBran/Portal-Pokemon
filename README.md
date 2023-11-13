@@ -5,6 +5,8 @@ Portal Pokemon es un proyecto de React.js basado en el mundo Pokemon, que posee 
 
 Inició como una calculadora de tipos, luego quise incluir una Pokedex para buscar al Pokemon que necesitase y posteriormente fue evolucionando en lo que es ahora, que aún está en camino de algo más grande.
 
+Lo pueden ver en: https://tomasbran.github.io/Portal-Pokemon/
+
 ## Dependencias
 
 
@@ -27,9 +29,9 @@ Inició como una calculadora de tipos, luego quise incluir una Pokedex para busc
 
 ## Coming Soon
 
+- Minijuego adivinar set de movimientos
 - Minijuego adivinar generación del Pokemon
 - Minijuego desafio tabla de tipos
-- Minijuego adivinar set de movimientos
 - Login/Profile
 - Tienda Pokemon y sistema de recompensas
 
@@ -52,7 +54,6 @@ Existe un sistema de selección de generaciones, para poder jugar con las que qu
 
 WIP:
 
-- Bug: Si sale al azar un pokemon que ya está en tu poder, el seguro de no repetición no te permitirá agarrarlo.
 - Feature: Se implementará un sistema que premie distintas sinergias.
 
 ## Pokedle (W.I.P)
@@ -64,4 +65,3 @@ En Pokedle tendrás que averiguar el Pokemon misterioso elegido al azar, usando 
 WIP:
 
 - Design: Algunas cosas respecto al diseño están apenas siendo incluidas, con lo cual serán vistas en las próximas versiones.
-- Feature: Se añadirá un mensaje de victoria para cuando el Pokemon sea adivinado.

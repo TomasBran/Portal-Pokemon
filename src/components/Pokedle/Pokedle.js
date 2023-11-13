@@ -112,13 +112,32 @@ const Pokedle = () => {
         setInputValue(value)
     }
 
+    useEffect(() => {
+      const handleKeyPress = (event) => {
+        const key = event.key;
+        if(key==='r' && event.target.tagName !== "INPUT"){
+          resetGame()
+        }
+
+        
+
+        
+      };
+  
+      document.addEventListener('keydown', handleKeyPress);
+  
+      return () => {
+        document.removeEventListener('keydown', handleKeyPress);
+      };
+  }, [originalPokemon]);
+
     return(
         <div className="pokedle-main-container">
             <div className='pokedle-title-container'>
                 <span>Elige un Pokemon:</span>
                 <PokemonSearch onInputChange={handleInputChange}/>
            <button className='guess-button' onClick={() => comparePokemon(originalPokemon)}>ADIVINAR</button>
-            <button className='guess-button' onClick={() => resetGame()}>REINICIAR</button>
+            <button className='guess-button' onClick={() => resetGame()}><span className='hotkey'>R</span>EINICIAR</button>
             </div>
 
             <div className='pokedle-game-container'>
@@ -146,7 +165,6 @@ const Pokedle = () => {
             <div className='test1'>
                 <Generations getGenerations={getGenerations} resetGame={resetGame}/>
             </div>
-            <ToastContainer/>
         </div>
     )
 }

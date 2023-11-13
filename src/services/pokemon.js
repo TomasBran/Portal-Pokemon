@@ -4,6 +4,29 @@ import 'react-toastify/dist/ReactToastify.css';
 import { capitalizeFirstLetter } from '../utils/functions';
 
 
+async function pokemonExists (pokemonName){
+    const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=905&offset=0');
+    const data = await response.json();
+    const pokemonList = data.results;
+
+    if(pokemonList.some(pokemon => pokemon.name.toLowerCase() === pokemonName.toLowerCase())){
+        return true
+    } else{
+        toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`, {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            })
+        return false
+    }
+
+
+}
 
 
 async function getPokemon (pokemonName) {
@@ -58,10 +81,9 @@ async function getPokemon (pokemonName) {
         
     }
     )
-    .catch((error) =>{
-        console.log(error)
+    .catch((err) =>{
         toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`, {
-            position: "top-center",
+            position: "bottom-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -77,4 +99,4 @@ async function getPokemon (pokemonName) {
 }
 
 
-export { getPokemon }
+export { getPokemon, pokemonExists}

@@ -307,7 +307,7 @@ const PokeGym = () => {
         <div className="poke-gym-container">
             <div className="poke-gym-game">
                 {isLoading ? (
-                    <ProgressSpinner />
+                    <ProgressSpinner animationDuration=".5s"/>
                 ) : (
                     currentTeam.map((pokemon, index) => {
                         

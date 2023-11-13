@@ -60,6 +60,10 @@
     background: url(../../assets/pokedle.png);
 }
 
+.moveset-button{
+    background: url(../../assets/moveset_background.jpg);
+}
+
 .coming-soon-button {
     background: url(../../assets/coming_soon.webp);
 }
