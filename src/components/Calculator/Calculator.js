@@ -1,6 +1,6 @@
 import { useState, useEffect, React } from "react";
 import { useSelection } from "../../context/SelectionContext";
-import "./Calculator.css";
+import "./types.css";
 import  pokedex  from "../../assets/pokedex.webp"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -214,6 +214,13 @@ const Calculator = () => {
     const [ types_x0,   setTypes_x0  ] = useState([])
 
     const {currentFirstSelection, currentSecondSelection, setSelection, deleteSelection, setBothTypes, deleteBothTypes} = useSelection()
+
+    useEffect(() => {
+
+        deleteSelection();
+        deleteBothTypes();
+
+      }, []);
     
 
     const handleInputChange = (value) => {
@@ -236,8 +243,8 @@ const Calculator = () => {
                 
                 toast.error(`Ya estás utilizando 2 tipos. Elimina uno primero`, {
                     position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: false,
+                    autoClose: 1000,
+                    hideProgressBar: true,
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
@@ -330,110 +337,110 @@ const Calculator = () => {
         }
     }
 
+    function isArrayEmpty (array) {
+        return array.length === 0;
+    }
+
 
 
 
     return (
 
-        <div className='main-container'>
-              <h2 className='main-title'>Tipos del pokemon enemigo:</h2>
-              <div className="type-container">
+        <div className=' min-h-screen bg-zinc-300 pt-16 flex flex-col items-center'>
 
+                <div className="flex justify-center flex-col items-center">
 
-                <div className="flex-container">
-
-                    <div className="selector-container">
-                        <div className="button-container">
+                    <div className="flex items-center justify-center gap-14">
+                        <div className="flex justify-center items-center w-6/12 h-[32vh] flex-wrap gap-3 p-8 bg-zinc-100 rounded-lg">
                             {pokemonTypes.map((type) => 
-                            <button onClick={() => handleClick(type.name)} className={`${type.name} button`} key={type.name}><span>{type.name}</span></button>
+                            <button onClick={() => handleClick(type.name)} className={`${type.name} px-4 py-2 my-1 text-white font-bold text-md rounded-lg shadow hover:shadow-black/80 active:scale-95 transition duration-150 capitalize w-[6vw]`} key={type.name}><span>{type.name}</span></button>
                             )}
                         </div>
 
-                        <div className={`pokedex-container ${isVisible ? (currentFirstSelection!=="" ? currentFirstSelection : currentSecondSelection) : "empty-pokedex"} ${(currentFirstSelection==="" && currentSecondSelection==="") && "empty-pokedex"}`}>
-                            <div className="pokedex-info">
-                                <img alt="" src={pokedex} className="pokedex-image"/>
+                        <div className={`w-5/12 h-[32vh] px-6 py-3 rounded-lg ${isVisible ? (currentFirstSelection!=="" ? currentFirstSelection : currentSecondSelection) : "bg-zinc-100"} ${(currentFirstSelection==="" && currentSecondSelection==="") && "bg-zinc-100"}`}>
+                            <div className="flex justify-between">
+                                <img alt="" src={pokedex} className="relative h-14"/>
                                 <PokemonSearch onInputChange={handleInputChange}/>
-                                <button className="search-button" onClick={() => searchPokemon(inputValue)}>Buscar</button>
+                                <button className="p-1 md:p-2 mr-10 rounded-2xl w-2/12 bg-gray-500 text-white font-semibold cursor-pointer hover:bg-gray-600 active:bg-gray-700 active:scale-95 transition duration-150" onClick={() => searchPokemon(inputValue)}>Buscar</button>
                                 
                             </div>
 
                             {loading
                                 ? ( <ProgressSpinner/> )
                                 : (
-                                    <div className={`pokemon-preview ${isVisible ? "visible" : "invisible"}`}>
-                                        <div className="pokemon-info-display">
-                                            <span className="pokemon-name">#{currentPokemonId} - {currentPokemonName}</span>
-                                            <div className="pokemon-types">
-                                                <p className={`${currentFirstSelection!=="" ? currentFirstSelection : "invisible"} types`}>{capitalizeFirstLetter(currentFirstSelection)}</p>
-                                                <p className={`${currentSecondSelection!=="" ? currentSecondSelection : "invisible"} types`}>{capitalizeFirstLetter(currentSecondSelection)}</p>
+                                    <div className={`items-center justify-evenly ${isVisible ? "flex" : "hidden"}`}>
+                                        <div className="flex flex-col items-center">
+                                            <span className="text-3xl text-gray-800 bg-white rounded-lg border-2 border-gray-500 min-w-10/12 p-2 capitalize">#{currentPokemonId} - {currentPokemonName}</span>
+                                            <div className="flex gap-2 brightness-125 cursor-default py-2">
+                                                <p className={`${currentFirstSelection!=="" ? currentFirstSelection : "hidden"} p-1.5 md:p-4 text-white font-semibold rounded-2xl border border-white text-xs md:text-sm flex justify-center items-center border-gray-500 border-2`}>{capitalizeFirstLetter(currentFirstSelection)}</p>
+                                                <p className={`${currentSecondSelection!=="" ? currentSecondSelection : "hidden"} p-1.5 md:p-4 text-white font-semibold rounded-2xl border border-white text-xs md:text-sm flex justify-center items-center border-gray-500 border-2`}>{capitalizeFirstLetter(currentSecondSelection)}</p>
                                             </div>
                                         </div>
-                                        <img alt="" src={currentPokemonImage} className="pokemon-image" loading="lazy"/>
+                                        <img alt="" src={currentPokemonImage} className="h-24" loading="lazy"/>
                                         
                                     </div>
                                 )}
                             
                         </div>
                     </div>
-                    <div className="selected-container">
-                        <h2>Seleccionados:</h2>
-                        <div className="selections">
-                            <button className={` ${currentFirstSelection!=="" ? `${currentFirstSelection} button selected-type` : "empty"}`} onClick={() => handleClick(currentFirstSelection)}><span>{currentFirstSelection}</span></button>
-                            <button className={currentSecondSelection!== "" ? `${currentSecondSelection} button selected-type` : "empty"} onClick={() => handleClick(currentSecondSelection)}><span>{currentSecondSelection}</span></button>
+                    <div className="bg-white/80 m-4 rounded-2xl p-8 flex justify-between items-center w-3/12 h-2">
+                        <p className="text-xl">Seleccionados:</p>
+                        <div className="flex justify-center gap-2 w-6/12">
+                            <button className={` ${currentFirstSelection!=="" ? `${currentFirstSelection} px-4 py-2 my-1 text-white font-bold text-sm rounded-lg shadow hover:shadow-black/80 capitalize w-[5vw] justify-center items-center flex cursor-pointer hover:bg-red-500 active:scale-95 transition duration-150` : "hidden"}`} onClick={() => handleClick(currentFirstSelection)}><span>{currentFirstSelection}</span></button>
+                            <button className={currentSecondSelection!== "" ? `${currentSecondSelection} px-4 py-2 my-1 text-white font-bold text-sm rounded-lg shadow hover:shadow-black/80 capitalize w-[5vw] justify-center items-center flex cursor-pointer hover:bg-red-500 active:scale-95 transition duration-150` : "hidden"} onClick={() => handleClick(currentSecondSelection)}><span>{currentSecondSelection}</span></button>
                         </div>
                     </div>
 
-                    <div className={`main-type-container ${(currentFirstSelection==="" && currentSecondSelection==="") ? "invisible" : ""}`}>
-                        <div className="effective-container">
-                            <h2>Efectivo:</h2>
-                            <div className={`${types_x4.length===0 ? "invisible" : ""}`}>
-                                <h2>x4:</h2>
-                                <div className="types-container">
-                                    {types_x4.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
+                    <div className={`flex justify-evenly gap-4 cursor-default ${(currentFirstSelection==="" && currentSecondSelection==="") ? "hidden" : ""}`}>
+                        <div className={`bg-white  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x4) && isArrayEmpty(types_x2) ? "hidden" : ""}`}>
+                            <p>Efectivo:</p>
+                            <div className={`${isArrayEmpty(types_x4) ? "hidden" : ""}`}>
+                                <p className='my-3'>x4:</p>
+                                <div className="flex justify-center flex-wrap gap-4">
+                                    {types_x4.map((type) => <div className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`} key={type}><span>{type}</span></div>)}
                                 </div>
                             </div>
-                            <div className={`${types_x2.length===0 ? "invisible" : ""}`}>
-                                <h2>x2:</h2>
-                                <div className="types-container">
-                                    {types_x2.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
+                            <div className={`${isArrayEmpty(types_x2) ? "hidden" : ""}`}>
+                                <p className='my-3'>x2:</p>
+                                <div className="flex justify-center flex-wrap gap-4">
+                                    {types_x2.map((type) => <div className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`} key={type}><span>{type}</span></div>)}
                                 </div>
                             </div>
                         </div>
-                        <div className="neutral-container">
-                            <h2>Neutral:</h2>
-                            <h2>x1:</h2>
-                            <div className="types-container">
-                                {types_x1.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
+                        <div className={`bg-white  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x1) ? "hidden" : ""}`}>
+                            <p>Neutral:</p>
+                            <p className='my-3'>x1:</p>
+                            <div className="flex justify-center flex-wrap gap-4">
+                                {types_x1.map((type) => <div className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`} key={type}><span>{type}</span></div>)}
                             </div>
                         </div>
-                        <div className={`uneffective-container ${(types_x05.length===0 && types_x025.length===0) ? "invisible" : ""}`}>
-                            <h2>Poco efectivo:</h2>
-                            <div className={`${types_x05.length===0 ? "invisible" : ""}`}>
-                                <h2>x1/2:</h2>
-                                <div className="types-container">
-                                    {types_x05.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
+                        <div className={`bg-white  min-h-[43vh] w-[23vw] rounded-lg p-4 ${(isArrayEmpty(types_x05) && isArrayEmpty(types_x025)) ? "hidden" : ""}`}>
+                            <p>Poco efectivo:</p>
+                            <div className={`${isArrayEmpty(types_x05) ? "hidden" : ""}`}>
+                                <p className='my-3'>x1/2:</p>
+                                <div className="flex justify-center flex-wrap gap-4">
+                                    {types_x05.map((type) => <div className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`} key={type}><span>{type}</span></div>)}
                                 </div>
 
                             </div>
-                            <div className={`${types_x025.length===0 ? "invisible" : ""}`}>
-                                <h2>x1/4:</h2>
-                                <div className="types-container">
-                                    {types_x025.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
+                            <div className={`${isArrayEmpty(types_x025) ? "hidden" : ""}`}>
+                                <p className='my-3'>x1/4:</p>
+                                <div className="flex justify-center flex-wrap gap-4">
+                                    {types_x025.map((type) => <div className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`} key={type}><span>{type}</span></div>)}
                                 </div>
                             </div>
                         </div>
 
-                        <div className={`immune-container ${types_x0.length===0 ? "invisible" : ""}`}>
-                            <h2>Inmune:</h2>
-                            <h2>x0:</h2>
-                            <div className="types-container">
-                                {types_x0.map((type) => <div className={`${type} types`} key={type}><span>{type}</span></div>)}
+                        <div className={`bg-white  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x0) ? "hidden" : ""}`}>
+                            <p>Inmune:</p>
+                            <p className='my-3'>x0:</p>
+                            <div className="flex justify-center flex-wrap gap-4">
+                                {types_x0.map((type) => <div className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`} key={type}><span>{type}</span></div>)}
                             </div>
 
                         </div>
                     </div>
                 </div>
-              </div>
               <ToastContainer autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored"/>
             </div>
     )

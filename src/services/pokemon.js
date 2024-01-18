@@ -17,8 +17,8 @@ async function pokemonExists (pokemonName){
         return true
     } else{
         toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`, {
-            position: "bottom-center",
-            autoClose: 5000,
+            position: "bottom-left",
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -94,9 +94,9 @@ async function getPokemon (pokemonName) {
     )
     .catch((err) =>{
         toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`, {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: false,
+            position: "bottom-left",
+            autoClose: 1000,
+            hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,

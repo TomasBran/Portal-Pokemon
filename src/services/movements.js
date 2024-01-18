@@ -17,6 +17,7 @@ async function getPokemonMovements (pokemonName) {
     while (pokemonMovements.length<4) {
         const randomNumber = Math.floor(Math.random() * availableMovements.length);
 
+
         if(!pokemonMovements.includes(availableMovements[randomNumber])){
             pokemonMovements.push(availableMovements[randomNumber])
         }

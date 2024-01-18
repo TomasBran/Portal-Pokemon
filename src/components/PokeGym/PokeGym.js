@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
-import './PokeGym.css'
 import { BsStarFill, BsStarHalf, BsStar } from 'react-icons/bs';
+import { IoSettingsSharp } from "react-icons/io5";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TeamContainer from "../TeamContainer/TeamContainer";
@@ -10,6 +10,7 @@ import { generateRandomPokemonNumber } from "../../utils/functions";
 import { getPokemon } from "../../services/pokemon";
 import Generations from "../Generations/Generations";
 import { ProgressSpinner } from 'primereact/progressspinner';
+import  pokeball  from '../../assets/pokeball.png'
 
 
 
@@ -34,20 +35,14 @@ const PokeGym = () => {
 
     const lockInPokemon = useCallback((pokemon) => {
         if (pokemon.hasBeenChosen === true) {
-          toast.error(`Has quitado a ${pokemon.name} de tu equipo`, {
-            autoClose: 3000,
-            position: "bottom-right",
-          });
+          
           pokemon.hasBeenChosen = false;
           setChosenTeam((previousTeam) =>
             previousTeam.filter((poke) => poke.name !== pokemon.name)
           );
           return;
         }
-        toast.success(`Has incluido a ${pokemon.name} en tu equipo`, {
-          autoClose: 2000,
-          position: "bottom-right",
-        });
+        
         pokemon.hasBeenChosen = true;
         if (!chosenTeam.find((element) => element.name === pokemon.name)) {
           setChosenTeam((team) => [...team, pokemon]);
@@ -76,13 +71,12 @@ const PokeGym = () => {
                         updatePokemonTeam()
                     } else{
                         toast.warn(`${rollButtonText}`, {
-                            autoClose: 3000,
                             position: "bottom-right",
                         });
                     }
                     break;
                 case 'r':
-                    if(rollButtonText!=="Iniciar"){
+                    if(rollButtonText!=="Iniciar Juego"){
                         resetGame(true)
                     }
                     break;
@@ -119,7 +113,7 @@ const PokeGym = () => {
     const updatePokemonTeam = async () => {
         setIsLoading(true);
       
-        const gymButton = document.getElementsByClassName("gym-game-button")[0];
+        const gymButton = document.getElementById("fight-button");
         gymButton.disabled = true;
         const tempText = rollButtonText;
       
@@ -170,27 +164,46 @@ const PokeGym = () => {
     
   
     const handleStars = (power) => {
+        let stars, halfStars;
 
-        if(power>560){
-            return (<div><BsStarFill/> <BsStarFill/> <BsStarFill/></div>)
-        } else if (power > 500){
-            return (<div><BsStarFill/> <BsStarFill/> <BsStarHalf/></div>)
-        } else if (power > 375){
-            return (<div><BsStarFill/> <BsStarFill/> <BsStar/></div>)
-        } else if (power > 300){
-            return (<div><BsStarFill/> <BsStarHalf/> <BsStar/></div>)
-        } else if (power > 200){
-            return (<div><BsStarFill/> <BsStar/> <BsStar/></div>)
+        if (power > 560) {
+            stars = 3;
+            halfStars = 0;
+        } else if (power > 500) {
+            stars = 2;
+            halfStars = 1;
+        } else if (power > 375) {
+            stars = 2;
+            halfStars = 0;
+        } else if (power > 300) {
+            stars = 1;
+            halfStars = 1;
+        } else if (power > 200) {
+            stars = 1;
+            halfStars = 0;
         } else {
-            return (<div><BsStarHalf/> <BsStar/> <BsStar/></div>)
+            stars = 0;
+            halfStars = 1;
         }
+    
+        const starsArray = Array.from({ length: 3 }, (_, index) => {
+            if (index < stars) {
+                return <BsStarFill key={index} />;
+            } else if (index === stars && halfStars) {
+                return <BsStarHalf key={index} />;
+            } else {
+                return <BsStar key={index} />;
+            }
+        });
+    
+        return <div className="flex gap-1">{starsArray}</div>;
         
     }
 
 
     const handleButtonText = () => {
-        if(rerollsLeft===4){
-            setRollButtonText("Iniciar")
+        if(rerollsLeft===4 || rerollsLeft===100){
+            setRollButtonText("Iniciar Juego")
             setShouldDisable(false)
             return
         }
@@ -200,7 +213,7 @@ const PokeGym = () => {
             return
         }
         if(chosenTeam.length<6){
-            setRollButtonText(`Generar ${6-chosenTeam.length} pokemon ${chosenTeam.length!==5 ? "nuevos" : "nuevo"} (${rerollsLeft} ${rerollsLeft!==1 ? "RE-ROLLS" : "RE-ROLL"})`)
+            setRollButtonText(`Generar ${6-chosenTeam.length} pokemon (${rerollsLeft} ${rerollsLeft!==1 ? "RE-ROLLS" : "RE-ROLL"})`)
             setShouldDisable(false)
         } else{
             setRollButtonText("EQUIPO COMPLETO")
@@ -293,7 +306,7 @@ const PokeGym = () => {
             setChosenTeam([])
             setCurrentTeam([])
             setRerollsLeft(testing ? 100 : 4)
-            setRollButtonText("Iniciar")
+            setRollButtonText("Iniciar Juego")
             setShouldDisable(false)
         } 
 
@@ -302,48 +315,64 @@ const PokeGym = () => {
     
 
     return(
-        <div className="poke-gym-container">
-            <div className="poke-gym-game">
+        <div className="bg-zinc-200 pt-6 h-screen w-full flex flex-col justify-center items-center">
+            <div className="pt-7 h-3/4 flex flex-wrap justify-center items-center w-full gap-x-36">
                 {isLoading ? (
                     <ProgressSpinner animationDuration=".5s"/>
                 ) : (
                     currentTeam.map((pokemon, index) => {
                         
                         return(  
-                            <div className={`${pokemon.hasBeenChosen ? "selected-poke-card" : "poke-card"}`} key={index} onClick={() => lockInPokemon(pokemon)}>
-                                <span><span className="pokemon-number">#{pokemon.id} - </span>{pokemon.name}</span>
+                            <div 
+                                style={{
+                                    backgroundImage: `${pokemon.hasBeenChosen ? `url(${pokeball})` : ''}`,
+                                    
+                                }}
+                                className={`w-[14vw] h-[14vw] ${pokemon.hasBeenChosen ? `bg-cover bg-center ` : 'bg-red-400/60'} m-1 mx-10 cursor-pointer flex flex-col items-center gap-2 p-5 rounded-full`}
+                                key={index}
+                                onClick={() => lockInPokemon(pokemon)}
+                            >
+                                <span className="font-bold text-sm">{pokemon.name}</span>
 
                                 
-                                <img alt="" src={pokemon.img} className="pokemon-image"/>
+                                <img alt="" src={pokemon.img} className=" h-3/4"/>
 
 
                                 {handleStars(pokemon.power)}
-                                <span className={`locked-in ${pokemon.hasBeenChosen ? "visible" : "invisible"}`}>ELEGIDO</span>
                             </div>
                     )})
 
                 )}
             </div>
 
-            <div className="bottom-container">
+            <div className="flex justify-center items-center w-full m-2">
                 
-                <TeamContainer team={chosenTeam}/>
-
-                <div className="gym-game-button-container">
-
-                    <button className="gym-game-button" onClick={() => updatePokemonTeam()} disabled={shouldDisable}>{rollButtonText}</button>
-                    <button className="gym-game-button" disabled={chosenTeam.length!==6} onClick={fightGymLeaders}><span className="hotkey">P</span>ELEAR {chosenTeam.length!==6 ? `(Necesitas 6 Pokemon)` : ""}</button>
-                    <button className="gym-game-button" disabled={rollButtonText==="Iniciar"} onClick={() => resetGame(true)}><span className="hotkey">R</span>EINICIAR JUEGO</button>
+                <div className="ml-2 w-3/4 h-5/6">
+                    <TeamContainer team={chosenTeam}/>
                 </div>
-                
-                <Generations getGenerations={getGenerations} resetGame={resetGame}/>
+
+                <div className="flex justify-center gap-4 w-full">
+
+                    <button id="fight-button" className="bg-gray-700 text-white my-6 p-4 w-3/12 h-24 font-bold transition-all ease-in-out duration-150 rounded-md enabled:hover:shadow-lg enabled:hover:bg-gray-500 enabled:active:scale-95 disabled:opacity-30" onClick={() => updatePokemonTeam()} disabled={shouldDisable}>{rollButtonText}</button>
+                    <button className="bg-gray-700 text-white my-6 p-4 w-3/12 h-24 font-bold transition-all ease-in-out duration-150 rounded-md enabled:hover:shadow-lg enabled:hover:bg-gray-500 enabled:active:bg-gray-400 enabled:active:scale-95  disabled:opacity-30" disabled={chosenTeam.length!==6} onClick={fightGymLeaders}><span className="text-red-500">P</span>ELEAR {chosenTeam.length!==6 ? `(Necesitas 6 Pokemon)` : ""}</button>
+                    <button className="bg-gray-700 text-white my-6 p-4 w-3/12 h-24 font-bold transition-all ease-in-out duration-150 rounded-md enabled:hover:shadow-lg enabled:hover:bg-gray-500 enabled:active:bg-gray-400 enabled:active:scale-95  disabled:opacity-30" disabled={rollButtonText==="Iniciar Juego"} onClick={() => resetGame(true)}><span className="text-red-500">R</span>EINICIAR JUEGO</button>
+                </div>
+                <div className="w-1/6">
+                    <Generations getGenerations={getGenerations} resetGame={resetGame}/>
+
+
+                    {/* <div className="w-20">
+                        <IoSettingsSharp />
+
+                    </div> */}
+                </div>
                 
             </div>
 
             
 
 
-            <ToastContainer newestOnTop={false} rtl={true} theme="colored" pauseOnHover/>
+            <ToastContainer newestOnTop={false} rtl={true} theme="colored" pauseOnHover autoClose={1000} hideProgressBar/>
 
         </div>
     )

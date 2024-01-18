@@ -87,8 +87,8 @@ const Generations = ({getGenerations, resetGame}) => {
 
     return(
         <div>
-            <div className="generation-selector-button-container">
-                <button className="generation-selector-button" onClick={toggleGenerationPanel}>Cambiar <span className="hotkey">G</span>eneración</button>
+            <div className="generation-selector-button-container m-2 w-9/12">
+                <button className="w-full bg-gray-200 rounded-lg border-solid border-gray-400 border-2" onClick={toggleGenerationPanel}>Cambiar <span className="text-red-500">G</span>eneración</button>
             </div>
 
             <div className="generation-container invisible">
@@ -103,7 +103,6 @@ const Generations = ({getGenerations, resetGame}) => {
 
             </div>
 
-        <ToastContainer/>
         </div>
     )
 }

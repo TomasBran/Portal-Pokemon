@@ -1,20 +1,12 @@
-.home-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 94vh;
-    margin-top: 6vh;
-    background-color: #ECECEC;
-}
 
+/* 
 .home-panel {
     width: 100vw;
     height: 94vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.3);
-}
+} */
 
 .home-title {
     font-size: 40px;
@@ -28,9 +20,9 @@
     box-shadow: 0px 0px 12px #000;
 }
 
-.no-underline {
+/* .no-underline {
     text-decoration: none;
-}
+} */
 
 .home-button-text {
     color: #fff;
@@ -45,7 +37,6 @@
     justify-content: space-evenly;
     flex-wrap: wrap;
     gap: 16px;
-    background-color: #ECECEC;
 }
  
 .gym-button {
@@ -64,7 +55,7 @@
     background: url(../../assets/moveset_background.jpg);
 }
 
-.coming-soon-button {
+.portal-pokemon-button {
     background: url(../../assets/coming_soon.webp);
 }
 
@@ -73,8 +64,8 @@
     width: 25vw;
     height: 35vh;
     display: flex;
-    justify-content: end;
-    align-items: end;
+    justify-content: flex-end;
+    align-items: flex-end;
     transition: all ease 150ms;
     border-radius: 10px;
     border: none;

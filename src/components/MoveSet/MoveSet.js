@@ -78,8 +78,6 @@ const MoveSet = () => {
         }
     }
 
-    console.log(getPokemonsGeneration(originalPokemonMovements[6]))
-
     useEffect(() => {
         
     }, [originalPokemonMovements]);
@@ -89,7 +87,8 @@ const MoveSet = () => {
     }, []);
 
     return(
-        <div className="moveset-main-container">
+        <div className="moveset-main-container flex flex-col">
+            WORK IN PROGRESS
             <div className='moveset-game-container'>
 
                 <div className='moveset-left-container'>
