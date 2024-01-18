@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Portal-Pokemon/static/css/main.785dd420.css",
-    "main.js": "/Portal-Pokemon/static/js/main.dff0d0ef.js",
+    "main.css": "/Portal-Pokemon/static/css/main.163c26e9.css",
+    "main.js": "/Portal-Pokemon/static/js/main.4abf8510.js",
     "static/js/787.bd30492c.chunk.js": "/Portal-Pokemon/static/js/787.bd30492c.chunk.js",
     "static/media/gym.png": "/Portal-Pokemon/static/media/gym.5ad4dc019d57c4c36632.png",
     "static/media/calculator.png": "/Portal-Pokemon/static/media/calculator.268111bc8b5de22c456b.png",
@@ -10,17 +10,18 @@
     "static/media/Inter-roman.var.woff2?v=3.19": "/Portal-Pokemon/static/media/Inter-roman.var.ba4caefcdf5b36b438db.woff2",
     "static/media/moveset_background.jpg": "/Portal-Pokemon/static/media/moveset_background.143efd5d44b281424e6d.jpg",
     "static/media/background.jpg": "/Portal-Pokemon/static/media/background.01b8d36634d61dedbd28.jpg",
+    "static/media/pokeball.png": "/Portal-Pokemon/static/media/pokeball.b1c83c6d6699a190719e.png",
     "static/media/unknown_pokemon.png": "/Portal-Pokemon/static/media/unknown_pokemon.e3d98628396cf224a500.png",
     "static/media/pokedex.webp": "/Portal-Pokemon/static/media/pokedex.492367d043e723e92388.webp",
     "static/media/coming_soon.webp": "/Portal-Pokemon/static/media/coming_soon.160b0f7056306a03f270.webp",
     "static/media/unresolved_pokemon.png": "/Portal-Pokemon/static/media/unresolved_pokemon.f679d133b9774d54dbdd.png",
     "index.html": "/Portal-Pokemon/index.html",
-    "main.785dd420.css.map": "/Portal-Pokemon/static/css/main.785dd420.css.map",
-    "main.dff0d0ef.js.map": "/Portal-Pokemon/static/js/main.dff0d0ef.js.map",
+    "main.163c26e9.css.map": "/Portal-Pokemon/static/css/main.163c26e9.css.map",
+    "main.4abf8510.js.map": "/Portal-Pokemon/static/js/main.4abf8510.js.map",
     "787.bd30492c.chunk.js.map": "/Portal-Pokemon/static/js/787.bd30492c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.785dd420.css",
-    "static/js/main.dff0d0ef.js"
+    "static/css/main.163c26e9.css",
+    "static/js/main.4abf8510.js"
   ]
 }
