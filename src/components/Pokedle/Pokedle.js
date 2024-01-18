@@ -43,8 +43,8 @@ const Pokedle = () => {
 
     const startNewGame = async() => {
         
-        // const newPokemon = await getPokemon(generateRandomPokemonNumber(currentGenerations));
-        const newPokemon = await(getPokemon(25))
+        const newPokemon = await getPokemon(generateRandomPokemonNumber(currentGenerations));
+        // const newPokemon = await(getPokemon(25))
         setOriginalPokemon(newPokemon);
     }
 
@@ -193,20 +193,20 @@ const Pokedle = () => {
             <div className='flex justify-center items-center gap-4 py-20'>
                 <span>Elige un Pokemon:</span>
                 <PokemonSearch onInputChange={handleInputChange}/>
-              <button id='guess-button' className='bg-indigo-500 enabled:hover:bg-indigo-600 enabled:active:bg-indigo-800 enabled:active:scale-95 transition duration-150 rounded-lg py-4 px-8 text-white font-bold disabled:opacity-40' onClick={() => comparePokemon(originalPokemon)} disabled={guessButtonDisabled}>ADIVINAR</button>
+              <button id='guess-button' className='bg-blue-500 enabled:hover:bg-blue-600 enabled:active:bg-blue-800 enabled:active:scale-95 transition duration-150 rounded-lg py-4 px-8 text-white font-bold disabled:opacity-40' onClick={() => comparePokemon(originalPokemon)} disabled={guessButtonDisabled}>ADIVINAR</button>
               <button
-              className={`bg-indigo-500 enabled:active:bg-indigo-800 enabled:active:scale-95 transition duration-150 enabled:hover:bg-indigo-600 disabled:opacity-40 rounded-lg py-4 px-8 text-white font-bold`} 
+              className={`bg-blue-500 enabled:active:bg-blue-800 enabled:active:scale-95 transition duration-150 enabled:hover:bg-blue-600 disabled:opacity-40 rounded-lg py-4 px-8 text-white font-bold`} 
               onClick={() => resetGame()}
               disabled={comparisons.length===0}>
                 REINICIAR
                 </button>
             </div>
 
-            <div className='flex flex-col gap-5'>
+            {comparisons.length!==0 && <div className='flex flex-col gap-5'>
                 <div className='flex justify-center w-full gap-8'>
                   {attributes.map((attribute, index) => (
-                    <div key={index} className='bg-indigo-700 rounded-lg py-2 px-4 w-1/12 cursor-default'>
-                      <p className='font-bold text-indigo-100'>{attribute}</p>
+                    <div key={index} className='bg-blue-700 rounded-lg py-2 px-4 w-1/12 cursor-default'>
+                      <p className='font-bold text-white'>{attribute}</p>
                     </div>
                   ))}
 
@@ -223,9 +223,9 @@ const Pokedle = () => {
                     ))}
                 </div>
                 ))}
-            </div>
+            </div>}
             <div className='fixed -right-6 bottom-0'>
-                <Generations getGenerations={getGenerations} resetGame={resetGame}/>
+                <Generations getGenerations={getGenerations} resetGame={reloadGame}/>
             </div>
             <ToastContainer/>
         </div>

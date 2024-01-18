@@ -65,16 +65,6 @@ const PokeGym = () => {
                       lockInPokemon(currentTeam[Number(key) - 1]);
                   }
                   break;
-              
-              case ' ':
-                    if(!shouldDisable){
-                        updatePokemonTeam()
-                    } else{
-                        toast.warn(`${rollButtonText}`, {
-                            position: "bottom-right",
-                        });
-                    }
-                    break;
                 case 'r':
                     if(rollButtonText!=="Iniciar Juego"){
                         resetGame(true)
@@ -121,13 +111,6 @@ const PokeGym = () => {
           gymButton.textContent = "Espera";
         }, 1);
       
-        setTimeout(() => {
-          if (rerollsLeft > 1) {
-            gymButton.disabled = false;
-          }
-          setRollButtonText(tempText);
-        }, 750);
-      
         setCurrentTeam([]);
         setRerollsLeft((prev) => prev - 1);
       
@@ -149,6 +132,8 @@ const PokeGym = () => {
             loadedImages++;
             if (loadedImages === imagesToLoad) {
               setIsLoading(false);
+              gymButton.disabled = false;
+              setRollButtonText(tempText);
             }
           };
         }
