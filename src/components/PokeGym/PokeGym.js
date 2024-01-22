@@ -268,7 +268,7 @@ const PokeGym = () => {
             text: `Tu equipo fue: ${chosenTeam.map(pokemon => `${pokemon.name} ~${(pokemon.power/power*100).toFixed(0)}%`).join(' | ')}`,
             icon: 'success',
             showCancelButton: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: 'rgb(99 102 241)',
             confirmButtonText: 'Volver a empezar',
             width: '70vw',
           });
@@ -283,8 +283,8 @@ const PokeGym = () => {
                 text: 'Esto borrará todos los pokemon elegidos y ofrecidos',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: 'rgb(99 102 241)',
+                cancelButtonColor: 'rgb(239 68 68)',
                 cancelButtonText: 'Cancelar',
                 confirmButtonText: 'Reiniciar'
               });
@@ -310,8 +310,8 @@ const PokeGym = () => {
             text: 'En el modo difícil no se puede ver el poder de los Pokemon. Si comenzaste una partida, se reiniciará.',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: 'rgb(99 102 241)',
+            cancelButtonColor: 'rgb(239 68 68)',
             cancelButtonText: 'Cancelar',
             confirmButtonText: `${hardmode ? 'Cambiar a normal' : 'Cambiar a difícil'}`
           });
@@ -331,8 +331,8 @@ const PokeGym = () => {
             text: 'El factor suerte varía al azar entre -3% y +5%. Si comenzaste una partida, se reiniciará.',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: 'rgb(99 102 241)',
+            cancelButtonColor: 'rgb(239 68 68)',
             cancelButtonText: 'Cancelar',
             confirmButtonText: `${luckActive ? 'Desactivar' : 'Activar'}`
           });
@@ -395,8 +395,8 @@ const PokeGym = () => {
                 <div className="w-1/6 h-4/6 flex justify-end items-end px-3">
                     {showSettings &&
                     <div className="fixed right-2 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
-                        <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl">
-                            <Generations getGenerations={getGenerations} resetGame={resetGame}/>
+                        <div className="w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl">
+                            <Generations getGenerations={getGenerations} resetGame={resetGame} padding={3}/>
                         </div>
 
                         <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500" onClick={handleHardMode}>Modo difícil: {hardmode ? 'ON' : 'OFF'}</div>

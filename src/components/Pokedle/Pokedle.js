@@ -139,6 +139,8 @@ const Pokedle = () => {
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Confirmar',
+        confirmButtonColor: 'rgb(99 102 241)',
+        cancelButtonColor: 'rgb(239 68 68)',
       })
       if(response.isConfirmed){
         await MySwal.fire({
@@ -188,6 +190,8 @@ const Pokedle = () => {
   //     };
   // }, [originalPokemon]);
 
+
+
     return(
         <div className="bg-zinc-200 min-h-screen pb-4">
             <div className='flex justify-center items-center gap-4 py-20'>
@@ -224,8 +228,8 @@ const Pokedle = () => {
                 </div>
                 ))}
             </div>}
-            <div className='fixed -right-6 bottom-0'>
-                <Generations getGenerations={getGenerations} resetGame={reloadGame}/>
+            <div className='bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400 rounded m-4 fixed right-0 bottom-0 text-bold text-white'>
+                <Generations getGenerations={getGenerations} resetGame={reloadGame} padding={4}/>
             </div>
             <ToastContainer/>
         </div>

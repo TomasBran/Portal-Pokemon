@@ -20,8 +20,8 @@ const MoveSet = () => {
     const [guessedPokemons, setGuessedPokemons] = useState([])
 
     const startNewGame = async () => {
-        const newPokemon = await getPokemonMovements(generateRandomPokemonNumber(currentGenerations));
-        // const newPokemon = await getPokemonMovements("eevee")
+        // const newPokemon = await getPokemonMovements(generateRandomPokemonNumber(currentGenerations));
+        const newPokemon = await getPokemonMovements("eevee")
         setOriginalPokemonMovements(newPokemon)
     }
 
@@ -85,34 +85,32 @@ const MoveSet = () => {
     useEffect(() => {
         startNewGame()
     }, []);
-
+ 
     return(
-        <div className="moveset-main-container flex flex-col">
-            WORK IN PROGRESS
-            <div className='moveset-game-container'>
+        <div className="h-screen bg-gray-200 w-full flex flex-col items-center justify-center">
+            <div className='w-full h-9/12 flex justify-around items-center'>
 
-                <div className='moveset-left-container'>
-                    <div className='pokemon-image-container'>
-                        <img alt="" src={unknown_pokemon}></img>
+                <div className='w-3/12 h-full flex flex-col justify-center items-center gap-4'>
+                    <div className='w-4/6'>
+                        <img alt="" src={unknown_pokemon}/>
                     </div>
 
-                    <div className='search-container'>
-                        <PokemonSearch onInputChange={handleInputChange}/>
-                        <button onClick={() => guess(inputValue)} className='moveset-guess-button'>ADIVINAR ({5-movesShown} pistas)</button>           
-                    </div>
-                    <div className='restart-button-container'>
-                        <button onClick={() => resetGame(true)} className='restart-button'>RESET GAME</button> 
+                    <PokemonSearch onInputChange={handleInputChange}/>
+
+                    <div className='flex justify-center gap-4 text-white font-medium'>
+                        <div onClick={() => guess(inputValue)} className='rounded-lg bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-300 cursor-pointer w-6/12 py-1 px-2 flex items-center justify-center'>ADIVINAR ({5-movesShown} pistas)</div>
+                        <div className='bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-300 cursor-pointer w-6/12 py-2 px-4 rounded-lg flex items-center justify-center' onClick={() => resetGame(true)}>RESET GAME</div>
                     </div>
                 </div>
 
 
 
-                <div className='moveset-guessed-pokemons'>
-                    <span className='guessed-title'>Intentos ({guessedPokemons.length}):</span>
-                    <div className='guessed-pokemon-list'>
+                <div className='w-3/12 h-[50vh] bg-gray-300 text-white rounded-2xl border-2 border-gray-900 flex flex-col items-center overflow-y-auto'>
+                    <div className='text-gray-800 font-bold border-b-2 border-black w-1/6 h-2/12 fixed bg-gray-300 flex justify-center pt-2 items-center'>Intentos ({guessedPokemons.length}):</div>
+                    <div className='flex flex-col-reverse items-center gap-1 mt-8'>
                         {guessedPokemons.map((pokemon, index) => (
                             <div key={index}>
-                                <span className='guessed-pokemon'>{pokemon}</span>
+                                <span className='flex justify-center bg-gradient-to-r from-transparent via-blue-500 to-transparent px-8'>{pokemon}</span>
                             </div>
                         ))}
 
@@ -120,25 +118,27 @@ const MoveSet = () => {
                 </div>
 
 
-                <div className='moveset-container'>
-                    <div>
-                        <span>Generación: {getPokemonsGeneration(originalPokemonMovements[6])}</span>
+                <div className='w-3/12 h-full flex flex-col flex-wrap items-center justify-center gap-10'>
+                    <div className='bg-stone-500 rounded px-10 py-3 text-white font-medium'>Generación: {getPokemonsGeneration(originalPokemonMovements[6])} </div>
+                    <div className='flex flex-wrap w-full justify-center items-center gap-3'>
+
+                        {originalPokemonMovements.slice(0, 4).map((movement, index) => (
+                            <div
+                                key={index}
+                                className={`p-4 rounded-xl capitalize text-white font-medium flex justify-center items-center h-3/6 w-5/12 ${
+                                movesShown >= index + 1 ? 'bg-blue-500' : 'bg-red-500'
+                                }`}
+                            >
+                                <span>
+                                {`Movimiento ${index + 1}:`}
+                                <br />
+                                {movesShown >= index + 1 ? movement : '???'}
+                                </span>
+                            </div>
+                        ))}
+
                     </div>
-                    <div className='movements'>
-                        <div className={`moveset-item movement ${movesShown>=1 ? "shown-moveset" : "hidden-moveset"}`}>
-                            <span>{`Movimiento 1`}<br />{movesShown>=1 ? originalPokemonMovements[0] : "???"}</span>
-                        </div>
-                        <div className={`moveset-item movement ${movesShown>=2 ? "shown-moveset" : "hidden-moveset"}`}>
-                            <span>{`Movimiento 2:`}<br />{movesShown >= 2 ? originalPokemonMovements[1] : "???"}</span>
-                        </div>
-                        <div className={`moveset-item movement ${movesShown>=3 ? "shown-moveset" : "hidden-moveset"}`}>
-                            <span>{`Movimiento 3:`}<br />{movesShown>=3 ? originalPokemonMovements[2] : "???"}</span>
-                        </div>
-                        <div className={`moveset-item movement ${movesShown>=4 ? "shown-moveset" : "hidden-moveset"}`}>
-                            <span>{`Movimiento 4:`}<br />{movesShown>=4 ? originalPokemonMovements[3] : "???"}</span>
-                        </div>
-                    </div>
-                    <div className={`moveset-item ability ${movesShown>=5 ? "shown-moveset" : "hidden-moveset"}`}>{`Habilidad: ${movesShown>=5 ? originalPokemonMovements[4] : "???"}`}</div>
+                    <div className={`p-4 rounded-xl capitalize text-white font-medium flex justify-center items-center w-full ${movesShown>=5 ? "bg-blue-500" : "bg-red-500"}`}>{`Habilidad: ${movesShown>=5 ? originalPokemonMovements[4] : "???"}`}</div>
                 </div>
 
             </div>
