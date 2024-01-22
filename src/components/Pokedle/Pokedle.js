@@ -189,7 +189,7 @@ const Pokedle = () => {
   // }, [originalPokemon]);
 
     return(
-        <div className="bg-zinc-200 min-h-screen">
+        <div className="bg-zinc-200 min-h-screen pb-4">
             <div className='flex justify-center items-center gap-4 py-20'>
                 <span>Elige un Pokemon:</span>
                 <PokemonSearch onInputChange={handleInputChange}/>
@@ -205,8 +205,8 @@ const Pokedle = () => {
             {comparisons.length!==0 && <div className='flex flex-col gap-5'>
                 <div className='flex justify-center w-full gap-8'>
                   {attributes.map((attribute, index) => (
-                    <div key={index} className='bg-blue-700 rounded-lg py-2 px-4 w-1/12 cursor-default'>
-                      <p className='font-bold text-white'>{attribute}</p>
+                    <div key={index} className='bg-blue-700 rounded-lg py-2 px-4 w-1/12 cursor-default flex items-center justify-center'>
+                      <p className='font-bold text-white text-sm'>{attribute}</p>
                     </div>
                   ))}
 

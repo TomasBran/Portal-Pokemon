@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { BsStarFill, BsStarHalf, BsStar } from 'react-icons/bs';
-import { IoSettingsSharp } from "react-icons/io5";
+import settings from '../../assets/settings.png'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TeamContainer from "../TeamContainer/TeamContainer";
@@ -28,6 +28,8 @@ const PokeGym = () => {
     const [chosenTeam, setChosenTeam] = useState([])
     const [rerollsLeft, setRerollsLeft] = useState(testing ? 100 : 4)
     const [rollButtonText, setRollButtonText] = useState(`Generar ${6-chosenTeam.length} pokemon (3 REROLLS)`)
+    const [showSettings, setShowSettings] = useState(false)
+    const [hardmode, setHardmode] = useState(false)
     
     const [shouldDisable, setShouldDisable] = useState(false)
 
@@ -281,6 +283,7 @@ const PokeGym = () => {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
                 confirmButtonText: 'Reiniciar'
               });
               
@@ -296,6 +299,30 @@ const PokeGym = () => {
         } 
 
 
+    }
+
+    const handleHardMode = async () => {
+
+        let result = await MySwal.fire({
+            title: '¿Querés cambiar la dificultad?',
+            text: 'En el modo difícil no se puede ver el poder de los Pokemon. Si comenzaste una partida, se reiniciará.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: `${hardmode ? 'Cambiar a normal' : 'Cambiar a difícil'}`
+          });
+
+          if(result){
+            setHardmode(prev => !prev)
+            resetGame(false)
+          }
+
+    }
+
+    const handleShowSettings = () => {
+        setShowSettings(prev => !prev)
     }
     
 
@@ -323,7 +350,7 @@ const PokeGym = () => {
                                 <img alt="" src={pokemon.img} className=" h-3/4"/>
 
 
-                                {handleStars(pokemon.power)}
+                                {!hardmode && handleStars(pokemon.power)}
                             </div>
                     )})
 
@@ -342,14 +369,26 @@ const PokeGym = () => {
                     <button className="bg-gray-700 text-white my-6 p-4 w-3/12 h-24 font-bold transition-all ease-in-out duration-150 rounded-md enabled:hover:shadow-lg enabled:hover:bg-gray-500 enabled:active:bg-gray-400 enabled:active:scale-95  disabled:opacity-30" disabled={chosenTeam.length!==6} onClick={fightGymLeaders}><span className="text-red-500">P</span>ELEAR {chosenTeam.length!==6 ? `(Necesitas 6 Pokemon)` : ""}</button>
                     <button className="bg-gray-700 text-white my-6 p-4 w-3/12 h-24 font-bold transition-all ease-in-out duration-150 rounded-md enabled:hover:shadow-lg enabled:hover:bg-gray-500 enabled:active:bg-gray-400 enabled:active:scale-95  disabled:opacity-30" disabled={rollButtonText==="Iniciar Juego"} onClick={() => resetGame(true)}><span className="text-red-500">R</span>EINICIAR JUEGO</button>
                 </div>
-                <div className="w-1/6">
-                    <Generations getGenerations={getGenerations} resetGame={resetGame}/>
+                <div className="w-1/6 h-4/6 flex justify-end items-end px-3">
+                    {showSettings &&
+                    <div className="fixed right-2 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
+                        <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl">
+                            <Generations getGenerations={getGenerations} resetGame={resetGame}/>
+
+                        </div>
+                        <div className="w-full">
+                            <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500" onClick={handleHardMode}>Modo difícil: {hardmode ? 'ON' : 'OFF'}</div>
+                        </div>
+                        <div className="w-full">
+                            <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl" onClick={() => setShowSettings(false)}>Cerrar</div>
+                        </div>
+                    </div>
+                        }
 
 
-                    {/* <div className="w-20">
-                        <IoSettingsSharp />
-
-                    </div> */}
+                    <div className="w-10 cursor-pointer bg-gray-700 rounded-lg p-2 hover:bg-gray-600 active:scale-95 active:hover:bg-gray-500 transition-all ease-in-out duration-150" onClick={handleShowSettings}>
+                        <img src={settings} alt='settings'/>
+                    </div>
                 </div>
                 
             </div>

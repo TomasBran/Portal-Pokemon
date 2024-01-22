@@ -1,12 +1,4 @@
-.generation-selector-container {
-    position: fixed;
-    right: 2vw;
-    bottom: 2vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
- }
- 
+/*  
  .generation-selector {
     padding: 8px 16px;
     border-radius: 10px;
@@ -110,4 +102,4 @@
         display: none;
     }
  }
- 
+  */

@@ -11,7 +11,8 @@ const Generations = ({getGenerations, resetGame}) => {
     
     
     const MySwal = withReactContent(Swal);
-    const generationsContainer = document.getElementsByClassName("generation-container")[0]
+    const [showGenerationsContainer, setShowGenerationsContainer] = useState(false)
+
         
     
     
@@ -36,25 +37,6 @@ const Generations = ({getGenerations, resetGame}) => {
     }
 
     useEffect(() => {
-        const handleKeyPress = (event) => {
-          const key = event.key;
-          if(key==='g' && event.target.tagName !== "INPUT"){
-            if(!generationsContainer.classList.contains("invisible")){
-                resetGame()
-            }
-            toggleGenerationPanel()
-          }
-          
-        };
-    
-        document.addEventListener('keydown', handleKeyPress);
-    
-        return () => {
-          document.removeEventListener('keydown', handleKeyPress);
-        };
-    }, [generationsContainer]);
-
-    useEffect(() => {
         getGenerations(currentGenerations);
     }, [currentGenerations]);
 
@@ -62,8 +44,8 @@ const Generations = ({getGenerations, resetGame}) => {
     const toggleGenerationPanel = async () => {
 
 
-        if (!generationsContainer.classList.contains("invisible")) {
-            generationsContainer.classList.toggle("invisible");
+        if (showGenerationsContainer) {
+            setShowGenerationsContainer(prev => !prev);
             resetGame(false)
             return;
           }
@@ -79,27 +61,27 @@ const Generations = ({getGenerations, resetGame}) => {
           });
 
           if(result.isConfirmed){
-              generationsContainer.classList.toggle("invisible")
-              resetGame(false)
+            setShowGenerationsContainer(prev => !prev);
+            resetGame(false)
           }
 
-    }
+    } 
 
     return(
         <div>
-            <div className="generation-selector-button-container m-2 w-9/12">
-                <button className="w-full bg-gray-200 rounded-lg border-solid border-gray-400 border-2" onClick={toggleGenerationPanel}>Cambiar <span className="text-red-500">G</span>eneración</button>
+            <div className="w-full">
+                <button className="w-full" onClick={toggleGenerationPanel}>Cambiar Generación</button>
             </div>
 
-            <div className="generation-container invisible">
-                <div  className="generation-selector-panel">
+            <div className={`p-4 w-[36vw] fixed right-2 bottom-2 bg-white rounded-lg border-2 border-gray-600 flex flex-col gap-6 items-center ${!showGenerationsContainer && 'hidden'}`}>
+                <div  className="flex flex-wrap gap-6 justify-center">
                     {currentGenerations.map((element, index) => (
-                        <div key={index} className={`generation-panel ${element===true ? "enabled-panel" : "disabled-panel"}`} onClick={() => toggleGeneration(index)}><span>{index+1}° Gen<span className="shorten-text">eración</span></span></div>
+                        <div key={index} className={`w-3/12 py-2 rounded-lg cursor-pointer ${element===true ? "bg-green-400 hover:bg-green-500 active:bg-green-600" : "bg-red-400 hover:bg-red-500 active:bg-red-600"}`} onClick={() => toggleGeneration(index)}><span>{index+1}° Generación</span></div>
                     ))}
 
                 </div>
 
-                <button className="generation-selector-panel-button" onClick={() => {toggleGenerationPanel(); resetGame(false)}}>Listo</button>
+                <button className="py-3 rounded-lg bg-gray-300 w-2/6 hover:bg-gray-400 active:bg-gray-500" onClick={() => {toggleGenerationPanel(); resetGame(false)}}>Listo</button>
 
             </div>
 
