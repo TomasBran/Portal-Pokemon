@@ -52,7 +52,7 @@ const Generations = ({getGenerations, resetGame}) => {
 
         let result = await MySwal.fire({
             title: '¿Querés cambiar las generaciones disponibles?',
-            text: 'Esto reiniciará tu partida',
+            text: 'Si comenzaste una partida, se reiniciará.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -73,7 +73,7 @@ const Generations = ({getGenerations, resetGame}) => {
                 <button className="w-full" onClick={toggleGenerationPanel}>Cambiar Generación</button>
             </div>
 
-            <div className={`p-4 w-[36vw] fixed right-2 bottom-2 bg-white rounded-lg border-2 border-gray-600 flex flex-col gap-6 items-center ${!showGenerationsContainer && 'hidden'}`}>
+            <div className={`p-4 w-[36vw] fixed right-2 bottom-2 bg-white rounded-lg border-2 border-gray-600 flex flex-col gap-6 items-center hover:text-white ${!showGenerationsContainer && 'hidden'}`}>
                 <div  className="flex flex-wrap gap-6 justify-center">
                     {currentGenerations.map((element, index) => (
                         <div key={index} className={`w-3/12 py-2 rounded-lg cursor-pointer ${element===true ? "bg-green-400 hover:bg-green-500 active:bg-green-600" : "bg-red-400 hover:bg-red-500 active:bg-red-600"}`} onClick={() => toggleGeneration(index)}><span>{index+1}° Generación</span></div>

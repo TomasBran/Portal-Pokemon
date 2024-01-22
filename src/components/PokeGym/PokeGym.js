@@ -30,6 +30,7 @@ const PokeGym = () => {
     const [rollButtonText, setRollButtonText] = useState(`Generar ${6-chosenTeam.length} pokemon (3 REROLLS)`)
     const [showSettings, setShowSettings] = useState(false)
     const [hardmode, setHardmode] = useState(false)
+    const [luckActive, setLuckActive] = useState(true)
     
     const [shouldDisable, setShouldDisable] = useState(false)
 
@@ -134,7 +135,7 @@ const PokeGym = () => {
             loadedImages++;
             if (loadedImages === imagesToLoad) {
               setIsLoading(false);
-              gymButton.disabled = false;
+              setShouldDisable(true)
               setRollButtonText(tempText);
             }
           };
@@ -146,7 +147,7 @@ const PokeGym = () => {
     
     useEffect(() => {
         handleButtonText();
-    }, [chosenTeam, updatePokemonTeam]);
+    }, [chosenTeam, updatePokemonTeam, setShouldDisable]);
 
     
   
@@ -222,8 +223,9 @@ const PokeGym = () => {
         });
         const minLuckValue = 97 // 0.97
         const maxLuckValue = 105 // 1.05
-        const randomEnhancer = getRandomArbitrary(minLuckValue/100, maxLuckValue/100)
+        const randomEnhancer = luckActive ? getRandomArbitrary(minLuckValue/100, maxLuckValue/100) : 1
         const bonusLuck = (randomEnhancer*100).toFixed(0)-100
+        
         power*=randomEnhancer
 
 
@@ -259,11 +261,11 @@ const PokeGym = () => {
 
         finalText+=
         `${beatenGyms!==8 && beatenGyms!==0 ? `\n- Progreso hacia la ${beatenGyms+1}° medalla: <span style="color: blue;">~${excessPower.toFixed(0)}%</span>.` : ""}
-        - Bonus Suerte: <span style="color: ${bonusLuck===0 ? "blue" : bonusLuck>=0 ? "green" : "red"};">${bonusLuck}%</span>`
+        ${luckActive ? `- Bonus Suerte: <span style="color: ${bonusLuck === 0 ? "blue" : bonusLuck >= 0 ? "green" : "red"};">${bonusLuck}%</span>` : ""}`
 
         await MySwal.fire({
             title: finalText,
-            text: `Tu equipo fue: ${chosenTeam.map(pokemon => pokemon.name).join(' | ')}`,
+            text: `Tu equipo fue: ${chosenTeam.map(pokemon => `${pokemon.name} ~${(pokemon.power/power*100).toFixed(0)}%`).join(' | ')}`,
             icon: 'success',
             showCancelButton: false,
             confirmButtonColor: '#3085d6',
@@ -314,8 +316,29 @@ const PokeGym = () => {
             confirmButtonText: `${hardmode ? 'Cambiar a normal' : 'Cambiar a difícil'}`
           });
 
-          if(result){
+          if(result.isConfirmed){
             setHardmode(prev => !prev)
+            resetGame(false)
+          }
+
+    }
+
+
+    const handleLuckActive = async () => {
+
+        let result = await MySwal.fire({
+            title: `¿Querés ${luckActive ? 'desactivar' : 'activar'} la suerte?`,
+            text: 'El factor suerte varía al azar entre -3% y +5%. Si comenzaste una partida, se reiniciará.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: `${luckActive ? 'Desactivar' : 'Activar'}`
+          });
+
+          if(result.isConfirmed){
+            setLuckActive(prev => !prev)
             resetGame(false)
           }
 
@@ -374,14 +397,13 @@ const PokeGym = () => {
                     <div className="fixed right-2 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
                         <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl">
                             <Generations getGenerations={getGenerations} resetGame={resetGame}/>
+                        </div>
 
-                        </div>
-                        <div className="w-full">
-                            <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500" onClick={handleHardMode}>Modo difícil: {hardmode ? 'ON' : 'OFF'}</div>
-                        </div>
-                        <div className="w-full">
-                            <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl" onClick={() => setShowSettings(false)}>Cerrar</div>
-                        </div>
+                        <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500" onClick={handleHardMode}>Modo difícil: {hardmode ? 'ON' : 'OFF'}</div>
+
+                        <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500" onClick={handleLuckActive}>Suerte: {luckActive ? 'ON' : 'OFF'}</div>
+
+                        <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl" onClick={() => setShowSettings(false)}>Cerrar</div>
                     </div>
                         }
 
