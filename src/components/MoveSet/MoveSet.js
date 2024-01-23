@@ -20,8 +20,8 @@ const MoveSet = () => {
     const [guessedPokemons, setGuessedPokemons] = useState([])
 
     const startNewGame = async () => {
-        // const newPokemon = await getPokemonMovements(generateRandomPokemonNumber(currentGenerations));
-        const newPokemon = await getPokemonMovements("eevee")
+        const newPokemon = await getPokemonMovements(generateRandomPokemonNumber(currentGenerations));
+        // const newPokemon = await getPokemonMovements("eevee")
         setOriginalPokemonMovements(newPokemon)
     }
 
