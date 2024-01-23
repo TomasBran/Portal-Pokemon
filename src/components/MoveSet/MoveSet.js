@@ -9,6 +9,7 @@ import withReactContent from 'sweetalert2-react-content';
 import Generations from '../Generations/Generations';
 import { getPokemonsGeneration, pokemonExists } from '../../services/pokemon';
 import { ToastContainer } from 'react-toastify';
+import settings from '../../assets/settings.png'
 
 const MoveSet = () => {
 
@@ -18,6 +19,7 @@ const MoveSet = () => {
     const [movesShown, setMovesShown] = useState(0)
     const [inputValue, setInputValue] = useState('')
     const [guessedPokemons, setGuessedPokemons] = useState([])
+    const [showSettings, setShowSettings] = useState(false)
 
     const startNewGame = async () => {
         const newPokemon = await getPokemonMovements(generateRandomPokemonNumber(currentGenerations));
@@ -85,6 +87,11 @@ const MoveSet = () => {
     useEffect(() => {
         startNewGame()
     }, []);
+
+    
+    const handleShowSettings = () => {
+        setShowSettings(prev => !prev)
+    }
  
     return(
         <div className="h-screen bg-gray-200 w-full flex flex-col items-center justify-center">
@@ -143,8 +150,25 @@ const MoveSet = () => {
 
             </div>
 
+            <div className="fixed right-0 bottom-0 m-4">
+                    {showSettings &&
+                        <div className="fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
+                            <div className="w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl">
+                                <Generations getGenerations={getGenerations} resetGame={resetGame} padding={4}/>
+                            </div>
+
+                            <div className="w-full py-4 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl" onClick={() => setShowSettings(false)}>Cerrar</div>
+                        </div>
+                        }
+
+
+                <div className="w-10 cursor-pointer bg-gray-700 rounded-lg p-2 hover:bg-gray-600 active:scale-95 active:hover:bg-gray-500 transition-all ease-in-out duration-150" onClick={handleShowSettings}>
+                    <img src={settings} alt='settings'/>
+                </div>
+            </div>
+
+            
             <ToastContainer/>
-            <Generations getGenerations={getGenerations} resetGame={resetGame}/>
         </div>
     )
 }

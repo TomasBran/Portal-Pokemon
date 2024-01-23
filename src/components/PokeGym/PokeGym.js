@@ -36,6 +36,8 @@ const PokeGym = () => {
 
     
 
+    
+
     const lockInPokemon = useCallback((pokemon) => {
         if (pokemon.hasBeenChosen === true) {
           
@@ -392,18 +394,18 @@ const PokeGym = () => {
                     <button className="bg-gray-700 text-white my-6 p-4 w-3/12 h-24 font-bold transition-all ease-in-out duration-150 rounded-md enabled:hover:shadow-lg enabled:hover:bg-gray-500 enabled:active:bg-gray-400 enabled:active:scale-95  disabled:opacity-30" disabled={chosenTeam.length!==6} onClick={fightGymLeaders}><span className="text-red-500">P</span>ELEAR {chosenTeam.length!==6 ? `(Necesitas 6 Pokemon)` : ""}</button>
                     <button className="bg-gray-700 text-white my-6 p-4 w-3/12 h-24 font-bold transition-all ease-in-out duration-150 rounded-md enabled:hover:shadow-lg enabled:hover:bg-gray-500 enabled:active:bg-gray-400 enabled:active:scale-95  disabled:opacity-30" disabled={rollButtonText==="Iniciar Juego"} onClick={() => resetGame(true)}><span className="text-red-500">R</span>EINICIAR JUEGO</button>
                 </div>
-                <div className="w-1/6 h-4/6 flex justify-end items-end px-3">
+                <div className="fixed right-0 bottom-0 m-4">
                     {showSettings &&
-                    <div className="fixed right-2 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
+                    <div className="fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
                         <div className="w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl">
-                            <Generations getGenerations={getGenerations} resetGame={resetGame} padding={3}/>
+                            <Generations getGenerations={getGenerations} resetGame={resetGame} padding={2}/>
                         </div>
 
-                        <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500" onClick={handleHardMode}>Modo difícil: {hardmode ? 'ON' : 'OFF'}</div>
+                        <div className="w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500" onClick={handleHardMode}>Modo difícil: {hardmode ? 'ON' : 'OFF'}</div>
 
-                        <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500" onClick={handleLuckActive}>Suerte: {luckActive ? 'ON' : 'OFF'}</div>
+                        <div className="w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500" onClick={handleLuckActive}>Suerte: {luckActive ? 'ON' : 'OFF'}</div>
 
-                        <div className="w-full py-3 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl" onClick={() => setShowSettings(false)}>Cerrar</div>
+                        <div className="w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl" onClick={() => setShowSettings(false)}>Cerrar</div>
                     </div>
                         }
 

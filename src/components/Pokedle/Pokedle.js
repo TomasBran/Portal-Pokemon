@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Generations from '../Generations/Generations';
 import { ToastContainer } from 'react-toastify';
+import settings from '../../assets/settings.png'
 
 
 const attributes = [
@@ -31,6 +32,7 @@ const Pokedle = () => {
     const [inputValue, setInputValue] = useState('')
     const [originalPokemon, setOriginalPokemon] = useState({})
     const [currentGenerations, setCurrentGenerations] = useState([true,true,true,true,true,true,true,true])
+    const [showSettings, setShowSettings] = useState(false)
     
     const [guessButtonDisabled, setGuessButtonDisabled] = useState(false)
 
@@ -173,24 +175,9 @@ const Pokedle = () => {
       }
     }
 
-
-  //   useEffect(() => {
-  //     const handleKeyPress = (event) => {
-  //       const key = event.key;
-
-  //       if(key==='r' && event.target.tagName !== "INPUT"){
-  //         resetGame()
-  //       }
-  //     };
-  
-  //     document.addEventListener('keydown', handleKeyPress);
-  
-  //     return () => {
-  //       document.removeEventListener('keydown', handleKeyPress);
-  //     };
-  // }, [originalPokemon]);
-
-
+    const handleShowSettings = () => {
+      setShowSettings(prev => !prev)
+    }
 
     return(
         <div className="bg-zinc-200 min-h-screen pb-4">
@@ -228,9 +215,25 @@ const Pokedle = () => {
                 </div>
                 ))}
             </div>}
-            <div className='bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400 rounded m-4 fixed right-0 bottom-0 text-bold text-white'>
-                <Generations getGenerations={getGenerations} resetGame={reloadGame} padding={4}/>
+            <div className="fixed right-0 bottom-0 m-4">
+                    {showSettings &&
+                        <div className="fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
+                            <div className="w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl">
+                                <Generations getGenerations={getGenerations} resetGame={resetGame} padding={4}/>
+                            </div>
+
+                            <div className="w-full py-4 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl" onClick={() => setShowSettings(false)}>Cerrar</div>
+                        </div>
+                        }
+
+
+                <div className="w-10 cursor-pointer bg-gray-700 rounded-lg p-2 hover:bg-gray-600 active:scale-95 active:hover:bg-gray-500 transition-all ease-in-out duration-150" onClick={handleShowSettings}>
+                    <img src={settings} alt='settings'/>
+                </div>
             </div>
+            {/* <div className='bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400 rounded m-4 fixed right-0 bottom-0 text-bold text-white'>
+                <Generations getGenerations={getGenerations} resetGame={reloadGame} padding={4}/>
+            </div> */}
             <ToastContainer/>
         </div>
     )
