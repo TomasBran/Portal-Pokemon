@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { BsStarFill, BsStarHalf, BsStar } from 'react-icons/bs';
 import settings from '../../assets/settings.png'
 import { ToastContainer, toast } from 'react-toastify';
@@ -35,7 +35,6 @@ const PokeGym = () => {
     const [shouldDisable, setShouldDisable] = useState(false)
 
     
-
     
 
     const lockInPokemon = useCallback((pokemon) => {

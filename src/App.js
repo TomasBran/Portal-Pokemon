@@ -10,6 +10,7 @@ import Pokedle from './components/Pokedle/Pokedle';
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import MoveSet from './components/MoveSet/MoveSet';
+import TypesChallenge from './components/TypesChallenge/TypesChallenge';
         
 
 
@@ -20,7 +21,6 @@ function App() {
     <div className="App">
 
       <BrowserRouter> 
-
           <PrimeReactProvider>
 
             <Navbar/>
@@ -33,6 +33,7 @@ function App() {
               <Route path="/gym" element={<PokeGym/>}/>
               <Route path="/pokedle" element={<Pokedle/>}/>
               <Route path="/moveset" element={<MoveSet/>}/>
+              {/* <Route path="/types-challenge" element={<TypesChallenge/>}/> */}
               
 
             </Routes>
