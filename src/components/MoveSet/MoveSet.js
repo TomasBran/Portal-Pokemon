@@ -1,7 +1,7 @@
 import './MoveSet.css'
 import unknown_pokemon from '../../assets/unresolved_pokemon.png'
 import { getPokemonMovements } from '../../services/movements'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PokemonSearch from '../PokemonSearch/PokemonSearch';
 import { generateRandomPokemonNumber } from '../../utils/functions';
 import Swal from 'sweetalert2';
@@ -20,6 +20,7 @@ const MoveSet = () => {
     const [inputValue, setInputValue] = useState('')
     const [guessedPokemons, setGuessedPokemons] = useState([])
     const [showSettings, setShowSettings] = useState(false)
+    const settingsRef = useRef(null);
 
     const startNewGame = async () => {
         const newPokemon = await getPokemonMovements(generateRandomPokemonNumber(currentGenerations));
@@ -92,6 +93,25 @@ const MoveSet = () => {
     const handleShowSettings = () => {
         setShowSettings(prev => !prev)
     }
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (
+            showSettings &&
+            settingsRef.current &&
+            !settingsRef.current.contains(event.target) &&
+            !Swal.isVisible()
+          ) {
+            setShowSettings(false);
+          }
+        };
+    
+        document.addEventListener('mousedown', handleClickOutside);
+    
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, [showSettings]);
  
     return(
         <div className="h-screen bg-gray-200 w-full flex flex-col items-center justify-center">
@@ -152,7 +172,7 @@ const MoveSet = () => {
 
             <div className="fixed right-0 bottom-0 m-4">
                     {showSettings &&
-                        <div className="fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
+                        <div ref={settingsRef} className="fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
                             <div className="w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl">
                                 <Generations getGenerations={getGenerations} resetGame={resetGame} padding={4}/>
                             </div>
@@ -161,10 +181,11 @@ const MoveSet = () => {
                         </div>
                         }
 
-
-                <div className="w-10 cursor-pointer bg-gray-700 rounded-lg p-2 hover:bg-gray-600 active:scale-95 active:hover:bg-gray-500 transition-all ease-in-out duration-150" onClick={handleShowSettings}>
-                    <img src={settings} alt='settings'/>
-                </div>
+                {!showSettings &&
+                    <div className="w-10 cursor-pointer bg-gray-700 rounded-lg p-2 hover:bg-gray-600 active:scale-95 active:hover:bg-gray-500 transition-all ease-in-out duration-150" onClick={handleShowSettings}>
+                        <img src={settings} alt='settings'/>
+                    </div>
+                }
             </div>
 
             

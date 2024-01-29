@@ -33,7 +33,7 @@ function App() {
               <Route path="/gym" element={<PokeGym/>}/>
               <Route path="/pokedle" element={<Pokedle/>}/>
               <Route path="/moveset" element={<MoveSet/>}/>
-              {/* <Route path="/types-challenge" element={<TypesChallenge/>}/> */}
+              <Route path="/types-challenge" element={<TypesChallenge/>}/>
               
 
             </Routes>

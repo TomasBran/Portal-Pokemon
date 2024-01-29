@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { BsStarFill, BsStarHalf, BsStar } from 'react-icons/bs';
 import settings from '../../assets/settings.png'
 import { ToastContainer, toast } from 'react-toastify';
@@ -31,6 +31,7 @@ const PokeGym = () => {
     const [showSettings, setShowSettings] = useState(false)
     const [hardmode, setHardmode] = useState(false)
     const [luckActive, setLuckActive] = useState(true)
+    const settingsRef = useRef(null);
     
     const [shouldDisable, setShouldDisable] = useState(false)
 
@@ -348,6 +349,25 @@ const PokeGym = () => {
     const handleShowSettings = () => {
         setShowSettings(prev => !prev)
     }
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (
+            showSettings &&
+            settingsRef.current &&
+            !settingsRef.current.contains(event.target) &&
+            !Swal.isVisible()
+          ) {
+            setShowSettings(false);
+          }
+        };
+    
+        document.addEventListener('mousedown', handleClickOutside);
+    
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, [showSettings]);
     
 
     return(
@@ -395,7 +415,7 @@ const PokeGym = () => {
                 </div>
                 <div className="fixed right-0 bottom-0 m-4">
                     {showSettings &&
-                    <div className="fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
+                    <div ref={settingsRef} className="fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium">
                         <div className="w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl">
                             <Generations getGenerations={getGenerations} resetGame={resetGame} padding={2}/>
                         </div>
@@ -408,10 +428,11 @@ const PokeGym = () => {
                     </div>
                         }
 
-
-                    <div className="w-10 cursor-pointer bg-gray-700 rounded-lg p-2 hover:bg-gray-600 active:scale-95 active:hover:bg-gray-500 transition-all ease-in-out duration-150" onClick={handleShowSettings}>
-                        <img src={settings} alt='settings'/>
-                    </div>
+                    {!showSettings &&
+                        <div className="w-10 cursor-pointer bg-gray-700 rounded-lg p-2 hover:bg-gray-600 active:scale-95 active:hover:bg-gray-500 transition-all ease-in-out duration-150" onClick={handleShowSettings}>
+                            <img src={settings} alt='settings'/>
+                        </div>
+                    }
                 </div>
                 
             </div>
