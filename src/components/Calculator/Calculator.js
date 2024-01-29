@@ -2,8 +2,7 @@ import { useState, useEffect, React } from "react";
 import { useSelection } from "../../context/SelectionContext";
 import "./types.css";
 import  pokedex  from "../../assets/pokedex.webp"
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'sonner';
 import PokemonSearch from "../PokemonSearch/PokemonSearch";
 import { getPokemon } from "../../services/pokemon";
 import { capitalizeFirstLetter } from "../../utils/functions";
@@ -241,16 +240,7 @@ const Calculator = () => {
                 setIsVisible(false)
             } else{
                 
-                toast.error(`Ya estás utilizando 2 tipos. Elimina uno primero`, {
-                    position: "top-left",
-                    autoClose: 1000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                    })
+                toast.error(`Ya estás utilizando 2 tipos. Elimina uno primero`)
             }
         }
 
@@ -441,7 +431,6 @@ const Calculator = () => {
                         </div>
                     </div>
                 </div>
-              <ToastContainer autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored"/>
             </div>
     )
 }

@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Generations from '../Generations/Generations';
 import { getPokemonsGeneration, pokemonExists } from '../../services/pokemon';
-import { ToastContainer } from 'react-toastify';
 import settings from '../../assets/settings.png'
 
 const MoveSet = () => {
@@ -189,7 +188,6 @@ const MoveSet = () => {
             </div>
 
             
-            <ToastContainer/>
         </div>
     )
 }

@@ -1,4 +1,3 @@
-import 'react-toastify/dist/ReactToastify.css';
 
 
 async function getPokemonMovements (pokemonName) {

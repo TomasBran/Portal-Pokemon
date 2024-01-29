@@ -1,6 +1,5 @@
 import unknown_pokemon from '../assets/unknown_pokemon.png'
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'sonner';
 import { capitalizeFirstLetter } from '../utils/functions';
 
 
@@ -16,16 +15,7 @@ async function pokemonExists (pokemonName){
     if(pokemonList.some(pokemon => pokemon.name.toLowerCase() === pokemonName.toLowerCase())){
         return true
     } else{
-        toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`, {
-            position: "bottom-left",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            })
+        toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`)
         return false
     }
 
@@ -93,16 +83,7 @@ async function getPokemon (pokemonName) {
     }
     )
     .catch((err) =>{
-        toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`, {
-            position: "bottom-left",
-            autoClose: 1000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            })
+        toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`)
     })
 
 

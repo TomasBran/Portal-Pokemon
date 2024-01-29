@@ -1,13 +1,11 @@
 import './Pokedle.css'
 import React, { useEffect, useRef, useState } from 'react';
 import PokemonSearch from '../PokemonSearch/PokemonSearch';
-import 'react-toastify/dist/ReactToastify.css';
 import { getPokemon } from '../../services/pokemon';
 import { generateRandomPokemonNumber } from '../../utils/functions';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Generations from '../Generations/Generations';
-import { ToastContainer } from 'react-toastify';
 import settings from '../../assets/settings.png'
 
 
@@ -253,7 +251,6 @@ const Pokedle = () => {
                   }
             </div>
 
-            <ToastContainer/>
         </div>
     )
 }

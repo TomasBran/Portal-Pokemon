@@ -2,7 +2,6 @@ import './App.css';
 import PokeGym from './components/PokeGym/PokeGym';
 import Calculator from './components/Calculator/Calculator';
 import { SelectionProvider } from './context/SelectionContext';
-import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Route, Link, Routes} from "react-router-dom";
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
@@ -11,6 +10,7 @@ import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import MoveSet from './components/MoveSet/MoveSet';
 import TypesChallenge from './components/TypesChallenge/TypesChallenge';
+import { Toaster } from 'sonner';
         
 
 
@@ -43,6 +43,7 @@ function App() {
               
 
             </SelectionProvider>
+            <Toaster position="bottom-left" richColors duration={2000} />
             
           </PrimeReactProvider>
       </BrowserRouter>

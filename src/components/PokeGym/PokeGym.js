@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { BsStarFill, BsStarHalf, BsStar } from 'react-icons/bs';
 import settings from '../../assets/settings.png'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import TeamContainer from "../TeamContainer/TeamContainer";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -10,7 +8,8 @@ import { generateRandomPokemonNumber } from "../../utils/functions";
 import { getPokemon } from "../../services/pokemon";
 import Generations from "../Generations/Generations";
 import { ProgressSpinner } from 'primereact/progressspinner';
-import  pokeball  from '../../assets/pokeball.png'
+import  pokeball  from '../../assets/pokeball.png';
+import { toast } from 'sonner';
 
 
 
@@ -79,10 +78,8 @@ const PokeGym = () => {
                     if(chosenTeam.length===6){
                         fightGymLeaders()
                       } else{
-                        toast.warn(`Necesitas ${6-chosenTeam.length} Pokemon más para poder pelear`, {
-                            autoClose: 3000,
-                            position: "bottom-right",
-                        });
+
+                        toast.error(`Necesitas ${6-chosenTeam.length} Pokemon más para poder pelear`);
                       }
                     break;
                     
@@ -321,6 +318,7 @@ const PokeGym = () => {
           if(result.isConfirmed){
             setHardmode(prev => !prev)
             resetGame(false)
+            toast.warning(`Modo difícil ${!hardmode ? 'activado' : 'desactivado'}.`)
           }
 
     }
@@ -342,6 +340,7 @@ const PokeGym = () => {
           if(result.isConfirmed){
             setLuckActive(prev => !prev)
             resetGame(false)
+            toast.warning(`Suerte ${!luckActive ? 'activada' : 'desactivada'}.`)
           }
 
     }
@@ -437,10 +436,7 @@ const PokeGym = () => {
                 
             </div>
 
-            
-
-
-            <ToastContainer newestOnTop={false} rtl={true} theme="colored" pauseOnHover autoClose={1000} hideProgressBar/>
+        
 
         </div>
     )

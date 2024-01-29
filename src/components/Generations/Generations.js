@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from 'sonner';
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import './Generations.css'
@@ -23,10 +23,7 @@ const Generations = ({getGenerations, resetGame, padding = 4}) => {
         const trueCount = currentGenerations.filter((value) => value === true).length;
 
         if (trueCount === 1 && currentGenerations[index]) {
-            toast.error(`Se necesita por lo menos 1 generación disponible`, {
-                autoClose: 3000,
-                position: "top-right",
-            });
+            toast.error(`Se necesita por lo menos 1 generación disponible`)
             return;
         }
         

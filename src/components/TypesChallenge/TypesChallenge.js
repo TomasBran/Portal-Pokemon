@@ -1,4 +1,4 @@
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 
 const TypesChallenge = () => {
@@ -12,7 +12,6 @@ const TypesChallenge = () => {
 
     return (
         <div className='mt-20'>
-            <Toaster />
             <button onClick={() => toastMessage()}>
                 Give me a toast
             </button>
