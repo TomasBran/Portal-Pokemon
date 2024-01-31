@@ -11,6 +11,8 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import MoveSet from './components/MoveSet/MoveSet';
 import TypesChallenge from './components/TypesChallenge/TypesChallenge';
 import { Toaster } from 'sonner';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
         
 
 
@@ -21,31 +23,34 @@ function App() {
     <div className="App">
 
       <BrowserRouter> 
-          <PrimeReactProvider>
+        <DndProvider backend={HTML5Backend}>
 
-            <Navbar/>
-            <SelectionProvider>
+            <PrimeReactProvider>
 
-            <Routes>
+              <Navbar/>
+              <SelectionProvider>
 
-              <Route path="/Portal-Pokemon" element={<Home/>}/>
-              <Route path="/calculator" element={<Calculator/>}/>
-              <Route path="/gym" element={<PokeGym/>}/>
-              <Route path="/pokedle" element={<Pokedle/>}/>
-              <Route path="/moveset" element={<MoveSet/>}/>
-              <Route path="/types-challenge" element={<TypesChallenge/>}/>
+              <Routes>
+
+                <Route path="/Portal-Pokemon" element={<Home/>}/>
+                <Route path="/calculator" element={<Calculator/>}/>
+                <Route path="/gym" element={<PokeGym/>}/>
+                <Route path="/pokedle" element={<Pokedle/>}/>
+                <Route path="/moveset" element={<MoveSet/>}/>
+                <Route path="/types-challenge" element={<TypesChallenge/>}/>
+                
+
+              </Routes>
+
               
 
-            </Routes>
+                
 
-            
-
+              </SelectionProvider>
+              <Toaster position="bottom-left" richColors duration={2000} />
               
-
-            </SelectionProvider>
-            <Toaster position="bottom-left" richColors duration={2000} />
-            
-          </PrimeReactProvider>
+            </PrimeReactProvider>
+        </DndProvider>
       </BrowserRouter>
       
 

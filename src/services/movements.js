@@ -16,11 +16,16 @@ async function getPokemonMovements (pokemonName) {
     while (pokemonMovements.length<4) {
         const randomNumber = Math.floor(Math.random() * availableMovements.length);
 
+        if(movementsArray[randomNumber].version_group_details[movementsArray[randomNumber].version_group_details.length-1].move_learn_method.name === 'level-up'){
 
-        if(!pokemonMovements.includes(availableMovements[randomNumber])){
-            pokemonMovements.push(availableMovements[randomNumber])
+            if(!pokemonMovements.includes(availableMovements[randomNumber])){
+                pokemonMovements.push(availableMovements[randomNumber])
+            }
         }
+
+
     } // 0 a 3
+
 
     const randomAbilityNumber = Math.floor(Math.random() * fetchedPokemon.abilities.length)
     pokemonMovements.push(fetchedPokemon.abilities[randomAbilityNumber].ability.name.replace(/-/g, ' ')) // 4
@@ -33,5 +38,5 @@ async function getPokemonMovements (pokemonName) {
     return pokemonMovements
 }
 
-
 export { getPokemonMovements }
+

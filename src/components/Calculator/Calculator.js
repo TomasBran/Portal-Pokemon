@@ -7,6 +7,7 @@ import PokemonSearch from "../PokemonSearch/PokemonSearch";
 import { getPokemon } from "../../services/pokemon";
 import { capitalizeFirstLetter } from "../../utils/functions";
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { typeLogos } from "../TypesChallenge/Dnd/DraggableItem";
 
 
 
@@ -343,7 +344,10 @@ const Calculator = () => {
                     <div className="flex items-center justify-center gap-14">
                         <div className="flex justify-center items-center w-6/12 h-[32vh] flex-wrap gap-3 p-8 bg-zinc-100 rounded-lg">
                             {pokemonTypes.map((type) => 
-                            <button onClick={() => handleClick(type.name)} className={`${type.name} px-4 py-2 my-1 text-white font-bold text-md rounded-lg shadow hover:shadow-black/80 active:scale-95 transition duration-150 capitalize w-[6vw]`} key={type.name}><span>{type.name}</span></button>
+                            <button onClick={() => handleClick(type.name)} className={`${type.name} px-1 py-2 my-1 text-white font-bold text-md rounded-lg shadow hover:shadow-black/80 active:scale-95 transition duration-150 capitalize w-[6.5vw] flex justify-center gap-1 `} key={type.name}>
+                                <img src={typeLogos[type.name.toLowerCase()]} alt={`${type.name} Logo`} className="h-[3.5vh] "/>
+                                <span>{type.name}</span>
+                            </button>
                             )}
                         </div>
 
@@ -361,9 +365,17 @@ const Calculator = () => {
                                     <div className={`items-center justify-evenly ${isVisible ? "flex" : "hidden"}`}>
                                         <div className="flex flex-col items-center">
                                             <span className="text-3xl text-gray-800 bg-white rounded-lg border-2 border-gray-500 min-w-10/12 p-2 capitalize">#{currentPokemonId} - {currentPokemonName}</span>
-                                            <div className="flex gap-2 brightness-125 cursor-default py-2">
-                                                <p className={`${currentFirstSelection!=="" ? currentFirstSelection : "hidden"} p-1.5 md:p-4 text-white font-semibold rounded-2xl border border-white text-xs md:text-sm flex justify-center items-center border-gray-500 border-2`}>{capitalizeFirstLetter(currentFirstSelection)}</p>
-                                                <p className={`${currentSecondSelection!=="" ? currentSecondSelection : "hidden"} p-1.5 md:p-4 text-white font-semibold rounded-2xl border border-white text-xs md:text-sm flex justify-center items-center border-gray-500 border-2`}>{capitalizeFirstLetter(currentSecondSelection)}</p>
+                                            <div className="flex gap-2 cursor-default py-2">
+                                                <div className={`${currentFirstSelection!=="" ? currentFirstSelection : "hidden"} p-2 border-2 border-white rounded-2xl `}>
+                                                    <img className={`h-[7vh]`} src={typeLogos[currentFirstSelection]} alt={`${currentFirstSelection} logo`}/>
+
+                                                </div>
+
+                                                <div className={`${currentSecondSelection!=="" ? currentSecondSelection : "hidden"} p-2 border-2 border-white rounded-2xl `}>
+                                                    <img className={`h-[7vh]`} src={typeLogos[currentSecondSelection]} alt={`${currentSecondSelection} logo`}/>
+
+                                                </div>
+ 
                                             </div>
                                         </div>
                                         <img alt="" src={currentPokemonImage} className="h-24" loading="lazy"/>
