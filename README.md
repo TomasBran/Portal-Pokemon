@@ -1,4 +1,6 @@
 
+README DESACTUALIZADO. UPDATE PREVISTO PARA EL 05-02-24
+
 # Portal Pokemon
 
 Portal Pokemon es un proyecto de React.js basado en el mundo Pokemon, que posee distintas herramientas actualmente, y otras que vendrán futuras.
