@@ -1,94 +1,91 @@
-import unknown_pokemon from '../assets/unknown_pokemon.png'
+import unknown_pokemon from '../assets/unknown_pokemon.png';
 import { toast } from 'sonner';
 import { capitalizeFirstLetter } from '../utils/functions';
 
+const pokemonNumberLimits = [151, 251, 386, 493, 649, 721, 809, 898, 1017];
 
-const pokemonNumberLimits = [
-    151, 251, 386, 493, 649, 721, 809, 898, 1017
-]
+async function pokemonExists(pokemonName) {
+	const response = await fetch(
+		'https://pokeapi.co/api/v2/pokemon?limit=905&offset=0'
+	);
+	const data = await response.json();
+	const pokemonList = data.results;
 
-async function pokemonExists (pokemonName){
-    const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=905&offset=0');
-    const data = await response.json();
-    const pokemonList = data.results;
-
-    if(pokemonList.some(pokemon => pokemon.name.toLowerCase() === pokemonName.toLowerCase())){
-        return true
-    } else{
-        toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`)
-        return false
-    }
-
-
+	if (
+		pokemonList.some(
+			(pokemon) => pokemon.name.toLowerCase() === pokemonName.toLowerCase()
+		)
+	) {
+		return true;
+	} else {
+		toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`);
+		return false;
+	}
 }
 
-function getPokemonsGeneration (pokemonId) {
+function getPokemonsGeneration(pokemonId) {
+	let wasGenerationAssigned = false;
+	let generation;
 
-    let wasGenerationAssigned = false
-    let generation
+	pokemonNumberLimits.forEach((element, index) => {
+		if (pokemonId <= element && !wasGenerationAssigned) {
+			generation = index + 1;
+			wasGenerationAssigned = true;
+		}
+	});
 
-    pokemonNumberLimits.forEach((element, index) => {
-        if(pokemonId<=element && !wasGenerationAssigned){
-         generation = index+1
-         wasGenerationAssigned = true
-        }
-    });
-
-    return generation
+	return generation;
 }
 
+async function getPokemon(pokemonName) {
+	let pokemon = {};
+	pokemonName += '';
 
-async function getPokemon (pokemonName) {
-    let pokemon = {}
-    pokemonName+=''
+	if (pokemonName === '') {
+		toast.error(`El buscador está vacio.`);
+		return;
+	}
 
+	await fetch('https://pokeapi.co/api/v2/pokemon/' + pokemonName.toLowerCase())
+		.then((res) => res.json())
+		.then((fetchedPokemon) => {
+			let totalStats = 0;
+			fetchedPokemon.stats.forEach((stat) => {
+				totalStats += stat.base_stat;
+			});
 
+			pokemon.img =
+				fetchedPokemon.sprites.other.dream_world.front_default !== null
+					? fetchedPokemon.sprites.other.dream_world.front_default
+					: fetchedPokemon.sprites.front_default
+						? fetchedPokemon.sprites.front_default
+						: unknown_pokemon;
 
-    await fetch('https://pokeapi.co/api/v2/pokemon/' + pokemonName.toLowerCase())
-    .then(res => res.json())
-    .then(fetchedPokemon => {
-        let totalStats = 0
-        fetchedPokemon.stats.forEach(stat => {
-            totalStats += stat.base_stat
-        })
+			if (pokemon.img.length > 120) {
+				// ERROR CUANDO PIDE EL NOMBRE EN LUGAR DE NUMERO DE POKEMON, SE CREA MAL LA URL
+				pokemon.img = pokemon.img.slice(57);
+			}
 
+			pokemon.name = capitalizeFirstLetter(fetchedPokemon.name);
 
-        pokemon.img = fetchedPokemon.sprites.other.dream_world.front_default !== null
-        ? fetchedPokemon.sprites.other.dream_world.front_default
-        : (fetchedPokemon.sprites.front_default
-            ? fetchedPokemon.sprites.front_default
-            : unknown_pokemon)
+			pokemon.generation = getPokemonsGeneration(fetchedPokemon.id);
 
-        if(pokemon.img.length>120){ // ERROR CUANDO PIDE EL NOMBRE EN LUGAR DE NUMERO DE POKEMON, SE CREA MAL LA URL
-            pokemon.img = pokemon.img.slice(57)
-        }
+			pokemon.type_1 = capitalizeFirstLetter(fetchedPokemon.types[0].type.name);
+			pokemon.type_2 =
+				fetchedPokemon.types.length > 1
+					? capitalizeFirstLetter(fetchedPokemon.types[1].type.name)
+					: 'Ninguno';
+			pokemon.power = totalStats;
+			pokemon.weight = fetchedPokemon.weight / 10;
+			pokemon.height = fetchedPokemon.height / 10;
+			pokemon.id = fetchedPokemon.id;
+			pokemon.hasBeenChosen = false;
+		})
+		.catch((err) => {
+			toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`);
+		});
 
-
-
-
-        pokemon.name = capitalizeFirstLetter(fetchedPokemon.name)
-
-        pokemon.generation = getPokemonsGeneration(fetchedPokemon.id)
-
-
-        pokemon.type_1 = capitalizeFirstLetter(fetchedPokemon.types[0].type.name)
-        pokemon.type_2 = fetchedPokemon.types.length>1 ?  capitalizeFirstLetter(fetchedPokemon.types[1].type.name) : "Ninguno"
-        pokemon.power = totalStats
-        pokemon.weight = fetchedPokemon.weight/10
-        pokemon.height = fetchedPokemon.height/10
-        pokemon.id = fetchedPokemon.id
-        pokemon.hasBeenChosen = false
-
-        
-    }
-    )
-    .catch((err) =>{
-        toast.error(`El pokemon "${pokemonName.toUpperCase()}" no existe`)
-    })
-
-
-    return pokemon
+	return pokemon;
 }
 
-
-export { getPokemon, pokemonExists, getPokemonsGeneration}
+export { getPokemon, pokemonExists, getPokemonsGeneration };
