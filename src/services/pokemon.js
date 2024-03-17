@@ -2,11 +2,11 @@ import unknown_pokemon from '../assets/unknown_pokemon.png';
 import { toast } from 'sonner';
 import { capitalizeFirstLetter } from '../utils/functions';
 
-const pokemonNumberLimits = [151, 251, 386, 493, 649, 721, 809, 898, 1017];
+const pokemonNumberLimits = [151, 251, 386, 493, 649, 721, 809, 898, 1025];
 
 async function pokemonExists(pokemonName) {
 	const response = await fetch(
-		'https://pokeapi.co/api/v2/pokemon?limit=905&offset=0'
+		'https://pokeapi.co/api/v2/pokemon?limit=1025&offset=0'
 	);
 	const data = await response.json();
 	const pokemonList = data.results;

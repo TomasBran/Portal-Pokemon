@@ -24,6 +24,7 @@ const MoveSet = () => {
 		true,
 		true,
 		true,
+		true,
 	]);
 	const [movesShown, setMovesShown] = useState(0);
 	const [inputValue, setInputValue] = useState('');
