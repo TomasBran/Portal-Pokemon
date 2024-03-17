@@ -530,12 +530,12 @@ const Calculator = () => {
 								Selecciona un tipo, o random
 							</p>
 							<p
-								className='text-lg text-white font-semibold bg-teal-500 cursor-pointer p-2 rounded-lg hover:bg-teal-400 active:bg-teal-300 active:scale-90 transition '
+								className='text-white font-semibold bg-teal-500 cursor-pointer p-2 rounded-lg hover:bg-teal-400 active:bg-teal-300 active:scale-90 transition '
 								onClick={pickRandomType}>
 								1 Random
 							</p>
 							<p
-								className='text-lg text-white font-semibold bg-teal-500 cursor-pointer p-2 rounded-lg hover:bg-teal-400 active:bg-teal-300 active:scale-90 transition '
+								className='text-white font-semibold bg-teal-500 cursor-pointer p-2 rounded-lg hover:bg-teal-400 active:bg-teal-300 active:scale-90 transition '
 								onClick={pickTwoRandomTypes}>
 								2 Random
 							</p>
