@@ -47,7 +47,6 @@ const Pokedle = () => {
 		const newPokemon = await getPokemon(
 			generateRandomPokemonNumber(currentGenerations)
 		);
-		// const newPokemon = await(getPokemon(25))
 		setOriginalPokemon(newPokemon);
 	};
 
@@ -100,7 +99,7 @@ const Pokedle = () => {
 
 		if (originalPokemon.name === newChosenPokemon.name) {
 			const response = await MySwal.fire({
-				title: `Felicitaciones! El Pokemon era <span class="text-green-500 font-bold">${originalPokemon.name}</span>.`,
+				title: `Felicitaciones! El Pokemon era <span class="text-green-500 font-bold">${originalPokemon.name.replace(/-/g, ' ')}</span>.`,
 				text: `${comparisons.length !== 0 ? `Adivinaste en ${comparisons.length + 1} intentos` : 'Adivinaste a la primera. Wow.'}`,
 				icon: 'success',
 				showCancelButton: true,
@@ -164,7 +163,7 @@ const Pokedle = () => {
 		if (response.isConfirmed) {
 			await MySwal.fire({
 				title: `La partida ha finalizado.`,
-				html: `No has adivinado. El Pokémon era <span class="text-red-500 font-bold">${originalPokemon.name}</span>`,
+				html: `No has adivinado. El Pokémon era <span class="text-red-500 font-bold">${originalPokemon.name.replace(/-/g, ' ')}</span>`,
 				icon: 'error',
 				showCancelButton: false,
 				confirmButtonText: 'Confirmar',
@@ -233,7 +232,11 @@ const Pokedle = () => {
 		<div className='bg-zinc-200 min-h-screen pb-4'>
 			<div className='flex justify-center items-center gap-4 py-20'>
 				<span>Elige un Pokemon:</span>
-				<PokemonSearch onInputChange={handleInputChange} />
+				<PokemonSearch
+					onInputChange={handleInputChange}
+					searchPokemon={() => comparePokemon(originalPokemon)}
+					showSearchButton={false}
+				/>
 				<button
 					id='guess-button'
 					className='bg-blue-500 enabled:hover:bg-blue-600 enabled:active:bg-blue-800 enabled:active:scale-95 transition duration-150 rounded-lg py-4 px-8 text-white font-bold disabled:opacity-40'
@@ -265,7 +268,9 @@ const Pokedle = () => {
 							className='flex justify-center w-full gap-8'
 							key={index}>
 							{Object.entries(result).map(([property, data]) => (
-								<div className='w-1/12 flex justify-center'>
+								<div
+									className='w-1/12 flex justify-center'
+									key={property}>
 									<div
 										key={property}
 										className={`w-5/6 h-20 border-2 border-white text-white flex justify-center items-center rounded-lg ${putDataStyle(data.class)} bg-contain bg-center bg-no-repeat`}

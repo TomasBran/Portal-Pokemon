@@ -151,7 +151,11 @@ const MoveSet = () => {
 						/>
 					</div>
 
-					<PokemonSearch onInputChange={handleInputChange} />
+					<PokemonSearch
+						onInputChange={handleInputChange}
+						showSearchButton={false}
+						searchPokemon={() => guess(inputValue)}
+					/>
 
 					<div className='flex justify-center gap-4 text-white font-medium'>
 						<div

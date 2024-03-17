@@ -16,7 +16,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
 	return (
-		<div className='App'>
+		<div className='App select-none'>
 			<BrowserRouter>
 				<DndProvider backend={HTML5Backend}>
 					<PrimeReactProvider>

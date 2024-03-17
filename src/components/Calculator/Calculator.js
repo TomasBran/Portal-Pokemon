@@ -10,6 +10,7 @@ import { typeLogos } from '../TypesChallenge/Dnd/DraggableItem';
 import settings from '../../assets/settings.png';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import Type from './Type';
 
 const steel = 'steel';
 const water = 'water';
@@ -223,6 +224,8 @@ const Calculator = () => {
 	const [currentPokemonId, setCurrentPokemonId] = useState('');
 	const [showSettings, setShowSettings] = useState(false);
 	const settingsRef = useRef(null);
+	const [showIcons, setShowIcons] = useState(false);
+	const [gimmickForms, setGimmickForms] = useState(false);
 	const [types_x4, setTypes_x4] = useState([]);
 	const [types_x2, setTypes_x2] = useState([]);
 	const [types_x1, setTypes_x1] = useState([]);
@@ -389,17 +392,26 @@ const Calculator = () => {
 	};
 
 	const pickTwoRandomTypes = () => {
-		const randomIndex = Math.floor(Math.random() * pokemonTypes.length);
-		const randomPokemonType = pokemonTypes[randomIndex];
-		const randomIndex2 = Math.floor(Math.random() * pokemonTypes.length);
-		const randomPokemonType2 = pokemonTypes[randomIndex2];
+		let randomIndex = Math.floor(Math.random() * pokemonTypes.length);
+		let randomPokemonType = pokemonTypes[randomIndex];
+
+		let randomIndex2;
+		let randomPokemonType2;
+
+		do {
+			randomIndex2 = Math.floor(Math.random() * pokemonTypes.length);
+			randomPokemonType2 = pokemonTypes[randomIndex2];
+		} while (randomPokemonType2.name === randomPokemonType.name);
+
 		setBothTypes(randomPokemonType.name, randomPokemonType2.name);
 	};
 
 	const openCalculatorTutorial = () => {
 		MySwal.fire({
 			title: '¿Cómo funciona la Calculadora Pokemon?',
-			html: `Debes elegir uno o dos tipos para que te muestre sus puntos débiles, inmunidades, o fortalezas frente a otros ataques.<br>Existe la opción de dejar que se elija al azar, o buscar al Pokemon en cuestión en la Pokedex en caso de que no sepas sus tipos!`,
+			html: `Debes elegir uno o dos tipos para que te muestre sus puntos débiles, inmunidades, o fortalezas frente a otros ataques.<br>
+			Existe la opción de dejar que se elija al azar, o buscar al Pokemon en cuestión en la Pokedex en caso de que no sepas sus tipos!<br><br>
+			Formas Gimmick: Son las formas especiales de los Pokemon (por ej. Mega evoluciones). Se puede elegir verlas o no en la Pokedex.`,
 			showCancelButton: true,
 			confirmButtonColor: 'rgb(99 102 241)',
 			cancelButtonColor: 'rgb(69 168 68)',
@@ -408,8 +420,16 @@ const Calculator = () => {
 		});
 	};
 
+	const handleShowIcons = () => {
+		setShowIcons((prev) => !prev);
+	};
+
+	const handleShowGimmickForms = () => {
+		setGimmickForms((prev) => !prev);
+	};
+
 	return (
-		<div className=' min-h-screen bg-zinc-50 pt-16 flex flex-col items-center'>
+		<div className=' min-h-screen bg-teal-200 pt-16 flex flex-col items-center'>
 			<div className='flex justify-center flex-col items-center'>
 				<div className='flex items-center justify-center gap-14'>
 					<div className='flex justify-center items-center w-6/12 h-[32vh] flex-wrap gap-3 p-8 bg-teal-700 rounded-lg'>
@@ -430,18 +450,17 @@ const Calculator = () => {
 
 					<div
 						className={`w-5/12 h-[32vh] px-6 py-3 rounded-lg ${isVisible ? (currentFirstSelection !== '' ? currentFirstSelection : currentSecondSelection) : 'bg-teal-700'} ${currentFirstSelection === '' && currentSecondSelection === '' && 'bg-teal-700'}`}>
-						<div className='flex justify-between'>
+						<div className='flex gap-2 justify-between w-full mb-2'>
 							<img
 								alt=''
 								src={pokedex}
 								className='relative h-14'
 							/>
-							<PokemonSearch onInputChange={handleInputChange} />
-							<button
-								className='p-1 md:p-2 mr-10 rounded-2xl w-2/12 bg-teal-500 text-white font-semibold cursor-pointer hover:bg-teal-400 active:bg-teal-300 active:scale-95 transition duration-150'
-								onClick={() => searchPokemon(inputValue)}>
-								Buscar
-							</button>
+							<PokemonSearch
+								onInputChange={handleInputChange}
+								searchPokemon={() => searchPokemon(inputValue)}
+								gimmickForms={gimmickForms}
+							/>
 						</div>
 
 						{loading ? (
@@ -450,10 +469,11 @@ const Calculator = () => {
 							<div
 								className={`items-center justify-evenly ${isVisible ? 'flex' : 'hidden'}`}>
 								<div className='flex flex-col items-center'>
-									<span className='text-3xl text-gray-800 bg-gray-200 rounded-lg outline outline-3 outline-white/50 min-w-10/12 p-2 capitalize'>
-										#{currentPokemonId} - {currentPokemonName}
+									<span className='text-3xl text-gray-800 bg-white rounded-lg outline outline-3 outline-white/50 min-w-10/12 p-2 capitalize'>
+										{currentPokemonId < 1026 && `#${currentPokemonId} - `}{' '}
+										{currentPokemonName.replace(/-/g, ' ')}
 									</span>
-									<div className='flex gap-2 cursor-default py-2'>
+									<div className='flex gap-2 cursor-default py-2 '>
 										<div
 											className={`${currentFirstSelection !== '' ? currentFirstSelection : 'hidden'} p-2 border-2 border-white rounded-2xl `}>
 											<img
@@ -526,17 +546,16 @@ const Calculator = () => {
 				<div
 					className={`flex justify-evenly gap-4 cursor-default ${currentFirstSelection === '' && currentSecondSelection === '' ? 'hidden' : ''}`}>
 					<div
-						className={`bg-teal-100  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x4) && isArrayEmpty(types_x2) ? 'hidden' : ''}`}>
+						className={`bg-teal-500  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x4) && isArrayEmpty(types_x2) ? 'hidden' : ''}`}>
 						<p>Efectivo:</p>
 						<div className={`${isArrayEmpty(types_x4) ? 'hidden' : ''}`}>
 							<p className='my-3'>x4:</p>
 							<div className='flex justify-center flex-wrap gap-4'>
 								{types_x4.map((type) => (
-									<div
-										className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`}
-										key={type}>
-										<span>{type}</span>
-									</div>
+									<Type
+										type={type}
+										showIcon={showIcons}
+									/>
 								))}
 							</div>
 						</div>
@@ -544,41 +563,38 @@ const Calculator = () => {
 							<p className='my-3'>x2:</p>
 							<div className='flex justify-center flex-wrap gap-4'>
 								{types_x2.map((type) => (
-									<div
-										className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`}
-										key={type}>
-										<span>{type}</span>
-									</div>
+									<Type
+										type={type}
+										showIcon={showIcons}
+									/>
 								))}
 							</div>
 						</div>
 					</div>
 					<div
-						className={`bg-teal-100  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x1) ? 'hidden' : ''}`}>
+						className={`bg-teal-500  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x1) ? 'hidden' : ''}`}>
 						<p>Neutral:</p>
 						<p className='my-3'>x1:</p>
 						<div className='flex justify-center flex-wrap gap-4'>
 							{types_x1.map((type) => (
-								<div
-									className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`}
-									key={type}>
-									<span>{type}</span>
-								</div>
+								<Type
+									type={type}
+									showIcon={showIcons}
+								/>
 							))}
 						</div>
 					</div>
 					<div
-						className={`bg-teal-100  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x05) && isArrayEmpty(types_x025) ? 'hidden' : ''}`}>
+						className={`bg-teal-500  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x05) && isArrayEmpty(types_x025) ? 'hidden' : ''}`}>
 						<p>Poco efectivo:</p>
 						<div className={`${isArrayEmpty(types_x05) ? 'hidden' : ''}`}>
 							<p className='my-3'>x1/2:</p>
 							<div className='flex justify-center flex-wrap gap-4'>
 								{types_x05.map((type) => (
-									<div
-										className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`}
-										key={type}>
-										<span>{type}</span>
-									</div>
+									<Type
+										type={type}
+										showIcon={showIcons}
+									/>
 								))}
 							</div>
 						</div>
@@ -586,27 +602,25 @@ const Calculator = () => {
 							<p className='my-3'>x1/4:</p>
 							<div className='flex justify-center flex-wrap gap-4'>
 								{types_x025.map((type) => (
-									<div
-										className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`}
-										key={type}>
-										<span>{type}</span>
-									</div>
+									<Type
+										type={type}
+										showIcon={showIcons}
+									/>
 								))}
 							</div>
 						</div>
 					</div>
 
 					<div
-						className={`bg-teal-100  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x0) ? 'hidden' : ''}`}>
+						className={`bg-teal-500  min-h-[43vh] w-[23vw] rounded-lg p-4 ${isArrayEmpty(types_x0) ? 'hidden' : ''}`}>
 						<p>Inmune:</p>
 						<p className='my-3'>x0:</p>
 						<div className='flex justify-center flex-wrap gap-4'>
 							{types_x0.map((type) => (
-								<div
-									className={`${type} p-1.5 md:p-4 text-white font-semibold rounded-xl border border-white text-xs md:text-sm flex justify-center items-center w-[4vw] h-[6vh] capitalize`}
-									key={type}>
-									<span>{type}</span>
-								</div>
+								<Type
+									type={type}
+									showIcon={showIcons}
+								/>
 							))}
 						</div>
 					</div>
@@ -623,6 +637,18 @@ const Calculator = () => {
 							setShowSettings(false);
 						}}>
 						¿Cómo funciona?
+					</div>
+
+					<div
+						className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
+						onClick={handleShowIcons}>
+						{`Mostrar ${showIcons ? 'nombres' : 'iconos'}`}
+					</div>
+
+					<div
+						className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
+						onClick={handleShowGimmickForms}>
+						{`Formas Gimmick en Pokedex: ${gimmickForms ? 'SI' : 'NO'} `}
 					</div>
 
 					<div

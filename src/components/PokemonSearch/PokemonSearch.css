@@ -16,7 +16,7 @@
 }
 
 .react-autosuggest__suggestion--highlighted {
-	background-color: #f0f0f0;
+	background-color: #95bfff;
 }
 
 .react-autosuggest__suggestions-list {
@@ -29,7 +29,7 @@
 	border-radius: 5px;
 	max-height: 200px;
 	overflow-y: auto;
-	background-color: rgb(185, 185, 199);
+	background-color: rgb(136, 136, 151);
 	width: 15vw;
 }
 

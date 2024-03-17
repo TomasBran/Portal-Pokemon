@@ -10,7 +10,7 @@ const TeamContainer = ({ team }) => {
 						<img
 							alt=''
 							src={pokemon.img}
-							className={`w-4/6 h-full`}
+							className={`w-4/6 h-full object-contain drop-shadow-xl`}
 						/>
 					</div>
 				);

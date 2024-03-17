@@ -408,7 +408,7 @@ const PokeGym = () => {
 								<img
 									alt=''
 									src={pokemon.img}
-									className=' h-3/4'
+									className=' h-3/4 drop-shadow-2xl'
 								/>
 
 								{!hardmode && handleStars(pokemon.power)}

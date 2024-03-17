@@ -3,6 +3,7 @@ import gym from '../../assets/gym.png';
 import calculator from '../../assets/calculator.png';
 import pokedle from '../../assets/pokedle.png';
 import moveset from '../../assets/moveset_background.jpg';
+import typesChallenge from '../../assets/types_challenge.webp';
 import coming_soon from '../../assets/coming_soon.webp';
 
 const buttonsArray = [
@@ -27,9 +28,9 @@ const buttonsArray = [
 		image: moveset,
 	},
 	{
-		url: 'Portal-Pokemon',
-		text: 'Coming Soon',
-		image: coming_soon,
+		url: 'types-challenge',
+		text: 'Desafío de Tipos (WIP)',
+		image: typesChallenge,
 	},
 	{
 		url: 'Portal-Pokemon',
@@ -51,11 +52,13 @@ const Home = () => {
 							key={index}>
 							<button
 								disabled={button.url === 'Portal-Pokemon'}
-								className={`p-2 md:p-4 w-[25vw] h-[35vh] flex justify-end items-end rounded-lg border-none text-white no-underline bg-cover bg-center ease-in duration-150 enabled:active:scale-95 enabled:hover:shadow-gray-400 enabled:hover:shadow-lg disabled:cursor-default`}
+								className={`p-2 md:p-4 w-[25vw] h-[35vh] flex justify-end items-end rounded-lg border-none text-white no-underline bg-cover bg-center ease-in duration-150 enabled:active:scale-95 enabled:hover:shadow-gray-400 enabled:hover:shadow-lg disabled:cursor-default group
+								${button.url !== 'Portal-Pokemon' ? 'group-hover:bg-white/90' : ''}`}
 								style={{ backgroundImage: `url(${button.image})` }}>
 								<div
-									className={`bg-zinc-300/80 p-1 w-full rounded-md ${button.url !== 'Portal-Pokemon' && 'hover:bg-zinc-100/80  ease-in duration-150'}`}>
-									<span className='text-gray-700 no-underline font-bold text-lg text-shadow-md transition'>
+									className={`bg-zinc-300/80 p-1 w-full rounded-md transition duration-150 ease-in 
+    								${button.url !== 'Portal-Pokemon' ? 'group-hover:bg-white/90' : ''}`}>
+									<span className='text-gray-700 no-underline font-bold text-lg text-shadow-md'>
 										{button.text}
 									</span>
 								</div>

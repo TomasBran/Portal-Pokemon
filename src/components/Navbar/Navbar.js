@@ -26,6 +26,11 @@ const routes = [
 		text: 'Move Set',
 		isDisabled: false,
 	},
+	{
+		url: '/types-challenge',
+		text: 'Desafío de Tipos',
+		isDisabled: false,
+	},
 ];
 
 const Navbar = () => {

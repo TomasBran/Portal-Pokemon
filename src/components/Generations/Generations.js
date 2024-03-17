@@ -17,6 +17,7 @@ const Generations = ({ getGenerations, resetGame, padding = 4 }) => {
 		true,
 		true,
 		true,
+		true,
 	]);
 
 	const toggleGeneration = (index) => {
