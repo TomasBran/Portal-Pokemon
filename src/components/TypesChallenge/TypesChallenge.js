@@ -21,7 +21,7 @@ const zonesData = [
 
 const TypesChallenge = () => {
 	// ***IMPORTANTE*** DESHABILITAR CUANDO NO ESTE TESTEANDO //
-	const testing = true; // PONER FALSE AL NO TESTEAR
+	const testing = false; // PONER FALSE AL NO TESTEAR
 	if (testing) console.log('EL MODO TESTING ESTA ON');
 	// ***IMPORTANTE*** DESHABILITAR CUANDO NO ESTE TESTEANDO //
 
