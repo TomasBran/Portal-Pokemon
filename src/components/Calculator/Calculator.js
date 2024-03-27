@@ -506,7 +506,7 @@ const Calculator = () => {
 				<div className='bg-teal-700/80 p-8 m-4 rounded-2xl w-4/12 h-2 cursor-default'>
 					{currentFirstSelection || currentSecondSelection ? (
 						<div className=' flex justify-between items-center w-full h-full'>
-							<p className='text-xl text-white'>Seleccionados:</p>
+							<p className='text-xl text-white font-semibold'>Seleccionados:</p>
 							<div className='flex justify-evenly w-8/12'>
 								<button
 									className={` ${currentFirstSelection !== '' ? `${currentFirstSelection} px-4 py-2 my-1 text-white font-bold text-sm rounded-lg shadow hover:shadow-black/80 capitalize w-[7vw] justify-center items-center flex cursor-pointer hover:bg-red-500 active:scale-95 transition duration-150` : 'hidden'}`}

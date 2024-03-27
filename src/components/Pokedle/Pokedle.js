@@ -52,6 +52,11 @@ const Pokedle = () => {
 
 	const comparePokemon = async (originalPokemon) => {
 		const newChosenPokemon = await getPokemon(inputValue.toLowerCase());
+
+		if (newChosenPokemon === undefined) {
+			return;
+		}
+
 		const results = {};
 
 		for (const property in newChosenPokemon) {
@@ -240,7 +245,10 @@ const Pokedle = () => {
 				<button
 					id='guess-button'
 					className='bg-blue-500 enabled:hover:bg-blue-600 enabled:active:bg-blue-800 enabled:active:scale-95 transition duration-150 rounded-lg py-4 px-8 text-white font-bold disabled:opacity-40'
-					onClick={() => comparePokemon(originalPokemon)}
+					onClick={() => {
+						comparePokemon(originalPokemon);
+						setInputValue('');
+					}}
 					disabled={guessButtonDisabled}>
 					ADIVINAR
 				</button>

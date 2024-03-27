@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Autosuggest from 'react-autosuggest';
 import './PokemonSearch.css';
+import { toast } from 'sonner';
 
 function PokemonSearch(props) {
 	const [value, setValue] = useState('');
@@ -57,6 +58,10 @@ function PokemonSearch(props) {
 
 	const handleKeyDown = (event) => {
 		if (event.key === 'Enter') {
+			if (value.length <= 0) {
+				toast.error(`El buscador está vacío.`);
+				return;
+			}
 			searchPokemon(value);
 		}
 	};
@@ -68,10 +73,13 @@ function PokemonSearch(props) {
 		onKeyDown: handleKeyDown,
 	};
 
-	const searchPokemon = (pokemon) => {
-		console.log(pokemon.name);
-		props.searchPokemon(pokemon.name);
+	const clearInput = () => {
 		setValue('');
+	};
+
+	const searchPokemon = (pokemon) => {
+		props.searchPokemon(pokemon.name);
+		clearInput();
 	};
 
 	return (

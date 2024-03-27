@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import DraggableItem from './DraggableItem';
 
@@ -16,10 +16,14 @@ const DroppableArea = ({ id, items, onDrop, enabledContainer = true }) => {
 		}),
 	}));
 
+	useEffect(() => {
+		setShortenText(id !== 'main');
+	}, [items, id]);
+
 	return (
 		<div
 			ref={drop}
-			className={`h-full w-full items-start flex flex-wrap justify-center gap-2 p-2 border-2 rounded-lg ${isOver ? 'border-blue-800 bg-blue-300' : 'border-slate-800 bg-slate-300'}`}>
+			className={`h-full w-full items-start flex flex-wrap justify-center gap-2 p-2 border-2 rounded-lg ${isOver ? 'border-blue-800 bg-blue-300' : 'border-violet-800 bg-violet-300'}`}>
 			{items.map((item) => (
 				<DraggableItem
 					key={item.id}

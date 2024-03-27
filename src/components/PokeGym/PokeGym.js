@@ -10,9 +10,24 @@ import Generations from '../Generations/Generations';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import pokeball from '../../assets/pokeball.png';
 import { toast } from 'sonner';
+import {
+	getFromLocalStorage,
+	saveToLocalStorage,
+} from '../../utils/localStorage';
 
 const PokeGym = () => {
 	const testing = false; //CAMBIAR CUANDO ESTOY TESTEANDO
+
+	if (getFromLocalStorage('gym_streak') === null) {
+		saveToLocalStorage('gym_streak', 0);
+	}
+	if (getFromLocalStorage('gym_stats') === null) {
+		saveToLocalStorage('gym_stats', {
+			easymode_badges: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
+			hardmode_badges: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
+			games_restarted: 0,
+		});
+	}
 
 	const MySwal = withReactContent(Swal);
 
@@ -270,6 +285,7 @@ const PokeGym = () => {
 			confirmButtonText: 'Volver a empezar',
 			width: '70vw',
 		});
+		updateGymStats(hardmode, beatenGyms);
 		resetGame(false);
 	};
 
@@ -289,12 +305,41 @@ const PokeGym = () => {
 		}
 
 		if (result.isConfirmed || !shouldAsk || testing) {
+			updateGymResetNumber();
 			setChosenTeam([]);
 			setCurrentTeam([]);
 			setRerollsLeft(testing ? 100 : 4);
 			setRollButtonText('Iniciar Juego');
 			setShouldDisable(false);
 		}
+	};
+
+	const updateGymResetNumber = () => {
+		const gymStats = getFromLocalStorage('gym_stats') || {
+			easymode_badges: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
+			hardmode_badges: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
+			games_restarted: 0,
+		};
+
+		gymStats.games_restarted++;
+
+		saveToLocalStorage('gym_stats', gymStats);
+	};
+
+	const updateGymStats = (isHardmodeEnabled, badges) => {
+		const gymStats = getFromLocalStorage('gym_stats') || {
+			easymode_badges: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
+			hardmode_badges: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
+			games_restarted: 0,
+		};
+
+		const badgesMode = isHardmodeEnabled
+			? gymStats.hardmode_badges
+			: gymStats.easymode_badges;
+
+		badgesMode[badges]++;
+
+		saveToLocalStorage('gym_stats', gymStats);
 	};
 
 	const handleHardMode = async () => {
@@ -385,6 +430,49 @@ const PokeGym = () => {
 			showCancelButton: false,
 			confirmButtonColor: 'rgb(99 102 241)',
 			confirmButtonText: '¡Estoy listo!',
+		});
+	};
+
+	const openStats = () => {
+		const gymStats = getFromLocalStorage('gym_stats');
+		setShowSettings(false);
+		MySwal.fire({
+			title: 'Estadística de gimnasios derrotados.',
+			html: `
+			<div class='flex w-full justify-evenly'>
+				<div>
+					<span class='font-bold'>Modo normal:</span>
+					<br><br>
+					0 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.easymode_badges[0]} </span><br>
+					1 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.easymode_badges[1]} </span><br>
+					2 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.easymode_badges[2]} </span><br>
+					3 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.easymode_badges[3]} </span><br>
+					4 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.easymode_badges[4]} </span><br>
+					5 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.easymode_badges[5]} </span><br>
+					6 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.easymode_badges[6]} </span><br>
+					7 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.easymode_badges[7]} </span><br>
+					8 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.easymode_badges[8]} </span><br>
+				</div>
+
+				<div>
+					<span class='font-bold'>Modo Difícil:</span>
+					<br><br>
+					0 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.hardmode_badges[0]} </span><br>
+					1 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.hardmode_badges[1]} </span><br>
+					2 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.hardmode_badges[2]} </span><br>
+					3 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.hardmode_badges[3]} </span><br>
+					4 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.hardmode_badges[4]} </span><br>
+					5 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.hardmode_badges[5]} </span><br>
+					6 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.hardmode_badges[6]} </span><br>
+					7 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.hardmode_badges[7]} </span><br>
+					8 Gimnasios: <span class='font-semibold text-blue-800'>${gymStats.hardmode_badges[8]} </span><br>
+				</div>
+			</div><br><br>
+			<span class='font-bold'>Partidas reiniciadas: ${gymStats.games_restarted} </span>
+			`,
+			showCancelButton: false,
+			confirmButtonColor: 'rgb(99 102 241)',
+			confirmButtonText: '¡A seguir ganando!',
 		});
 	};
 
@@ -479,7 +567,11 @@ const PokeGym = () => {
 								onClick={openFAQ}>
 								Preguntas Frecuentes
 							</div>
-
+							<div
+								className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
+								onClick={openStats}>
+								Estadísticas
+							</div>
 							<div
 								className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl'
 								onClick={() => setShowSettings(false)}>

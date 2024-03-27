@@ -1,454 +1,16 @@
 import { toast } from 'sonner';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DroppableArea from './Dnd/DropContainer';
 import { typeLogos } from './Dnd/DraggableItem';
 import { capitalizeFirstLetter } from '../../utils/functions';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
-export const types = {
-	fire: {
-		id: 1,
-		name: 'fire',
-		isEffectiveAgainst: ['grass', 'ice', 'steel', 'bug'],
-		isNotEffectiveAgainst: ['water', 'dragon', 'fire', 'rock'],
-		isResistantAgainst: ['steel', 'bug', 'fire', 'fairy', 'ice', 'grass'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['water', 'rock', 'ground'],
-		isImmuneAgainstMyAttacks: [],
-		isNeutralAgainst: [
-			'psychic',
-			'dragon',
-			'electric',
-			'ghost',
-			'fighting',
-			'normal',
-			'dark',
-			'poison',
-			'flying',
-		],
-	},
-	water: {
-		id: 2,
-		name: 'water',
-		isEffectiveAgainst: ['fire', 'rock', 'ground'],
-		isNotEffectiveAgainst: ['water', 'dragon', 'grass'],
-		isResistantAgainst: ['steel', 'water', 'fire', 'ice'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['electric', 'grass'],
-		isImmuneAgainstMyAttacks: [],
-		isNeutralAgainst: [
-			'psychic',
-			'bug',
-			'dragon',
-			'ghost',
-			'fairy',
-			'fighting',
-			'normal',
-			'rock',
-			'dark',
-			'ground',
-			'poison',
-			'flying',
-		],
-	},
-	grass: {
-		id: 3,
-		name: 'grass',
-		isEffectiveAgainst: ['water', 'rock', 'ground'],
-		isNotEffectiveAgainst: [
-			'steel',
-			'bug',
-			'dragon',
-			'fire',
-			'grass',
-			'poison',
-			'flying',
-		],
-		isResistantAgainst: ['water', 'electric', 'grass', 'ground'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['bug', 'fire', 'ice', 'poison', 'flying'],
-		isImmuneAgainstMyAttacks: [],
-		isNeutralAgainst: [
-			'psychic',
-			'steel',
-			'dragon',
-			'ghost',
-			'fairy',
-			'fighting',
-			'normal',
-			'rock',
-			'dark',
-		],
-	},
-	psychic: {
-		id: 4,
-		name: 'psychic',
-		isEffectiveAgainst: ['fighting', 'poison'],
-		isNotEffectiveAgainst: ['steel', 'psychic'],
-		isResistantAgainst: ['fighting', 'psychic'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['bug', 'ghost', 'dark'],
-		isImmuneAgainstMyAttacks: ['dark'],
-		isNeutralAgainst: [
-			'fire',
-			'water',
-			'grass',
-			'steel',
-			'dragon',
-			'electric',
-			'fairy',
-			'ice',
-			'normal',
-			'rock',
-			'ground',
-			'poison',
-			'flying',
-		],
-	},
-	steel: {
-		id: 5,
-		name: 'steel',
-		isEffectiveAgainst: ['fairy', 'ice', 'rock'],
-		isNotEffectiveAgainst: ['steel', 'water', 'electric', 'fire'],
-		isResistantAgainst: [
-			'steel',
-			'bug',
-			'dragon',
-			'fairy',
-			'ice',
-			'normal',
-			'grass',
-			'psychic',
-			'rock',
-			'flying',
-		],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['fire', 'fighting', 'ground'],
-		isImmuneAgainstMyAttacks: [],
-		isNeutralAgainst: ['water', 'electric', 'ghost', 'dark'],
-	},
-	bug: {
-		id: 6,
-		name: 'bug',
-		isEffectiveAgainst: ['grass', 'psychic', 'dark'],
-		isNotEffectiveAgainst: [
-			'steel',
-			'ghost',
-			'fire',
-			'fairy',
-			'fighting',
-			'poison',
-			'flying',
-		],
-		isResistantAgainst: ['fighting', 'grass', 'ground'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['fire', 'rock', 'flying'],
-		isImmuneAgainstMyAttacks: [],
-		isNeutralAgainst: [
-			'water',
-			'psychic',
-			'steel',
-			'bug',
-			'dragon',
-			'electric',
-			'ghost',
-			'fairy',
-			'ice',
-			'normal',
-			'dark',
-			'poison',
-		],
-	},
-	dragon: {
-		id: 7,
-		name: 'dragon',
-		isEffectiveAgainst: ['dragon'],
-		isNotEffectiveAgainst: ['steel'],
-		isResistantAgainst: ['water', 'electric', 'fire', 'grass'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['dragon', 'fairy', 'ice'],
-		isImmuneAgainstMyAttacks: ['fairy'],
-		isNeutralAgainst: [
-			'psychic',
-			'steel',
-			'bug',
-			'ghost',
-			'fighting',
-			'normal',
-			'rock',
-			'dark',
-			'ground',
-			'poison',
-			'flying',
-		],
-	},
-	electric: {
-		id: 8,
-		name: 'electric',
-		isEffectiveAgainst: ['water', 'flying'],
-		isNotEffectiveAgainst: ['dragon', 'electric', 'grass'],
-		isResistantAgainst: ['steel', 'electric', 'flying'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['ground'],
-		isImmuneAgainstMyAttacks: ['ground'],
-		isNeutralAgainst: [
-			'fire',
-			'water',
-			'grass',
-			'psychic',
-			'bug',
-			'dragon',
-			'ghost',
-			'fairy',
-			'ice',
-			'fighting',
-			'normal',
-			'rock',
-			'dark',
-			'poison',
-			'flying',
-		],
-	},
-	ghost: {
-		id: 9,
-		name: 'ghost',
-		isEffectiveAgainst: ['ghost', 'psychic'],
-		isNotEffectiveAgainst: ['dark'],
-		isResistantAgainst: ['bug', 'poison'],
-		hasImmunityAgainst: ['fighting', 'normal'],
-		isEffectiveAgainstMe: ['ghost', 'dark'],
-		isImmuneAgainstMyAttacks: ['normal'],
-		isNeutralAgainst: [
-			'fire',
-			'water',
-			'grass',
-			'psychic',
-			'steel',
-			'dragon',
-			'electric',
-			'fairy',
-			'ice',
-			'rock',
-			'ground',
-			'flying',
-		],
-	},
-	fairy: {
-		id: 10,
-		name: 'fairy',
-		isEffectiveAgainst: ['dragon', 'fighting', 'dark'],
-		isNotEffectiveAgainst: ['steel', 'fire', 'poison'],
-		isResistantAgainst: ['bug', 'fighting', 'dark'],
-		hasImmunityAgainst: ['dragon'],
-		isEffectiveAgainstMe: ['steel', 'poison'],
-		isImmuneAgainstMyAttacks: [],
-		isNeutralAgainst: [
-			'fire',
-			'water',
-			'grass',
-			'psychic',
-			'electric',
-			'ghost',
-			'ice',
-			'normal',
-			'rock',
-			'ground',
-			'poison',
-			'flying',
-		],
-	},
-	ice: {
-		id: 11,
-		name: 'ice',
-		isEffectiveAgainst: ['dragon', 'grass', 'ground', 'flying'],
-		isNotEffectiveAgainst: ['steel', 'water', 'fire', 'ice'],
-		isResistantAgainst: ['ice'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['steel', 'fire', 'fighting', 'rock'],
-		isImmuneAgainstMyAttacks: [],
-		isNeutralAgainst: [
-			'fire',
-			'water',
-			'psychic',
-			'bug',
-			'dragon',
-			'electric',
-			'ghost',
-			'fairy',
-			'normal',
-			'dark',
-			'ground',
-			'poison',
-			'flying',
-		],
-	},
-	fighting: {
-		id: 12,
-		name: 'fighting',
-		isEffectiveAgainst: ['steel', 'ice', 'normal', 'rock', 'dark'],
-		isNotEffectiveAgainst: ['bug', 'fairy', 'psychic', 'poison', 'flying'],
-		isResistantAgainst: ['bug', 'rock', 'dark'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['fairy', 'psychic', 'flying'],
-		isImmuneAgainstMyAttacks: ['ghost'],
-		isNeutralAgainst: [
-			'fire',
-			'water',
-			'grass',
-			'steel',
-			'dragon',
-			'electric',
-			'ghost',
-			'ice',
-			'normal',
-			'rock',
-			'ground',
-			'poison',
-		],
-	},
-	normal: {
-		id: 13,
-		name: 'normal',
-		isEffectiveAgainst: [],
-		isNotEffectiveAgainst: ['steel', 'rock'],
-		isResistantAgainst: [],
-		hasImmunityAgainst: ['ghost'],
-		isEffectiveAgainstMe: ['fighting'],
-		isImmuneAgainstMyAttacks: ['ghost'],
-		isNeutralAgainst: [
-			'fire',
-			'water',
-			'grass',
-			'psychic',
-			'steel',
-			'bug',
-			'dragon',
-			'electric',
-			'fairy',
-			'ice',
-			'rock',
-			'dark',
-			'ground',
-			'poison',
-			'flying',
-		],
-	},
-	rock: {
-		id: 14,
-		name: 'rock',
-		isEffectiveAgainst: ['bug', 'fire', 'ice', 'flying'],
-		isNotEffectiveAgainst: ['steel', 'fighting', 'ground'],
-		isResistantAgainst: ['fire', 'normal', 'poison', 'flying'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['steel', 'water', 'fighting', 'grass', 'ground'],
-		isImmuneAgainstMyAttacks: [],
-		isNeutralAgainst: [
-			'psychic',
-			'bug',
-			'dragon',
-			'electric',
-			'ghost',
-			'fairy',
-			'ice',
-			'rock',
-			'dark',
-		],
-	},
-	dark: {
-		id: 15,
-		name: 'dark',
-		isEffectiveAgainst: ['ghost', 'psychic'],
-		isNotEffectiveAgainst: ['fairy', 'fighting', 'dark'],
-		isResistantAgainst: ['ghost', 'dark'],
-		hasImmunityAgainst: ['psychic'],
-		isEffectiveAgainstMe: ['bug', 'fairy', 'fighting'],
-		isImmuneAgainstMyAttacks: [],
-		isNeutralAgainst: [
-			'fire',
-			'water',
-			'grass',
-			'steel',
-			'dragon',
-			'electric',
-			'ice',
-			'normal',
-			'rock',
-			'ground',
-			'poison',
-			'flying',
-		],
-	},
-	ground: {
-		id: 16,
-		name: 'ground',
-		isEffectiveAgainst: ['steel', 'electric', 'fire', 'rock', 'poison'],
-		isNotEffectiveAgainst: ['bug', 'grass'],
-		isResistantAgainst: ['rock', 'poison'],
-		hasImmunityAgainst: ['electric'],
-		isEffectiveAgainstMe: ['water', 'ice', 'grass'],
-		isImmuneAgainstMyAttacks: ['flying'],
-		isNeutralAgainst: [
-			'fire',
-			'psychic',
-			'steel',
-			'bug',
-			'dragon',
-			'ghost',
-			'fairy',
-			'fighting',
-			'normal',
-			'dark',
-			'poison',
-			'flying',
-		],
-	},
-	poison: {
-		id: 17,
-		name: 'poison',
-		isEffectiveAgainst: ['fairy', 'grass'],
-		isNotEffectiveAgainst: ['ghost', 'rock', 'ground', 'poison'],
-		isResistantAgainst: ['bug', 'fairy', 'fighting', 'grass', 'poison'],
-		hasImmunityAgainst: [],
-		isEffectiveAgainstMe: ['psychic', 'ground'],
-		isImmuneAgainstMyAttacks: ['steel'],
-		isNeutralAgainst: [
-			'fire',
-			'water',
-			'steel',
-			'dragon',
-			'electric',
-			'ghost',
-			'ice',
-			'normal',
-			'rock',
-			'dark',
-			'flying',
-		],
-	},
-	flying: {
-		id: 18,
-		name: 'flying',
-		isEffectiveAgainst: ['bug', 'fighting', 'grass'],
-		isNotEffectiveAgainst: ['steel', 'electric', 'rock'],
-		isResistantAgainst: ['bug', 'fighting', 'grass'],
-		hasImmunityAgainst: ['ground'],
-		isEffectiveAgainstMe: ['electric', 'ice', 'rock'],
-		isImmuneAgainstMyAttacks: [],
-		isNeutralAgainst: [
-			'fire',
-			'water',
-			'psychic',
-			'steel',
-			'dragon',
-			'ghost',
-			'fairy',
-			'normal',
-			'dark',
-			'poison',
-		],
-	},
-};
+import { types } from './types';
+import settings from '../../assets/settings.png';
+import {
+	getFromLocalStorage,
+	saveToLocalStorage,
+} from '../../utils/localStorage';
 
 const zonesData = [
 	{ id: 'zone_1', title: 'Efectivo' },
@@ -458,10 +20,30 @@ const zonesData = [
 ];
 
 const TypesChallenge = () => {
+	// ***IMPORTANTE*** DESHABILITAR CUANDO NO ESTE TESTEANDO //
+	const testing = true; // PONER FALSE AL NO TESTEAR
+	if (testing) console.log('EL MODO TESTING ESTA ON');
+	// ***IMPORTANTE*** DESHABILITAR CUANDO NO ESTE TESTEANDO //
+
+	const [streak, setStreak] = useState(0);
+
+	if (getFromLocalStorage('types_streak') === null) {
+		saveToLocalStorage('types_streak', 0);
+	}
+	if (getFromLocalStorage('types_highscore') === null) {
+		saveToLocalStorage('types_highscore', 0);
+	}
+
+	useEffect(() => {
+		setStreak(getFromLocalStorage('types_streak'));
+	}, []);
+
 	const MySwal = withReactContent(Swal);
+	const settingsRef = useRef(null);
 
 	const [gameStarted, setGameStarted] = useState(false);
 	const [gameEnded, setGameEnded] = useState(false);
+	const [showSettings, setShowSettings] = useState(false);
 	const [originalType, setOriginalType] = useState('');
 	const [correctZone, setCorrectZone] = useState({
 		zone_1: undefined,
@@ -504,6 +86,10 @@ const TypesChallenge = () => {
 			...Object.fromEntries(zonesData.map((zone) => [zone.id, []])),
 		});
 
+		if (testing) {
+			setOriginalType('Normal');
+			return;
+		}
 		setOriginalType(getRandomType);
 	};
 
@@ -511,6 +97,10 @@ const TypesChallenge = () => {
 		const typeNames = Object.keys(types);
 		const randomIndex = Math.floor(Math.random() * typeNames.length);
 		return capitalizeFirstLetter(typeNames[randomIndex]);
+	};
+
+	const handleShowSettings = () => {
+		setShowSettings((prev) => !prev);
 	};
 
 	const handleGuess = async () => {
@@ -526,7 +116,7 @@ const TypesChallenge = () => {
 		if (result) {
 			response = await MySwal.fire({
 				title: `Excelente!`,
-				text: `Hiciste todo correcto al 100%`,
+				text: `Hiciste todo correcto al 100%. Racha actual: ${streak + 1}`,
 				icon: 'success',
 				showCancelButton: true,
 				confirmButtonColor: 'rgb(99 102 241)',
@@ -534,22 +124,29 @@ const TypesChallenge = () => {
 				cancelButtonText: 'Ver el tablero',
 				width: '70vw',
 			});
+			setStreak((prev) => prev + 1);
+			saveToLocalStorage('types_streak', streak + 1);
+			checkHighscore(streak + 1);
 		} else {
 			response = await MySwal.fire({
 				title: `Todavia te falta.`,
-				text: `Tuviste algunos errores. A practicar!`,
+				text: `Tuviste algunos errores. A practicar! Racha actual: 0`,
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: 'rgb(99 102 241)',
-				confirmButtonText: 'Volver a empezar',
+				confirmButtonText: 'Volver a jugar',
 				cancelButtonText: 'Ver el tablero',
 				width: '70vw',
 			});
+			setStreak(0);
+			saveToLocalStorage('types_streak', 0);
 		}
 
-		if (!response.isConfirmed) {
-			setGameEnded(true);
+		if (response.isConfirmed) {
+			handleRestart();
+			return;
 		}
+		setGameEnded(true);
 	};
 
 	useEffect(() => {
@@ -568,20 +165,15 @@ const TypesChallenge = () => {
 	}, [gameStarted]);
 
 	const handleRestart = async () => {
-		let response = await MySwal.fire({
-			title: `Queres reiniciar la partida?`,
-			text: `Si tenias una racha, volvera a 0.`,
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: 'rgb(99 102 241)',
-			confirmButtonText: 'Reiniciar',
-			cancelButtonText: 'Cancelar',
-			width: '70vw',
-		});
+		setGameEnded(false);
+		setGameStarted(false);
+	};
 
-		if (response.isConfirmed) {
-			setGameEnded(false);
-			startNewGame();
+	const checkHighscore = (newScore) => {
+		const currentHighscore = getFromLocalStorage('types_highscore');
+
+		if (newScore > currentHighscore) {
+			saveToLocalStorage('types_highscore', newScore);
 		}
 	};
 
@@ -615,8 +207,8 @@ const TypesChallenge = () => {
 			);
 
 		result.zone_2 =
-			elementsInZone2.length === typeChosen.isNeutralAgainst.length &&
-			typeChosen.isNeutralAgainst.every((element) =>
+			elementsInZone2.length === typeChosen.isNeutralAgainstMe.length &&
+			typeChosen.isNeutralAgainstMe.every((element) =>
 				elementsInZone2.includes(element)
 			);
 
@@ -637,8 +229,50 @@ const TypesChallenge = () => {
 		return Object.values(result).every((value) => value === true);
 	};
 
+	const handleZoneClick = (targetZone) => {
+		const mainItems = zones.main;
+		const existingItems = zones[targetZone];
+
+		if (mainItems.length === 0) {
+			setZones((prevZones) => ({
+				...prevZones,
+				main: existingItems,
+				[targetZone]: [],
+			}));
+		} else {
+			setZones((prevZones) => ({
+				...prevZones,
+				main: [],
+				[targetZone]: [...existingItems, ...mainItems],
+			}));
+		}
+	};
+
+	const openTypesChallengeTutorial = () => {
+		setShowSettings(false);
+		MySwal.fire({
+			title: '¿Cómo se juega?',
+			html: `Debes posicionar todos los tipos en su posición correcta.<br>
+			Por ejemplo, si me toca el tipo <span class='font-bold text-red-500'>Fuego</span> yo ya se que uno de los tipos que le pega efectivo es <span class='font-bold text-blue-500'>Agua</span>, y con esa premisa debo completar toda la tabla del tipo que me toque.<br>
+			Si presionas "Adivinar" te dirá si está bien o mal y te dejará ver el tablero. Si seleccionas esta última opción podrás reacomodar los tipos para ver en qué te equivocaste.<br>
+			Si presionas en alguna de las zonas, se enviarán todos los tipos que aún no estén asignados. En caso de no haber ninguno, se desasignarán todos los tipos de esa zona.
+			<br><br><br><br>
+			<span class='text-sm text-gray-400'>
+			Psst! No me acabas de dar una pista si me toca el tipo Fuego?
+			</span><br>
+			<span class='text-sm text-black'>
+			Si, pero si no sabías esa debilidad, capaz incluso necesites otra pista.
+			</span>
+			`,
+			showCancelButton: false,
+			confirmButtonColor: 'rgb(99 102 241)',
+			confirmButtonText: '¡Estoy listo!',
+		});
+	};
+
 	return (
-		<div className='pt-16 p-6 flex flex-col gap-10 justify-start bg-zinc-300 h-screen'>
+		<div
+			className={`${gameStarted ? 'justify-start' : 'justify-center'} pt-16 p-6 flex flex-col gap-10 bg-zinc-200 h-screen`}>
 			<div className='w-full m-4 h-2/6 '>
 				<div className='h-1/6 flex justify-center gap-2 items-center mb-4'>
 					{gameStarted ? (
@@ -670,21 +304,31 @@ const TypesChallenge = () => {
 							)}
 						</div>
 					) : (
-						<div
-							className='bg-indigo-500 p-3 rounded-lg text-white font-bold cursor-pointer hover:bg-indigo-600 active:bg-indigo-700 active:scale-95'
-							onClick={startNewGame}>
-							Comenzar partida
+						<div className='flex flex-col gap-4'>
+							<div
+								className='bg-indigo-500 py-6 px-10 rounded-lg text-white font-bold cursor-pointer hover:bg-indigo-600 active:bg-indigo-700 active:scale-95'
+								onClick={startNewGame}>
+								Comenzar partida
+							</div>
+							<div className='text-xl '>
+								{`Racha actual: ${getFromLocalStorage('types_streak')}`}
+							</div>
+							<div className='text-xl '>
+								{`Racha más larga: ${getFromLocalStorage('types_highscore')}`}
+							</div>
 						</div>
 					)}
 				</div>
-				<div className='bg-white w-full h-5/6 flex rounded-lg'>
-					<DroppableArea
-						id='main'
-						items={zones.main}
-						onDrop={handleDrop}
-						enabledContainer={true}
-					/>
-				</div>
+				{gameStarted && (
+					<div className='bg-white w-full h-5/6 flex rounded-lg'>
+						<DroppableArea
+							id='main'
+							items={zones.main}
+							onDrop={handleDrop}
+							enabledContainer={true}
+						/>
+					</div>
+				)}
 			</div>
 
 			{gameStarted && (
@@ -694,7 +338,11 @@ const TypesChallenge = () => {
 							key={zone.id}
 							className='w-[24%] h-full flex flex-col gap-1'>
 							<div
-								className={`h-1/6 text-lg font-medium border-black border-2 rounded-lg flex justify-center items-center ${
+								onClick={() => handleZoneClick(zone.id)}
+								className={`h-1/6 text-lg font-medium border-black border-2 rounded-lg flex justify-center items-center 
+								${!gameEnded ? 'hover:bg-blue-400 cursor-pointer' : ''}
+
+								${
 									correctZone[zone.id] === undefined
 										? 'bg-white'
 										: correctZone[zone.id]
@@ -703,7 +351,7 @@ const TypesChallenge = () => {
 								}`}>
 								{zone.title}
 							</div>
-							<div className='bg-white w-full rounded-lg h-[45vh] '>
+							<div className='w-full rounded-lg h-[45vh] '>
 								<DroppableArea
 									id={zone.id}
 									items={zones[zone.id] || []}
@@ -715,6 +363,38 @@ const TypesChallenge = () => {
 					))}
 				</div>
 			)}
+			<div className='fixed right-0 bottom-0 m-4'>
+				{showSettings && (
+					<div
+						ref={settingsRef}
+						className='fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium'>
+						<div className='w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl'></div>
+
+						<div
+							className='w-full py-2 rounded-t-xl hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
+							onClick={openTypesChallengeTutorial}>
+							¿Cómo se juega?
+						</div>
+
+						<div
+							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl'
+							onClick={() => setShowSettings(false)}>
+							Cerrar
+						</div>
+					</div>
+				)}
+
+				{!showSettings && (
+					<div
+						className='w-10 cursor-pointer bg-gray-700 rounded-lg p-2 hover:bg-gray-600 active:scale-95 active:hover:bg-gray-500 transition-all ease-in-out duration-150'
+						onClick={handleShowSettings}>
+						<img
+							src={settings}
+							alt='settings'
+						/>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

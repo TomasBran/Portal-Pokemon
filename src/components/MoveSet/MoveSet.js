@@ -11,8 +11,14 @@ import withReactContent from 'sweetalert2-react-content';
 import Generations from '../Generations/Generations';
 import { getPokemonsGeneration, pokemonExists } from '../../services/pokemon';
 import settings from '../../assets/settings.png';
+import { toast } from 'sonner';
 
 const MoveSet = () => {
+	// ***IMPORTANTE*** DESHABILITAR CUANDO NO ESTE TESTEANDO //
+	const testing = false; // PONER FALSE AL NO TESTEAR
+	if (testing) console.log('EL MODO TESTING ESTA ON');
+	// ***IMPORTANTE*** DESHABILITAR CUANDO NO ESTE TESTEANDO //
+
 	const MySwal = withReactContent(Swal);
 	const [originalPokemonMovements, setOriginalPokemonMovements] = useState([]);
 	const [currentGenerations, setCurrentGenerations] = useState([
@@ -31,16 +37,26 @@ const MoveSet = () => {
 	const [guessedPokemons, setGuessedPokemons] = useState([]);
 	const [showSettings, setShowSettings] = useState(false);
 	const settingsRef = useRef(null);
+	const [guessButtonDisabled, setGuessButtonDisabled] = useState(false);
 
 	const startNewGame = async () => {
+		if (testing) {
+			const newPokemon = await getPokemonMovements('eevee');
+			setOriginalPokemonMovements(newPokemon);
+			return;
+		}
+
 		const newPokemon = await getPokemonMovements(
 			generateRandomPokemonNumber(currentGenerations)
 		);
-		// const newPokemon = await getPokemonMovements("eevee")
 		setOriginalPokemonMovements(newPokemon);
 	};
 
 	const resetGame = async (shouldAsk) => {
+		if (guessButtonDisabled) {
+			reloadGame();
+			return;
+		}
 		let result = false;
 		if (shouldAsk) {
 			result = await MySwal.fire({
@@ -52,21 +68,28 @@ const MoveSet = () => {
 				cancelButtonColor: '#d33',
 				confirmButtonText: 'Reiniciar',
 			});
+			if (result.isConfirmed) {
+				await MySwal.fire({
+					title: `Estuviste cerca! El Pokemon era <span class='text-red-400'>${capitalizeFirstLetter(originalPokemonMovements[5])}</span>.`,
+					text: 'La próxima seguro lo adivinas!',
+					icon: 'error',
+					showCancelButton: false,
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: ':(',
+				});
+			} else {
+				return;
+			}
 		}
 
-		if (result.isConfirmed || !shouldAsk) {
-			await MySwal.fire({
-				title: `Estuviste cerca! El Pokemon era <span class='text-red-400'>${capitalizeFirstLetter(originalPokemonMovements[5])}</span>.`,
-				text: 'La próxima seguro lo adivinas!',
-				icon: 'error',
-				showCancelButton: false,
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: ':(',
-			});
-			setMovesShown(0);
-			setGuessedPokemons([]);
-			startNewGame();
-		}
+		reloadGame();
+	};
+
+	const reloadGame = () => {
+		setMovesShown(0);
+		setGuessButtonDisabled(false);
+		setGuessedPokemons([]);
+		startNewGame();
 	};
 
 	const getGenerations = (childGenerations) => {
@@ -78,24 +101,35 @@ const MoveSet = () => {
 	};
 
 	const guess = async (pokemon) => {
+		if (pokemon === '') {
+			toast.error(`El buscador está vacío.`);
+			return;
+		}
+
 		const doesPokemonExist = await pokemonExists(pokemon);
 		if (!doesPokemonExist) {
 			return;
 		}
 		setGuessedPokemons((prev) => [...prev, pokemon]);
-		movesShown <= 4 && setMovesShown((prev) => prev + 1);
 		if (pokemon.toLowerCase() === originalPokemonMovements[5]) {
-			MySwal.fire({
+			await MySwal.fire({
 				title: `Felicitaciones! El Pokemon era ${pokemon}.`,
 				text: `${guessedPokemons.length !== 0 ? `Adivinaste en ${guessedPokemons.length + 1} intentos` : 'Adivinaste con 1 solo movimiento? Quizá pueda aprender una cosa o dos al verte.'}`,
 				icon: 'success',
-				showCancelButton: false,
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: 'Volver',
-			}).then(() => {
-				resetGame(false);
+				showCancelButton: true,
+				confirmButtonColor: 'green',
+				confirmButtonText: 'Jugar otra vez',
+				cancelButtonText: 'Ver el tablero',
+			}).then((response) => {
+				if (response.isConfirmed) {
+					resetGame(false);
+				} else {
+					setGuessButtonDisabled(true);
+				}
 			});
+			return;
 		}
+		movesShown <= 4 && setMovesShown((prev) => prev + 1);
 	};
 
 	useEffect(() => {}, [originalPokemonMovements]);
@@ -159,27 +193,29 @@ const MoveSet = () => {
 					/>
 
 					<div className='flex justify-center gap-4 text-white font-medium'>
-						<div
+						<button
+							disabled={guessButtonDisabled}
 							onClick={() => guess(inputValue)}
-							className='rounded-lg bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-300 cursor-pointer w-6/12 py-1 px-2 flex items-center justify-center'>
-							ADIVINAR ({5 - movesShown} pistas)
-						</div>
-						<div
-							className='bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-300 cursor-pointer w-6/12 py-2 px-4 rounded-lg flex items-center justify-center'
+							className='rounded-lg disabled:opacity-40 bg-indigo-500  enabled:hover:bg-indigo-400 enabled:active:bg-indigo-300 enabled:cursor-pointer py-4 px-4 flex items-center justify-center'>
+							ADIVINAR
+						</button>
+						<button
+							className='bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-300 cursor-pointer py-4 px-4 rounded-lg flex items-center justify-center'
 							onClick={() => resetGame(true)}>
-							RESET GAME
-						</div>
+							REINICIAR
+						</button>
 					</div>
 				</div>
 
-				<div className='w-3/12 h-[50vh] bg-gray-300 text-white rounded-2xl border-2 border-gray-900 flex flex-col items-center overflow-y-auto'>
-					<div className='text-gray-800 font-bold border-b-2 border-black w-1/6 h-2/12 fixed bg-gray-300 flex justify-center pt-2 items-center'>
+				<div className='w-3/12 h-[50vh] bg-white text-white rounded-2xl border-2 border-gray-900 flex flex-col items-center overflow-y-auto'>
+					<div className='text-gray-800 font-bold border-b-2 border-black w-1/6 h-2/12 fixed bg-white flex justify-center pt-2 items-center'>
 						Intentos ({guessedPokemons.length}):
 					</div>
-					<div className='flex flex-col-reverse items-center gap-1 mt-8'>
+					<div className='flex flex-col-reverse items-center gap-1 mt-10'>
 						{guessedPokemons.map((pokemon, index) => (
 							<div key={index}>
-								<span className='flex justify-center bg-gradient-to-r from-transparent via-blue-500 to-transparent px-8'>
+								<span
+									className={`${pokemon.toLowerCase() === originalPokemonMovements[5] ? 'bg-green-500' : 'bg-red-500'} flex justify-center font-bold text-white border-2 rounded-xl px-6 py-1`}>
 									{pokemon}
 								</span>
 							</div>
@@ -196,18 +232,18 @@ const MoveSet = () => {
 							<div
 								key={index}
 								className={`p-4 rounded-xl capitalize text-white font-medium flex justify-center items-center h-3/6 w-5/12 ${
-									movesShown >= index + 1 ? 'bg-blue-500' : 'bg-red-500'
+									movesShown >= index ? 'bg-blue-500' : 'bg-red-500'
 								}`}>
 								<span>
 									{`Movimiento ${index + 1}:`}
 									<br />
-									{movesShown >= index + 1 ? movement : '???'}
+									{movesShown >= index ? movement : '???'}
 								</span>
 							</div>
 						))}
 					</div>
 					<div
-						className={`p-4 rounded-xl capitalize text-white font-medium flex justify-center items-center w-full ${movesShown >= 5 ? 'bg-blue-500' : 'bg-red-500'}`}>{`Habilidad: ${movesShown >= 5 ? originalPokemonMovements[4] : '???'}`}</div>
+						className={`p-4 rounded-xl capitalize text-white font-medium flex justify-center items-center w-full ${movesShown >= 4 ? 'bg-blue-500' : 'bg-red-500'}`}>{`Habilidad: ${movesShown >= 4 ? originalPokemonMovements[4] : '???'}`}</div>
 				</div>
 			</div>
 
