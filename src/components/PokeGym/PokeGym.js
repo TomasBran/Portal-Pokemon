@@ -541,16 +541,8 @@ const PokeGym = () => {
 					<div
 						ref={settingsRef}
 						className={`${showSettings ? '' : 'hidden'} fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium`}>
-						<div className='w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl'>
-							<Generations
-								getGenerations={getGenerations}
-								resetGame={resetGame}
-								padding={2}
-							/>
-						</div>
-
 						<div
-							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
+							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl'
 							onClick={handleHardMode}>
 							Modo difícil: {hardmode ? 'ON' : 'OFF'}
 						</div>
@@ -559,6 +551,13 @@ const PokeGym = () => {
 							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
 							onClick={handleLuckActive}>
 							Suerte: {luckActive ? 'ON' : 'OFF'}
+						</div>
+						<div className='w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'>
+							<Generations
+								getGenerations={getGenerations}
+								resetGame={resetGame}
+								padding={2}
+							/>
 						</div>
 						<div
 							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
