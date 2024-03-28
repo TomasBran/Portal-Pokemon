@@ -116,6 +116,7 @@ const PokeGym = () => {
 	}, [currentTeam, lockInPokemon, shouldDisable, rollButtonText]);
 
 	const getGenerations = (childGenerations) => {
+		console.log('aso algo');
 		setCurrentGenerations(childGenerations);
 	};
 
@@ -303,9 +304,11 @@ const PokeGym = () => {
 				confirmButtonText: 'Reiniciar',
 			});
 		}
+		if (result.isConfirmed) {
+			updateGymResetNumber();
+		}
 
 		if (result.isConfirmed || !shouldAsk || testing) {
-			updateGymResetNumber();
 			setChosenTeam([]);
 			setCurrentTeam([]);
 			setRerollsLeft(testing ? 100 : 4);
@@ -434,6 +437,7 @@ const PokeGym = () => {
 	};
 
 	const openStats = () => {
+		console.log(currentGenerations);
 		const gymStats = getFromLocalStorage('gym_stats');
 		setShowSettings(false);
 		MySwal.fire({
@@ -534,51 +538,49 @@ const PokeGym = () => {
 					</button>
 				</div>
 				<div className='fixed right-0 bottom-0 m-4'>
-					{showSettings && (
-						<div
-							ref={settingsRef}
-							className='fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium'>
-							<div className='w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl'>
-								<Generations
-									getGenerations={getGenerations}
-									resetGame={resetGame}
-									padding={2}
-								/>
-							</div>
-
-							<div
-								className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
-								onClick={handleHardMode}>
-								Modo difícil: {hardmode ? 'ON' : 'OFF'}
-							</div>
-
-							<div
-								className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
-								onClick={handleLuckActive}>
-								Suerte: {luckActive ? 'ON' : 'OFF'}
-							</div>
-							<div
-								className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
-								onClick={openGymTutorial}>
-								¿Cómo se juega?
-							</div>
-							<div
-								className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
-								onClick={openFAQ}>
-								Preguntas Frecuentes
-							</div>
-							<div
-								className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
-								onClick={openStats}>
-								Estadísticas
-							</div>
-							<div
-								className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl'
-								onClick={() => setShowSettings(false)}>
-								Cerrar
-							</div>
+					<div
+						ref={settingsRef}
+						className={`${showSettings ? '' : 'hidden'} fixed right-0 bottom-0 m-3 bg-blue-500 h-auto w-[20vw] flex flex-col items-center rounded-xl text-white font-medium`}>
+						<div className='w-full hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-t-xl'>
+							<Generations
+								getGenerations={getGenerations}
+								resetGame={resetGame}
+								padding={2}
+							/>
 						</div>
-					)}
+
+						<div
+							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
+							onClick={handleHardMode}>
+							Modo difícil: {hardmode ? 'ON' : 'OFF'}
+						</div>
+
+						<div
+							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
+							onClick={handleLuckActive}>
+							Suerte: {luckActive ? 'ON' : 'OFF'}
+						</div>
+						<div
+							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
+							onClick={openGymTutorial}>
+							¿Cómo se juega?
+						</div>
+						<div
+							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
+							onClick={openFAQ}>
+							Preguntas Frecuentes
+						</div>
+						<div
+							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500'
+							onClick={openStats}>
+							Estadísticas
+						</div>
+						<div
+							className='w-full py-2 hover:bg-yellow-200 active:bg-yellow-300 cursor-pointer hover:text-blue-500 rounded-b-xl'
+							onClick={() => setShowSettings(false)}>
+							Cerrar
+						</div>
+					</div>
 
 					{!showSettings && (
 						<div
